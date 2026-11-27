@@ -30,10 +30,10 @@ O ponto de partida é o que o `nest new` (template ESM) e o `nest g` geram. Na d
 | envalid | [README do envalid](https://github.com/af/envalid) |
 | class-validator | [README do class-validator](https://github.com/typestack/class-validator) |
 | Vitest | [Guia do Vitest](https://vitest.dev/guide/) |
+| oxlint | [Linter do oxlint](https://oxc.rs/docs/guide/usage/linter) |
 
 ## Onde divergimos da documentação do Nest
 
 Cada divergência tem uma razão registrada:
 
 - **Variáveis de ambiente com envalid, não com `@nestjs/config`.** Veja a [ADR 0007](../decisions/0007-envalid-config-and-class-validator-input.md).
-- **ESLint, não oxlint (que o template usa).** A regra de fronteiras entre camadas depende do `eslint-plugin-boundaries`, que só existe para ESLint.
