@@ -5,17 +5,17 @@ Como entregar mudanças no agent-desk. Os termos seguem o [glossário](../../doc
 ## Regras
 
 - **Um PR = uma entrega.** De preferência, um caso de uso `M<n>.<k>` de [`milestones.md`](../../documents/mvp/milestones.md). Se a funcionalidade for grande, ela vira vários PRs.
-- **Máximo de 10 arquivos alterados.** Esse limite vale mesmo que a funcionalidade precise de 20 PRs.
+- **Por volta de 10 arquivos alterados.** Essa é a média esperada. Até 18 arquivos é aceitável quando a entrega pede; acima disso, quebre o PR, mesmo que a funcionalidade precise de vários PRs.
 - **Revisão humana lê tudo.** Um PR grande demais para ser lido por inteiro deve ser quebrado em PRs menores.
 
-## O que conta no limite de 10 arquivos
+## O que conta no tamanho do PR
 
 | Conta | Não conta |
 |---|---|
 | Código, testes e documentos | `pnpm-lock.yaml` |
 | Arquivos de configuração e de CI | Arquivos gerados em `apps/api/drizzle/` (migrations do drizzle-kit) |
 
-A CI avisa quando o limite é passado (veja [`ci.md`](ci.md)). O aviso não bloqueia o PR, mas o revisor espera uma boa razão para ele.
+A CI avisa quando o PR passa de 18 arquivos (veja [`ci.md`](ci.md)). O aviso não bloqueia o PR, mas o revisor espera uma boa razão para ele.
 
 ## Branch
 
@@ -44,7 +44,7 @@ Em **português**, preenchendo o [template](../../.github/pull_request_template.
 2. **Por quê**: o motivo da mudança.
 3. **Como testar**: comandos que o revisor pode rodar.
 4. **Decisões**: ADRs criadas ou afetadas (veja [`decisions/`](../decisions/TEMPLATE.md)).
-5. **Checklist**: teste antes do código, nomes do glossário, camadas respeitadas, até 10 arquivos, documentos atualizados.
+5. **Checklist**: teste antes do código, nomes do glossário, camadas respeitadas, por volta de 10 arquivos (até 18), documentos atualizados.
 
 ## Antes de abrir o PR
 

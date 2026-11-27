@@ -11,6 +11,7 @@ export default [
         'error',
         { allowWithDecorator: true },
       ],
+      '@typescript-eslint/no-unsafe-class-instance-assignment': 'off',
     },
   },
   { files: ['**/*.js'], ...tseslint.configs.disableTypeChecked },

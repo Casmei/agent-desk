@@ -23,6 +23,6 @@ Os tipos do Drizzle ficam restritos à camada `infrastructure`: os repositórios
 ## Consequências
 
 - Esquema e migrations versionados junto do código, com tipos de ponta a ponta na infraestrutura.
-- As migrations geradas não contam no limite de 10 arquivos do PR.
+- As migrations geradas não contam no tamanho do PR.
 - Como os tipos do Drizzle não saem da infraestrutura, o domínio continua testável sem banco.
 - Os testes de integração exigem um Postgres rodando (`docker compose up -d`).

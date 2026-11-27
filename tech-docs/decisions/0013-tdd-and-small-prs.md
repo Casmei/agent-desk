@@ -11,7 +11,7 @@ O projeto precisa ser construído com convicção, não como um projeto "vibecod
 ## Decisão
 
 - **TDD obrigatório** em toda implementação: escrever o teste, vê-lo falhar, implementar o mínimo e vê-lo passar.
-- **PRs pequenos:** no máximo cerca de 10 arquivos alterados e uma entrega por PR. Não contam `pnpm-lock.yaml` nem os arquivos de migração em `apps/api/drizzle/`.
+- **PRs pequenos:** por volta de 10 arquivos alterados e uma entrega por PR. Até 18 é aceitável quando a entrega pede; acima disso, o PR é quebrado. (Revisado em 2026-11-27: o limite rígido de 10 virou média, com teto de 18.) Não contam `pnpm-lock.yaml` nem os arquivos de migração em `apps/api/drizzle/`.
 
 ## Alternativas consideradas
 

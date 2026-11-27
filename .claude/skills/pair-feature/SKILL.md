@@ -75,7 +75,7 @@ Siga em ordem. Cada **PARE** é obrigatório.
 ### 3. Quebrar em passos atômicos
 
 - [ ] Leia o enunciado e o critério de aceite de cada `REQ` do item escolhido.
-- [ ] Proponha a quebra em passos. Cada passo é **um caso de uso pequeno**, testável sozinho, que cabe em **um PR com no máximo 10 arquivos alterados** (sem contar `pnpm-lock.yaml` e `apps/api/drizzle/`; veja [`tech-docs/workflow/pull-requests.md`](../../../tech-docs/workflow/pull-requests.md)).
+- [ ] Proponha a quebra em passos. Cada passo é **um caso de uso pequeno**, testável sozinho, que cabe em **um PR com por volta de 10 arquivos alterados (no máximo 18)** (sem contar `pnpm-lock.yaml` e `apps/api/drizzle/`; veja [`tech-docs/workflow/pull-requests.md`](../../../tech-docs/workflow/pull-requests.md)).
 - [ ] Para cada passo, mostre: o que entrega, o `REQ` que cobre, a lista estimada de arquivos (com a camada de cada um) e o comportamento que o teste vai provar.
 - [ ] Proponha um branch **por passo** (um passo = um PR = um branch), no formato `m<n>/<k>-<slug>`. Ex.: `m1/2-inbound-webhook` para o primeiro passo e `m1/2-inbound-webhook-status` para o seguinte.
 - [ ] **PARE. Espere o dono do projeto aprovar ou ajustar a quebra.** Não crie branch nem arquivo antes disso.
@@ -113,7 +113,7 @@ Aponte na hora qualquer desvio, **inclusive do dono do projeto**, dizendo a regr
 - [ ] **Proibidos do `CLAUDE.md`:** repositório genérico, herança profunda, biblioteca de CQRS ou event sourcing, abstração sem um segundo caso real, "utils" genérico.
 - [ ] **Convenções:** nomes (`tech-docs/code/naming.md`), logs (`logging.md`), segredos (`security.md`), API (`api.md`).
 - [ ] **TDD:** código de produção sem teste falhando antes.
-- [ ] **Tamanho do PR:** conte os arquivos com `git diff --name-only main...HEAD -- . ':!pnpm-lock.yaml' ':!apps/api/drizzle' | wc -l`. Ao chegar perto de 10, avise e proponha dividir.
+- [ ] **Tamanho do PR:** conte os arquivos com `git diff --name-only main...HEAD -- . ':!pnpm-lock.yaml' ':!apps/api/drizzle' | wc -l`. Ao passar de 10, avise; ao chegar perto de 18, proponha dividir.
 - [ ] **Documentos:** tabela nova vai para `tech-docs/data-model.md`; regra nova vai para o documento do contexto, no mesmo PR.
 
 ### 8. Fechamento do passo
@@ -136,7 +136,7 @@ Se qualquer um destes acontecer, você saiu do papel de suporte:
 - Escolheu o item ou aprovou a quebra no lugar dele.
 - Fez duas ou mais perguntas de decisão na mesma mensagem.
 - Pulou o teste, ou escreveu o código antes de ver o teste falhar.
-- O PR passou de 10 arquivos alterados.
+- O PR passou de 18 arquivos alterados.
 - Fez commit, push ou abriu PR sem pedido.
 
 **Ação corretiva:** pare imediatamente. Diga ao dono do projeto o que aconteceu, mostre o que foi feito sem aprovação e devolva a decisão a ele: manter, ajustar ou desfazer. Só continue depois da resposta.

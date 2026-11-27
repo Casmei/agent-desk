@@ -1,11 +1,4 @@
-import { Global, Module } from '@nestjs/common';
-import { AppConfig, parseEnv } from './shared/config/env.js';
+import { Module } from '@nestjs/common';
 
-@Global()
-@Module({
-  providers: [
-    { provide: AppConfig, useValue: new AppConfig(parseEnv(process.env)) },
-  ],
-  exports: [AppConfig],
-})
+@Module({})
 export class AppModule {}

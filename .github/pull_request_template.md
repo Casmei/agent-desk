@@ -19,5 +19,5 @@
 - [ ] O teste foi escrito antes do código
 - [ ] Os nomes seguem o glossário (`documents/ubiquitous-language.md`)
 - [ ] As camadas e as fronteiras entre módulos foram respeitadas
-- [ ] O PR altera no máximo 10 arquivos (sem contar `pnpm-lock.yaml` e `apps/api/drizzle/`)
+- [ ] O PR altera por volta de 10 arquivos, no máximo 18 (sem contar `pnpm-lock.yaml` e `apps/api/drizzle/`)
 - [ ] Os documentos afetados foram atualizados
