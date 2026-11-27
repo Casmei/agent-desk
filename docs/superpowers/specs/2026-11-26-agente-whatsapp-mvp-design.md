@@ -319,8 +319,9 @@ O que **nunca pode sair numa mensagem** automática (inspirado no Garimpo).
 | Banco | PostgreSQL | dono |
 | ORM / migrations | Drizzle + drizzle-kit | dono |
 | Fila / agendamento (debounce, ouvintes, atrasos de digitação) | Redis + BullMQ | Claude |
-| Validação e config | Zod (env validado na subida) | Claude |
-| Logs | Pino (via nestjs-pino), JSON estruturado | Claude |
+| Config (variáveis de ambiente) | envalid, validado na subida | dono |
+| Validação de entrada da API | Zod | Claude |
+| Logs | Logger nativo do Nest (`ConsoleLogger`), JSON estruturado, `redact`, seguindo a doc oficial | dono |
 | Testes | Vitest (mesmo runner no back e no front) | Claude |
 | Front (só setup) | Vite + React + TypeScript | Claude |
 | Modelo | OpenRouter pela API compatível com OpenAI | dono (OpenRouter) / Claude (como) |
@@ -444,7 +445,7 @@ Comportamento da skill:
   - Monorepo com `apps/api` (Nest com endpoint de health que verifica Postgres e Redis),
     `apps/web` (Vite + React vazio) e pacotes de configuração compartilhada (TypeScript, lint).
   - Drizzle configurado com schema vazio e comandos de migration.
-  - Config por env validada com Zod; logger Pino configurado.
+  - Config por env validada com envalid; logger nativo do Nest configurado (JSON + redact).
   - Vitest configurado, com um teste exemplo de cada tipo (unidade e integração) que sirva de padrão.
   - Lint de fronteiras entre camadas.
   - Dockerfile da API e docker-compose (postgres, redis, api; Evolution em perfil opcional de
