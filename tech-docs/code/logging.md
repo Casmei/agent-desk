@@ -4,7 +4,7 @@ Usamos o **logger nativo do Nest**, seguindo a [documentação oficial](https://
 
 ## Configuração
 
-`ConsoleLogger` com `json: true` fora de `development`, para gerar JSON estruturado. Em `development`, saída legível. A configuração `redact` mascara chaves sensíveis nos parâmetros estruturados.
+`ConsoleLogger` com `json: true` fora de `development`, para gerar JSON estruturado. Em `development`, saída legível. O formato segue o `NODE_ENV` do `.env`, também no `docker compose up`: com `development` os logs saem coloridos e legíveis; num deploy real, use `NODE_ENV=production` para ter JSON. A configuração `redact` mascara chaves sensíveis nos parâmetros estruturados.
 
 ## Uso
 
