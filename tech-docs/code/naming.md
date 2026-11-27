@@ -21,7 +21,7 @@ O [glossário](../../documents/ubiquitous-language.md) é lei: se o conceito exi
 
 Testes ficam ao lado do código (veja [`testing.md`](testing.md)).
 
-Imports relativos terminam em `.js`, mesmo apontando para um arquivo `.ts`: `import { HealthController } from './health.controller.js'`. O app é ESM, e o Node não resolve import sem extensão. O caminho aponta para o arquivo que vai existir no `dist/` depois do build. É o mesmo padrão do template ESM do Nest.
+Imports relativos terminam em `.js`, mesmo apontando para um arquivo `.ts`: `import { HealthController } from './health.controller.js'`. O app é ESM, e o Node não resolve import sem extensão. O caminho aponta para o arquivo que vai existir no `dist/` depois do build. É o mesmo padrão do template ESM do Nest. A regra vale para o `apps/api`. O `apps/web` segue o template do Vite, que importa com a extensão do fonte (`import App from './app.tsx'`).
 
 ## Classes
 
