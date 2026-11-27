@@ -10,9 +10,9 @@ O projeto reúne a API (NestJS), um front que no MVP é só um projeto vazio (Vi
 
 ## Decisão
 
-Usamos um **monorepo** com **pnpm workspaces** para os pacotes e **Turborepo** para orquestrar e cachear as tarefas (`lint`, `typecheck`, `test`, `build`). Os pacotes têm o prefixo `@agent-desk/`. O Node é fixado na versão `24` (`.nvmrc` e `engines`).
+Usamos um **monorepo** com **pnpm workspaces** para os pacotes e **Turborepo** para orquestrar e cachear as tarefas (`lint`, `typecheck`, `test`, `build`). Os pacotes têm o prefixo `@agent-desk/`. O Node é fixado na versão `24`.
 
-O TypeScript fica fixado em `~6.0.3`, porque o typescript-eslint ainda não suporta o TypeScript 7.
+A versão do TypeScript é decidida na ADR 0010.
 
 ## Alternativas consideradas
 
@@ -25,4 +25,3 @@ O TypeScript fica fixado em `~6.0.3`, porque o typescript-eslint ainda não supo
 - Uma única instalação e um único lockfile (`pnpm-lock.yaml`), que não conta no limite de arquivos do PR.
 - O cache do Turborepo acelera a CI e o ciclo local.
 - Quem contribui precisa do pnpm instalado.
-- Trocar o TypeScript para uma versão nova exige conferir antes o suporte do typescript-eslint.

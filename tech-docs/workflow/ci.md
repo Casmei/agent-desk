@@ -2,6 +2,10 @@
 
 A CI roda no GitHub Actions. Esta página explica o que cada job faz e como rodar a mesma checagem na sua máquina antes de abrir o PR. Veja também [`pull-requests.md`](pull-requests.md).
 
+## Quando roda
+
+Os jobs `quality`, `integration` e `build` ficam em `ci.yml`, que roda em `pull_request` e em `push` para a `main`. O workflow `pr-size` roda em `pull_request`.
+
 ## Jobs
 
 | Job / workflow | O que faz |
@@ -23,7 +27,7 @@ pnpm typecheck
 pnpm test
 ```
 
-Job `integration`: suba Postgres e Redis e rode os testes de integração.
+Job `integration`: suba Postgres e Redis e rode os testes de integração. O `pnpm test:integration` precisa de `DATABASE_URL`, `REDIS_URL` e `ADMIN_TOKEN` no `.env`; copie o `.env.example` como base.
 
 ```bash
 docker compose up -d
@@ -37,7 +41,11 @@ pnpm build
 docker build -f apps/api/Dockerfile .
 ```
 
-Para o `pr-size`, confira o número de arquivos alterados contra a `main` com `git diff --stat main`, descontando o lockfile e as migrations geradas.
+Para o `pr-size`, conte os arquivos alterados contra a `main`, sem o lockfile e as migrations geradas:
+
+```bash
+git diff --name-only main...HEAD -- . ':!pnpm-lock.yaml' ':!apps/api/drizzle' | wc -l
+```
 
 ## Quando a CI falha
 

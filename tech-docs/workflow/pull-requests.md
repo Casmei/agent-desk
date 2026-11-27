@@ -5,7 +5,7 @@ Como entregar mudanças no agent-desk. Os termos seguem o [glossário](../../doc
 ## Regras
 
 - **Um PR = uma entrega.** De preferência, um caso de uso `M<n>.<k>` de [`milestones.md`](../../documents/mvp/milestones.md). Se a funcionalidade for grande, ela vira vários PRs.
-- **Máximo de 10 arquivos alterados.** Mesmo que a funcionalidade vire 20 PRs.
+- **Máximo de 10 arquivos alterados.** Esse limite vale mesmo que a funcionalidade precise de 20 PRs.
 - **Revisão humana lê tudo.** Um PR grande demais para ser lido por inteiro deve ser quebrado em PRs menores.
 
 ## O que conta no limite de 10 arquivos
