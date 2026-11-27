@@ -20,6 +20,8 @@ Ciclo **vermelho, verde, refatorar**:
 - **Domínio sem mocks:** entidades e regras são testadas com objetos reais.
 - **Portas usam fakes escritos à mão,** como uma classe que estende a porta e guarda dados em memória. Sem bibliotecas de mock.
 - Repositórios e filas são testados na integração, contra os serviços reais.
+- **Cada teste de integração começa com as tabelas que usa vazias:** um `beforeEach` apaga as linhas (`db.delete(tabela)`), como recomenda a skill `nestjs-testing-expert` ("reset data per test"). Os arquivos de integração rodam um de cada vez (`fileParallelism: false` no `vitest.config.ts`), porque dividem o mesmo banco.
+- **Atenção:** os testes de integração usam o mesmo banco do desenvolvimento, então rodar `pnpm test:integration` apaga os dados locais dessas tabelas.
 
 ## Como escrever
 
