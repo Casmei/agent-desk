@@ -380,9 +380,9 @@ Termos e nomes de código seguem o [glossário](../ubiquitous-language.md).
 
 ### REQ-NF-04 PRs pequenos
 
-**Enunciado.** Cada PR entrega uma coisa e altera no máximo 10 arquivos. Contam documentos e testes. Não contam lockfiles nem arquivos gerados (migrations do drizzle-kit).
+**Enunciado.** Cada PR entrega uma coisa e altera por volta de 10 arquivos, com teto de 18. Contam documentos e testes. Não contam lockfiles nem arquivos gerados (migrations do drizzle-kit).
 
-**Critério de aceite.** A CI avisa quando um PR passa de 10 arquivos contados.
+**Critério de aceite.** A CI avisa quando um PR passa de 18 arquivos contados.
 
 ### REQ-NF-05 Logs estruturados
 

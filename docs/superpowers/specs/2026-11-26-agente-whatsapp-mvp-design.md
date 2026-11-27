@@ -131,7 +131,7 @@ Docker.
 - **Código sempre em inglês** (variáveis, classes, tabelas, logs, mensagens de erro internas).
 - **Documentação em português**, organizada em subpastas com ordem de leitura (seção 5.4).
 - **TDD obrigatório** em toda implementação.
-- **PRs pequenos**: no máximo ~10 arquivos alterados, uma entrega por PR.
+- **PRs pequenos**: por volta de 10 arquivos alterados (teto de 18), uma entrega por PR.
 - **O dono quer participar de cada passo e conhecer a fundo cada parte do sistema.** O plano
   entrega a fundação (documentos + boilerplate + a skill de pareamento da seção 5.5); as
   funcionalidades são implementadas depois, marco a marco, junto com o dono. A IA é **suporte,
@@ -367,7 +367,7 @@ Módulos iniciais sugeridos (a arquitetura fecha a lista): `channels`, `conversa
 - **Testes / TDD:** o teste vem antes da implementação; testa comportamento, não implementação;
   domínio testado sem mocks de infraestrutura; testes de integração com Postgres real; nada de
   teste que só repete o código. Poucos testes, claros, que falham por um motivo só.
-- **Git e PRs:** um PR = uma entrega; máximo ~10 arquivos alterados (mesmo que a funcionalidade
+- **Git e PRs:** um PR = uma entrega; por volta de 10 arquivos alterados, teto de 18 (mesmo que a funcionalidade
   vire 20 PRs); descrição clara com o que, por quê e como testar; template obrigatório; commits
   em inglês no padrão Conventional Commits; descrição do PR em português **[decisão do Claude]**.
 - **Contagem do limite de PR** **[decisão do Claude]**: contam todos os arquivos alterados,
