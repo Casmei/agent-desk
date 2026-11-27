@@ -9,7 +9,8 @@
     "typecheck": {},
     "test": {},
     "test:integration": {
-      "cache": false
+      "cache": false,
+      "passThroughEnv": ["DATABASE_URL", "REDIS_URL", "ADMIN_TOKEN"]
     },
     "dev": {
       "cache": false,
