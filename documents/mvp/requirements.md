@@ -46,7 +46,7 @@ Termos e nomes de código seguem o [glossário](../ubiquitous-language.md).
 
 **Enunciado.** O acesso ao WhatsApp acontece por uma interface de canal (`ChannelConnector`). A Evolution é apenas o primeiro conector. Nenhuma parte do domínio conhece a Evolution pelo nome.
 
-**Critério de aceite.** Nenhum arquivo de `domain` ou `application` menciona a Evolution. A checagem de fronteiras de camadas (lint) falha se uma dependência da Evolution aparecer fora de `infrastructure`.
+**Critério de aceite.** Nenhum arquivo de `domain` ou `application` menciona a Evolution. A revisão do PR barra uma dependência da Evolution fora de `infrastructure`.
 
 ### REQ-CH-02 Registrar a conexão
 
@@ -368,9 +368,9 @@ Termos e nomes de código seguem o [glossário](../ubiquitous-language.md).
 
 ### REQ-NF-02 Camadas e fronteiras
 
-**Enunciado.** Cada módulo segue as camadas `domain`, `application`, `infrastructure` e `interface`, com as dependências permitidas pelo documento de camadas. O domínio é TypeScript puro. As portas são classes abstratas. As regras de dependência são verificadas por lint na CI.
+**Enunciado.** Cada módulo segue as camadas `domain`, `application`, `infrastructure` e `interface`, com as dependências permitidas pelo documento de camadas. O domínio é TypeScript puro. As portas são classes abstratas. As regras de dependência são convenção, verificada na revisão do PR.
 
-**Critério de aceite.** Uma importação proibida entre camadas faz o lint falhar na CI.
+**Critério de aceite.** Uma importação proibida entre camadas é barrada na revisão do PR.
 
 ### REQ-NF-03 TDD
 
@@ -410,7 +410,7 @@ Termos e nomes de código seguem o [glossário](../ubiquitous-language.md).
 
 ### REQ-NF-09 Boilerplate e CI
 
-**Enunciado.** O repositório tem o monorepo com `apps/api` e `apps/web`, Drizzle com schema vazio, configuração por variáveis de ambiente validada com envalid, logger nativo do Nest (JSON e redact), Vitest com um teste de exemplo de cada tipo, lint de fronteiras, Dockerfile e docker-compose (Postgres, Redis, API, e Evolution em perfil opcional de dev), template de PR, e CI no GitHub Actions (lint, typecheck, testes com Postgres e Redis, build, build da imagem e aviso de limite de arquivos). Não há regra de negócio nele.
+**Enunciado.** O repositório tem o monorepo com `apps/api` e `apps/web`, Drizzle com schema vazio, configuração por variáveis de ambiente validada com envalid, logger nativo do Nest (JSON e redact), Vitest com um teste de exemplo de cada tipo, Dockerfile e docker-compose (Postgres, Redis, API, e Evolution em perfil opcional de dev), template de PR, e CI no GitHub Actions (lint, typecheck, testes com Postgres e Redis, build, build da imagem e aviso de limite de arquivos). Não há regra de negócio nele.
 
 **Critério de aceite.** Em um clone limpo, o docker-compose sobe e o endpoint de health verifica Postgres e Redis. A CI fica verde no branch `main`.
 

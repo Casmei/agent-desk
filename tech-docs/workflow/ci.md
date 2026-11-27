@@ -10,7 +10,7 @@ Os jobs `quality`, `integration` e `build` ficam em `ci.yml`, que roda em `pull_
 
 | Job / workflow | O que faz |
 |---|---|
-| `quality` | Confere a formatação (Prettier), roda lint (inclui as regras de fronteira entre camadas), typecheck e testes unitários. |
+| `quality` | Confere a formatação (Prettier), roda lint, typecheck e testes unitários. |
 | `integration` | Roda os testes de integração contra `postgres:18-alpine` e `redis:8-alpine`. |
 | `build` | Roda `pnpm build` e faz o build da imagem Docker de `apps/api/Dockerfile`, sem publicar (sem push). |
 | `pr-size` (workflow) | Etapa de shell que avisa quando o PR altera mais de 18 arquivos, sem contar `pnpm-lock.yaml` (em qualquer pasta) nem `apps/api/drizzle/`. |

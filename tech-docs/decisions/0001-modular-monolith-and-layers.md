@@ -25,7 +25,7 @@ Regras de fundação:
 - Repositórios convertem linhas do banco em entidades de domínio. Tipos do Drizzle nunca saem da infraestrutura.
 - O módulo Nest é só a fiação: liga portas a implementações.
 - Erros de domínio são classes tipadas, e a camada `interface` os traduz para HTTP.
-- As regras de dependência entre camadas são verificadas automaticamente por lint na CI.
+- As regras de dependência entre camadas são convenção, verificada na revisão do PR.
 - Proibido: repositório genérico, herança profunda, biblioteca de CQRS ou event sourcing, abstração sem um segundo caso real e "utils" genérico.
 
 ## Alternativas consideradas
@@ -37,6 +37,10 @@ Regras de fundação:
 ## Consequências
 
 - Um único deploy e um único processo para operar.
-- Cada módulo tem fronteiras explícitas, e o lint impede dependências proibidas entre camadas.
+- Cada módulo tem fronteiras explícitas, e a revisão do PR barra dependências proibidas entre camadas.
 - Há mais arquivos e mais código (portas, implementações, conversões), aceitos de propósito em troca de clareza.
 - Quem criar uma abstração precisa de um segundo caso real que a justifique.
+
+## Revisão em 2026-11-27
+
+Por decisão do dono, as regras de camada não são verificadas por lint: são convenção, verificada na revisão do PR.

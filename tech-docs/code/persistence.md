@@ -5,7 +5,7 @@ PostgreSQL acessado por Drizzle. As convenções de tabela e coluna estão em [`
 ## Regras
 
 - **Drizzle só em `infrastructure`.** Tipos do Drizzle nunca aparecem em `domain`, `application` ou `interface`.
-- **Schema** em `modules/<module>/infrastructure/*.schema.ts`, na pasta plana da camada, um arquivo por tabela ou grupo coeso de tabelas. O `drizzle.config.ts` encontra esses arquivos por glob.
+- **Schema** em `modules/<module>/infrastructure/*.schema.ts`, um arquivo por tabela ou grupo coeso de tabelas. O `drizzle.config.ts` encontra esses arquivos por glob.
 - **Repositórios usam o query builder** (`db.select().from(tabela)`, `db.insert(tabela)`) com as tabelas importadas do `*.schema.ts`. Por isso o `drizzle()` não recebe `schema`: ele só serve para a API relacional `db.query.*`, que não usamos.
 - **O repositório mapeia linha para entidade e entidade para linha.** O domínio nunca vê a linha.
 - Um repositório por agregado, com os métodos que os casos de uso precisam. Nada de repositório genérico.

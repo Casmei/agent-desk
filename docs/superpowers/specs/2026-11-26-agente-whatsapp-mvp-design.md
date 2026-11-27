@@ -351,7 +351,7 @@ Regras de fundação:
   infraestrutura.
 - O módulo Nest é só a "fiação": liga portas a implementações.
 - Erros de domínio são classes tipadas; a camada `interface` traduz para HTTP.
-- As regras de dependência entre camadas são **verificadas automaticamente** (lint) na CI.
+- As regras de dependência entre camadas são convenção, verificada na revisão do PR (decisão do dono, 2026-11-27).
 - **Proibido:** repositório genérico, herança profunda, biblioteca de CQRS/event sourcing,
   abstração sem um segundo caso real, "utils" genérico.
 
@@ -449,7 +449,6 @@ Comportamento da skill:
   - Drizzle configurado com schema vazio e comandos de migration.
   - Config por env validada com envalid; logger nativo do Nest configurado (JSON + redact).
   - Vitest configurado, com um teste exemplo de cada tipo (unidade e integração) que sirva de padrão.
-  - Lint de fronteiras entre camadas.
   - Dockerfile da API e docker-compose (postgres, redis, api; Evolution em perfil opcional de
     dev, falando com a API pela rede interna do Docker, sem túnel).
   - CI no GitHub Actions: lint, typecheck, testes (com Postgres e Redis), build, build da imagem

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nest start --watch --env-file ../../.env",
     "build": "nest build",
-    "lint": "oxlint --type-aware --ignore-pattern test/boundaries/fixtures/ src/ test/",
+    "lint": "oxlint --type-aware src/ test/",
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",

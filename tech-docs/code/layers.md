@@ -33,9 +33,8 @@ O módulo Nest (`<module>.module.ts`) é só fiação: liga cada porta à sua im
 - **Portas são classes abstratas,** usadas diretamente como token de injeção do Nest. Não há tokens em string.
 - **Um caso de uso por classe,** com um único método público: `execute(input)`.
 - **Erros de domínio são classes tipadas** (`*.error.ts`). A camada `interface` os traduz para HTTP (veja [`api.md`](api.md)) e, por isso, pode importar os erros de domínio do próprio módulo (`../domain/*.error.js`). O resto do `domain` continua bloqueado para ela.
-- **O `domain` só usa `node:crypto` entre os builtins do Node,** para gerar IDs com `randomUUID`. Todos os outros `node:*` são bloqueados pelo lint.
+- **O `domain` só usa `node:crypto` entre os builtins do Node,** para gerar IDs com `randomUUID`. Todos os outros `node:*` ficam fora do domínio.
 - **Entre módulos,** um módulo só usa outro pela `application` dele, nunca por `domain` nem por `infrastructure`.
-- **Cada camada é uma pasta plana,** sem subpastas: o lint de fronteiras depende disso (veja a [ADR 0015](../decisions/0015-nest-cli-swc-esm.md)).
 - Controllers e consumidores só chamam casos de uso.
 
 ## Proibido
@@ -46,7 +45,7 @@ O módulo Nest (`<module>.module.ts`) é só fiação: liga cada porta à sua im
 - Abstração sem um segundo caso real.
 - "Utils" genérico.
 - Tipos do Drizzle fora de `infrastructure`.
-- Dependência de camada ou de módulo que o lint da CI não permita.
+- Dependência de camada ou de módulo fora da tabela acima.
 
 ## Exemplo
 

@@ -87,7 +87,7 @@ Um módulo só usa outro **pela camada `application` dele**, nunca por `domain` 
 - Repositórios convertem linhas do banco em entidades de domínio. Tipos do Drizzle nunca saem da infraestrutura.
 - O módulo Nest é só a fiação: liga portas a implementações.
 - Erros de domínio são classes tipadas. A camada `interface` traduz para HTTP.
-- As regras de dependência entre camadas e entre módulos são **verificadas automaticamente** (lint) na CI.
+- As regras de dependência entre camadas e entre módulos são convenção, verificada na revisão do PR.
 - **Proibido:** repositório genérico, herança profunda, biblioteca de CQRS ou event sourcing, abstração sem um segundo caso real, "utils" genérico.
 
 ## Fronteira síncrona e assíncrona
