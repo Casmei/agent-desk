@@ -30,11 +30,11 @@ flowchart TD
     B -- não --> Z["Nada acontece"]
     B -- sim --> C["3. Monta o contexto"]
     C --> D["4. Chama o modelo (registra Usage)"]
-    D --> E{"Chegou mensagem nova do contato?"}
+    D --> E{"Chegou mensagem nova do contato? (durante o modelo, a ferramenta ou a espera de digitação)"}
     E -- sim --> F{"Atingiu o máximo de interrupções seguidas?"}
     F -- não --> G["Interrompe, descarta com superseded_by_new_message"]
     G --> H["Nova DebounceWindow"]
-    F -- sim --> I{"Gasto passou do limite?"}
+    F -- sim --> I{"Não interrompível: gasto passou do limite?"}
     E -- não --> I
     I -- sim --> J["Para a execução, handoff, SpendingLimitReached"]
     I -- não --> K{"Modelo pediu ferramenta?"}
@@ -43,9 +43,7 @@ flowchart TD
     L -- não --> N["Chama a ferramenta, registra ToolCall"]
     N --> D
     K -- não --> O["Resposta final: entrega em reply-delivery.md"]
-    O --> P{"Dono virou humano?"}
-    P -- sim --> Q["Descarta com human_takeover"]
-    P -- não --> R["Envia"]
+    O --> P["Entrega (ver reply-delivery.md)"]
 ```
 
 1. A janela de debounce fecha e uma `AgentRun` está pronta para começar. **Só existe uma execução por conversa por vez.**
@@ -53,9 +51,9 @@ flowchart TD
 3. O contexto é montado com as instruções do agente, as skills, o histórico recente (as últimas N mensagens) e a descrição das ferramentas.
 4. O sistema chama o modelo, direto pela interface `LlmProvider`, sem framework de agente. Toda chamada registra o modelo usado, os tokens e o custo.
 5. O modelo pode chamar ferramentas em sequência, até o **máximo de iterações por execução** (padrão 5). Cada chamada fica registrada em `ToolCall`. Passou do máximo, a execução termina e é feito handoff para humano.
-6. **Interrupção:** se chega mensagem nova do contato enquanto a execução ainda não enviou a resposta (pensando, chamando ferramenta ou "digitando"), a execução é interrompida e a chamada ao modelo é abortada quando possível. A nova janela de debounce começa, e a próxima execução recebe todas as mensagens juntas.
+6. **Interrupção:** se chega mensagem nova do contato enquanto a execução ainda não enviou a resposta, a interrupção pode ocorrer durante a chamada ao modelo, durante a chamada de uma ferramenta ou durante a espera da simulação de digitação (não só depois do modelo). Nesse caso a execução é interrompida e a chamada ao modelo é abortada quando possível. A nova janela de debounce começa, e a próxima execução recebe todas as mensagens juntas.
 7. **Descarte com motivo:** toda execução que não chega a enviar é registrada como `AgentRunDiscarded`, com o motivo e os tokens e o custo gastos. Os motivos são `superseded_by_new_message` (mensagem nova do contato) e `human_takeover` (o humano assumiu).
-8. **Proteção contra spam:** há um máximo de interrupções seguidas por conversa (padrão 3). Ao atingir o máximo, a próxima execução não é mais interrompida e envia a resposta. As mensagens que chegarem nesse meio tempo entram na execução seguinte.
+8. **Proteção contra spam:** há um máximo de interrupções seguidas por conversa (padrão 3). Ao atingir o máximo, a próxima execução **deixa de ser interrompível**: mensagem nova não a interrompe mais e ela envia a resposta. As mensagens que chegarem nesse meio tempo entram na execução seguinte.
 9. **Custo:** a cada chamada ao modelo, o gasto acumulado é comparado com o `SpendingLimit` por conversa e por agente por dia. Ao atingir um limite, a execução para, é feito handoff para humano e `SpendingLimitReached` é emitido com o `scope` (`conversation` ou `agent_daily`). O limite de gasto por conversa é a última barreira contra o spam.
 10. A resposta final segue para a entrega ([`reply-delivery.md`](reply-delivery.md)), onde o dono da conversa é verificado mais uma vez antes do envio.
 

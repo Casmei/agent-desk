@@ -37,7 +37,9 @@ flowchart TD
     F -- não --> H{"Limite diário atingido?"}
     H -- sim --> I["Não envia, bloqueio registrado, SendingLimitReached, handoff"]
     H -- não --> J["3. Digitando… (se o conector suporta) e espera proporcional ao tamanho"]
-    J --> K{"4. Dono da conversa ainda é o agente?"}
+    J --> J2{"Chegou mensagem nova do contato durante a espera?"}
+    J2 -- sim, interrompível --> J3["Não envia, descarta com superseded_by_new_message, nova DebounceWindow"]
+    J2 -- não, ou máximo de interrupções atingido --> K{"4. Dono da conversa ainda é o agente?"}
     K -- não --> L["Não envia, descarta com human_takeover"]
     K -- sim --> M["5. Envia pelo conector"]
     M --> N["6. Registra o id externo"]
@@ -53,6 +55,7 @@ flowchart TD
 ## Casos de borda
 
 - **Humano assume durante a espera de digitação:** nada é enviado e a execução fica registrada como `AgentRunDiscarded` com `human_takeover`, com os tokens e o custo já gastos.
+- **Mensagem nova do contato durante a espera de digitação:** a execução ainda não enviou, então é interrompida e descartada com `superseded_by_new_message`, e uma nova `DebounceWindow` começa. Exceção: se o máximo de interrupções seguidas já foi atingido, a execução não é mais interrompida e a resposta é enviada mesmo assim.
 - **Conector sem "digitando…":** só o atraso é aplicado.
 - **Barrada por uma etapa:** as etapas seguintes não são executadas.
 - **Avisos de ouvintes:** os envios automáticos dos ouvintes (como o aviso de handoff) também passam pela lista negra e pelas travas de envio. Mensagens do humano pelo celular não passam por este processo.

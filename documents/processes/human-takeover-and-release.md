@@ -46,7 +46,7 @@ flowchart TD
 
 ## Casos de borda
 
-- **Condição de corrida do eco:** o eco pode chegar pelo webhook **antes** de o envio terminar e de o id externo ser gravado. O conector precisa tratar esse caso, para que o eco de uma mensagem do sistema não vire `HumanTakeover`. Há um teste para essa corrida.
+- **Condição de corrida do eco:** o eco pode chegar pelo webhook **antes** de o envio terminar e de o id externo ser gravado. O conector precisa tratar esse caso, para que o eco de uma mensagem do sistema não vire `HumanTakeover`. Essa corrida deve ser coberta por teste.
 - **Humano fala durante a execução ou durante a espera de digitação:** nenhuma mensagem é enviada e a execução fica registrada como descartada com `human_takeover`, com os tokens e o custo já gastos.
 - **Mensagem do contato com dono da conversa humano:** é gravada normalmente, sem efeito sobre o agente.
 - **Aviso de handoff:** como todo `HumanTakeover` emite `ConversationHandedOff`, os ouvintes cadastrados para o evento são executados.
