@@ -322,7 +322,7 @@ O que **nunca pode sair numa mensagem** automática (inspirado no Garimpo).
 | ORM / migrations | Drizzle + drizzle-kit | dono |
 | Fila / agendamento (debounce, ouvintes, atrasos de digitação) | Redis + BullMQ | Claude |
 | Config (variáveis de ambiente) | envalid, validado na subida | dono |
-| Validação de entrada da API | Zod | Claude |
+| Validação de entrada da API | class-validator + class-transformer (`ValidationPipe`) | dono |
 | Logs | Logger nativo do Nest (`ConsoleLogger`), JSON estruturado, `redact`, seguindo a doc oficial | dono |
 | Testes | Vitest (mesmo runner no back e no front) | Claude |
 | Front (só setup) | Vite + React + TypeScript | Claude |
