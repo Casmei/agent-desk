@@ -8,10 +8,10 @@
     "build": "tsc -p tsconfig.build.json",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "db:generate": "node --env-file-if-exists=../../.env node_modules/drizzle-kit/bin.cjs generate",
-    "db:migrate": "node --env-file-if-exists=../../.env node_modules/drizzle-kit/bin.cjs migrate",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
     "test": "vitest run --project unit",
-    "test:integration": "node --env-file-if-exists=../../.env node_modules/vitest/vitest.mjs run --project integration"
+    "test:integration": "vitest run --project integration"
   },
   "dependencies": {
     "@nestjs/common": "^12.0.0",
@@ -28,6 +28,7 @@
     "@nestjs/testing": "^12.0.0",
     "@swc/core": "^1.16.0",
     "@types/node": "^24.0.0",
+    "dotenv": "^18.0.10",
     "drizzle-kit": "^0.31.11",
     "eslint": "^10.0.0",
     "typescript": "~6.0.3",
