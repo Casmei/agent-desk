@@ -27,10 +27,10 @@ pnpm typecheck
 pnpm test
 ```
 
-Job `integration`: suba Postgres e Redis e rode os testes de integração. O `pnpm test:integration` precisa de `DATABASE_URL`, `REDIS_URL` e `ADMIN_TOKEN` no `.env`; copie o `.env.example` como base.
+Job `integration`: suba Postgres e Redis e rode os testes de integração. O `pnpm test:integration` precisa de `DATABASE_URL`, `REDIS_URL` e `ADMIN_TOKEN` no `.env`; copie o `.env.example` como base e preencha o `ADMIN_TOKEN`. A CI define as próprias variáveis e sobe os próprios serviços, sem o compose.
 
 ```bash
-docker compose up -d
+docker compose up -d postgres redis
 pnpm test:integration
 ```
 

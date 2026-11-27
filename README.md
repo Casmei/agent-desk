@@ -8,13 +8,20 @@ Em construção (M0, fundação): documentos, boilerplate e CI. Ainda não há f
 
 ## Como subir localmente
 
-> Disponível a partir da Fase B do M0 (boilerplate).
-
 ```bash
+cp .env.example .env
 pnpm install
-docker compose up -d
+docker compose up -d postgres redis
 pnpm dev
 ```
+
+Depois do `cp`, preencha o `ADMIN_TOKEN` no `.env`: a API não sobe sem um valor de 32 ou mais caracteres, então o `pnpm dev` falha até você preencher. Para gerar um token:
+
+```bash
+openssl rand -hex 32
+```
+
+O `docker compose up -d`, sem argumentos, também sobe a API em container, na porta do `PORT` do `.env` (3000 por padrão).
 
 ## Mapa de pastas
 
@@ -23,7 +30,7 @@ pnpm dev
 | `documents/` | O negócio: o quê e por quê. Comece por [`documents/overview.md`](documents/overview.md). |
 | `tech-docs/` | A técnica: como. Comece por [`tech-docs/overview.md`](tech-docs/overview.md). |
 | `apps/` | Aplicações: `api` (NestJS) e `web` (Vite + React). |
-| `packages/` | Pacotes de configuração compartilhada (TypeScript, lint). |
+| `packages/` | Pacotes de configuração compartilhada. |
 
 ## Licença
 
