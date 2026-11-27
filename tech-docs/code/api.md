@@ -32,18 +32,21 @@ O tipo do `input` do caso de uso é declarado na `application`; veja [`layers.md
 
 ## Formato de erro
 
-Toda resposta de erro tem este formato:
+A resposta de erro é a padrão do Nest, produzida pelas [exceções HTTP nativas](https://docs.nestjs.com/exception-filters) e pelo filtro global de exceções que já vem com o framework. Não há filtro próprio.
 
 ```json
-{ "error": { "code": "conversation_not_found", "message": "Conversation not found" } }
+{ "statusCode": 404, "message": "Conversation not found", "error": "Not Found" }
 ```
 
-- `code`: identificador estável em `snake_case`, em inglês.
 - `message`: texto curto em inglês, sem dados sensíveis.
-- A `interface` traduz cada erro de domínio tipado para um status HTTP e um `code`. Erro desconhecido vira `500` com `code` genérico; o detalhe vai para o log, não para a resposta.
-- Falha de validação de entrada responde `400` no mesmo formato.
+- A `interface` traduz cada erro de domínio tipado para a exceção HTTP nativa correspondente (`NotFoundException`, `ConflictException` etc.).
+- Erro desconhecido vira `500` com `{ "statusCode": 500, "message": "Internal server error" }`; o detalhe vai para o log, não para a resposta.
+- Falha de validação de entrada responde `400` no formato do `ValidationPipe`, com `message` trazendo a lista de problemas.
 - **Exceção:** o `GET /health` responde no formato padrão do Terminus (`{ status, info, error, details }`, com `503` quando algo está fora), o formato nativo do `@nestjs/terminus`. Reescrevê-lo seria código próprio sem ganho.
 
 ## Proteção da gestão
 
 As rotas de gestão exigem o header `x-admin-token`, comparado com o token de administração da instalação. Sem o header ou com valor errado, a resposta é `401`. Regras do token em [`security.md`](security.md).
+
+- O `AdminTokenGuard` (`shared/admin-token/`) é global: toda rota exige o token, a menos que seja marcada com `@Public()`.
+- `@Public()` só em rota que não é de gestão: o `GET /health` e, a partir do M1.2, o webhook do conector, que tem token próprio (veja [`security.md`](security.md)).

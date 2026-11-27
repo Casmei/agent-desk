@@ -4,9 +4,11 @@ import {
   HealthCheckService,
   HealthIndicatorService,
 } from '@nestjs/terminus';
+import { Public } from '../admin-token/public.decorator.js';
 import { DatabaseClient } from '../database/database-client.js';
 import { RedisClient } from '../redis/redis-client.js';
 
+@Public()
 @Controller('health')
 export class HealthController {
   constructor(
