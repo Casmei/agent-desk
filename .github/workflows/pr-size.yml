@@ -1,0 +1,19 @@
+name: PR size
+
+on:
+  pull_request:
+
+jobs:
+  pr-size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Warn when the PR is too large
+        run: |
+          count=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- . \
+            ':(exclude,glob)**/pnpm-lock.yaml' ':!apps/api/drizzle' | wc -l)
+          if [ "$count" -gt 18 ]; then
+            echo "::warning title=PR size::$count files changed (limit 18)"
+          fi
