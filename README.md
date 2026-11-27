@@ -15,11 +15,13 @@ docker compose up -d postgres redis
 pnpm dev
 ```
 
-Depois do `cp`, preencha o `ADMIN_TOKEN` no `.env`: a API não sobe sem um valor de 32 ou mais caracteres, então o `pnpm dev` falha até você preencher. Para gerar um token:
+Depois do `cp`, preencha o `ADMIN_TOKEN` e a `SECRET_ENCRYPTION_KEY` no `.env`. A API não sobe sem um `ADMIN_TOKEN` de 32 ou mais caracteres nem sem uma `SECRET_ENCRYPTION_KEY` de 64 caracteres hexadecimais, então o `pnpm dev` falha até você preencher. Gere um valor para cada uma com:
 
 ```bash
 openssl rand -hex 32
 ```
+
+Guarde a `SECRET_ENCRYPTION_KEY`: ela cifra os segredos gravados no banco, e perdê-la ou trocá-la obriga a cadastrar todos de novo (veja a [ADR 0016](tech-docs/decisions/0016-secret-encryption.md)).
 
 O `docker compose up -d`, sem argumentos, também sobe a API em container, na porta do `PORT` do `.env` (3000 por padrão).
 
