@@ -5,33 +5,21 @@ import { DatabaseClient } from '../database/database-client.ts';
 import { RedisClient } from '../redis/redis-client.ts';
 import { HealthController } from './health.controller.ts';
 
-class FakeDatabase {
-  ping: () => Promise<void> = () => Promise.resolve();
-}
-
-class FakeRedis {
-  ping: () => Promise<void> = () => Promise.resolve();
-}
-
 describe('HealthController', () => {
-  let database: FakeDatabase;
-  let redis: FakeRedis;
+  const database = { ping: () => Promise.resolve() };
+  const redis = { ping: () => Promise.resolve() };
   let controller: HealthController;
 
   beforeEach(async () => {
-    database = new FakeDatabase();
-    redis = new FakeRedis();
+    database.ping = () => Promise.resolve();
+    redis.ping = () => Promise.resolve();
     const module = await Test.createTestingModule({
       controllers: [HealthController],
-    })
-      .useMocker((token) =>
-        token === DatabaseClient
-          ? database
-          : token === RedisClient
-            ? redis
-            : undefined,
-      )
-      .compile();
+      providers: [
+        { provide: DatabaseClient, useValue: database },
+        { provide: RedisClient, useValue: redis },
+      ],
+    }).compile();
     controller = module.get(HealthController);
   });
 
@@ -49,27 +37,26 @@ describe('HealthController', () => {
   it('returns 503 and marks database down when ping rejects', async () => {
     database.ping = () => Promise.reject(new Error('connection refused'));
 
-    const error = await controller.check().catch((e: unknown) => e);
-
-    expect(error).toBeInstanceOf(ServiceUnavailableException);
-    expect((error as ServiceUnavailableException).getResponse()).toEqual({
-      status: 'error',
-      checks: { database: 'down', redis: 'up' },
-    });
+    await expect(controller.check()).rejects.toEqual(
+      new ServiceUnavailableException({
+        status: 'error',
+        checks: { database: 'down', redis: 'up' },
+      }),
+    );
   });
 
   it('returns 503 when a ping takes longer than 2000 ms', async () => {
     vi.useFakeTimers();
     redis.ping = () => new Promise(() => {});
 
-    const result = controller.check().catch((e: unknown) => e);
+    const assertion = expect(controller.check()).rejects.toEqual(
+      new ServiceUnavailableException({
+        status: 'error',
+        checks: { database: 'up', redis: 'down' },
+      }),
+    );
     await vi.advanceTimersByTimeAsync(2000);
 
-    const error = await result;
-    expect(error).toBeInstanceOf(ServiceUnavailableException);
-    expect((error as ServiceUnavailableException).getResponse()).toEqual({
-      status: 'error',
-      checks: { database: 'up', redis: 'down' },
-    });
+    await assertion;
   });
 });

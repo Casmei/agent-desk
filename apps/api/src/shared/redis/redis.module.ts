@@ -12,7 +12,7 @@ import { RedisClient } from './redis-client.ts';
 export class RedisModule implements OnApplicationShutdown {
   constructor(private readonly redis: RedisClient) {}
 
-  async onApplicationShutdown(): Promise<void> {
-    await this.redis.close();
+  onApplicationShutdown(): void {
+    this.redis.close();
   }
 }

@@ -22,8 +22,7 @@ export class RedisClient {
     await this.redis.ping();
   }
 
-  close(): Promise<void> {
+  close(): void {
     this.redis.disconnect();
-    return Promise.resolve();
   }
 }
