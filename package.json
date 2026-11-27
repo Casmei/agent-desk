@@ -1,0 +1,22 @@
+{
+  "name": "agent-desk",
+  "private": true,
+  "packageManager": "pnpm@10.29.3",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:integration": "turbo run test:integration",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.10.1",
+    "turbo": "^2.11",
+    "typescript": "~6.0.3"
+  }
+}
