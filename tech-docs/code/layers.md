@@ -21,7 +21,7 @@ apps/api/src/
 
 | Camada | Vai aqui | Não vai aqui |
 |---|---|---|
-| `domain` | Entidades, value objects, regras, eventos de domínio e erros de domínio. TypeScript puro. | Nest, Drizzle, HTTP, fila, `process.env`. |
+| `domain` | Entidades, value objects, regras, eventos de domínio e erros de domínio. TypeScript puro; dos builtins do Node, só `node:crypto`. | Nest, Drizzle, HTTP, fila, `process.env`, outros módulos `node:*`. |
 | `application` | Casos de uso e portas (classes abstratas). | SQL, chamadas HTTP, tipos do Drizzle. |
 | `infrastructure` | Implementações das portas: repositórios, conectores, provedor de modelo, fila, cliente de webhooks. | Regra de negócio. |
 | `interface` | Controllers, consumidores de fila, DTOs de entrada e saída, tradução de erros para HTTP. | Regra de negócio. |
@@ -32,7 +32,8 @@ O módulo Nest (`<module>.module.ts`) é só fiação: liga cada porta à sua im
 
 - **Portas são classes abstratas,** usadas diretamente como token de injeção do Nest. Não há tokens em string.
 - **Um caso de uso por classe,** com um único método público: `execute(input)`.
-- **Erros de domínio são classes tipadas** (`*.error.ts`). A camada `interface` os traduz para HTTP (veja [`api.md`](api.md)).
+- **Erros de domínio são classes tipadas** (`*.error.ts`). A camada `interface` os traduz para HTTP (veja [`api.md`](api.md)) e, por isso, pode importar os erros de domínio do próprio módulo (`../domain/*.error.js`). O resto do `domain` continua bloqueado para ela.
+- **O `domain` só usa `node:crypto` entre os builtins do Node,** para gerar IDs com `randomUUID`. Todos os outros `node:*` são bloqueados pelo lint.
 - **Entre módulos,** um módulo só usa outro pela `application` dele, nunca por `domain` nem por `infrastructure`.
 - **Cada camada é uma pasta plana,** sem subpastas: o lint de fronteiras depende disso (veja a [ADR 0015](../decisions/0015-nest-cli-swc-esm.md)).
 - Controllers e consumidores só chamam casos de uso.

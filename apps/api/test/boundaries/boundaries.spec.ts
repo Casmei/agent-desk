@@ -41,6 +41,18 @@ describe('layer boundaries', () => {
     ]);
   });
 
+  it('allows only node:crypto among the node builtins in the domain', () => {
+    expect(lintErrors('domain/imports-node-crypto.ts')).toEqual([]);
+    expect(lintErrors('domain/imports-node-fs.ts')).toEqual([boundaryError]);
+  });
+
+  it('allows the interface layer to import its own domain errors', () => {
+    expect(lintErrors('interface/imports-domain-error.ts')).toEqual([]);
+    expect(lintErrors('interface/imports-domain-entity.ts')).toEqual([
+      boundaryError,
+    ]);
+  });
+
   it('rejects drizzle in the application layer', () => {
     expect(lintErrors('application/imports-drizzle.ts')).toEqual([
       boundaryError,

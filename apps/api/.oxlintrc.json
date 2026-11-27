@@ -17,8 +17,8 @@
           {
             "patterns": [
               {
-                "group": ["*", "!./**"],
-                "message": "The domain may only import from its own domain layer."
+                "group": ["*", "!./**", "!node:crypto"],
+                "message": "The domain may only import from its own domain layer and node:crypto."
               }
             ]
           }
@@ -97,10 +97,11 @@
               {
                 "group": [
                   "**/domain/**",
+                  "!../domain/*.error.js",
                   "**/infrastructure/**",
                   "../../*/interface/**"
                 ],
-                "message": "The interface layer may only import application layers and shared."
+                "message": "The interface layer may only import application layers, shared, and its own domain errors."
               }
             ]
           }

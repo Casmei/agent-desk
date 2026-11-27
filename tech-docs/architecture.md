@@ -63,10 +63,10 @@ Todo módulo segue as mesmas quatro camadas.
 
 | Camada | Contém | Pode depender de |
 |---|---|---|
-| `domain` | Entidades, value objects, regras, eventos de domínio, erros de domínio. TypeScript puro, sem Nest, sem Drizzle. | Nada fora do domínio. |
+| `domain` | Entidades, value objects, regras, eventos de domínio, erros de domínio. TypeScript puro, sem Nest, sem Drizzle. | Nada fora do domínio, exceto `node:crypto` (veja [`code/layers.md`](code/layers.md)). |
 | `application` | Casos de uso (uma classe por caso de uso) e as portas (classes abstratas) que eles usam. | `domain` |
 | `infrastructure` | Implementações das portas: repositórios Drizzle, conector Evolution, OpenRouter, BullMQ, cliente HTTP de webhooks. | `application`, `domain` |
-| `interface` | Controllers HTTP, consumidores de fila, DTOs de entrada e saída. Sem regra de negócio. | `application` |
+| `interface` | Controllers HTTP, consumidores de fila, DTOs de entrada e saída. Sem regra de negócio. | `application` e os erros de domínio (`*.error.ts`) do próprio módulo, para traduzi-los para HTTP. |
 
 ```mermaid
 flowchart TD
@@ -74,6 +74,7 @@ flowchart TD
     infrastructure["infrastructure"] --> application
     infrastructure --> domain["domain"]
     application --> domain
+    interface -. "só *.error.ts" .-> domain
 ```
 
 ### Regra entre módulos
