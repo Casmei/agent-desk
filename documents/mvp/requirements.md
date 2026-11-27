@@ -50,9 +50,9 @@ Termos e nomes de código seguem o [glossário](../ubiquitous-language.md).
 
 ### REQ-CH-02 Registrar a conexão
 
-**Enunciado.** O usuário registra uma `ChannelConnection` (o número do negócio) conectada pelo conector Evolution.
+**Enunciado.** O usuário registra uma `ChannelConnection` (o número do negócio) conectada pelo conector Evolution. A conexão também guarda o tempo do debounce (padrão 8 s) e os parâmetros da simulação de digitação (velocidade em caracteres por segundo, atraso mínimo e atraso máximo).
 
-**Critério de aceite.** Chamar a API de gestão com os dados da Evolution cria a conexão. A conexão fica listável e o segredo de acesso não aparece em nenhuma resposta nem em log.
+**Critério de aceite.** Chamar a API de gestão com os dados da Evolution cria a conexão. A conexão fica listável e o segredo de acesso não aparece em nenhuma resposta nem em log. A conexão aceita os parâmetros de debounce e de digitação, valida os valores (por exemplo, números positivos) e devolve os padrões documentados quando um campo não é informado.
 
 ### REQ-CH-03 Normalizar o webhook do provedor
 
@@ -126,7 +126,7 @@ Termos e nomes de código seguem o [glossário](../ubiquitous-language.md).
 
 ### REQ-AG-01 Configurar o agente
 
-**Enunciado.** O usuário configura o único `Agent` do MVP: nome, modelo (escolhido entre os do OpenRouter), instruções em texto, número N de mensagens de histórico, debounce, máximo de iterações, máximo de interrupções seguidas e parâmetros de digitação.
+**Enunciado.** O usuário configura o único `Agent` do MVP: nome, modelo (escolhido entre os do OpenRouter), instruções em texto, número N de mensagens de histórico, máximo de iterações e máximo de interrupções seguidas. O debounce e os parâmetros de digitação são configurados na conexão (REQ-CH-02).
 
 **Critério de aceite.** A API de gestão cria e atualiza o agente com esses campos, valida os valores (por exemplo, números positivos) e devolve os padrões documentados quando um campo não é informado.
 
@@ -138,9 +138,9 @@ Termos e nomes de código seguem o [glossário](../ubiquitous-language.md).
 
 ### REQ-AG-03 Janela de debounce
 
-**Enunciado.** Se o dono é o agente, uma mensagem do contato abre a `DebounceWindow` da conversa, ou a reinicia se já estiver aberta. O tempo é configurável por agente. O padrão é 8 s.
+**Enunciado.** Se o dono é o agente, uma mensagem do contato abre a `DebounceWindow` da conversa, ou a reinicia se já estiver aberta. O tempo é configurável por conexão (`ChannelConnection`). O padrão é 8 s.
 
-**Critério de aceite.** Três mensagens dentro de 8 s resultam em uma única `AgentRun` com as três mensagens. Alterar o tempo no agente muda a espera. Sem configuração, a espera é de 8 s.
+**Critério de aceite.** Três mensagens dentro de 8 s resultam em uma única `AgentRun` com as três mensagens. Alterar o tempo na conexão muda a espera de todas as conversas daquele número. Sem configuração, a espera é de 8 s.
 
 ### REQ-AG-04 Uma execução por conversa e dono verificado ao começar
 
@@ -174,7 +174,7 @@ Termos e nomes de código seguem o [glossário](../ubiquitous-language.md).
 
 ### REQ-AG-09 Simulação de digitação
 
-**Enunciado.** Antes de enviar cada mensagem do agente, o sistema mostra "digitando…" ao contato (quando o conector suporta) e espera um tempo proporcional ao tamanho da mensagem (`TypingSimulation`). Os parâmetros são configuráveis por agente: velocidade em caracteres por segundo, atraso mínimo e atraso máximo. Os valores padrão seguem a velocidade humana de digitação, limitados por um teto.
+**Enunciado.** Antes de enviar cada mensagem do agente, o sistema mostra "digitando…" ao contato (quando o conector suporta) e espera um tempo proporcional ao tamanho da mensagem (`TypingSimulation`). Os parâmetros são configuráveis por conexão (`ChannelConnection`): velocidade em caracteres por segundo, atraso mínimo e atraso máximo. Os valores padrão seguem a velocidade humana de digitação, limitados por um teto.
 
 **Critério de aceite.** O atraso calculado cresce com o tamanho da mensagem, nunca fica abaixo do mínimo nem passa do máximo configurados. A mensagem só é enviada depois da espera.
 

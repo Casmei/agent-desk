@@ -67,6 +67,8 @@ Regras:
 |---|---|
 | Dono de uma conversa nova (agente ou humano) | agente |
 
+O tempo da `DebounceWindow` não é configurado aqui: a janela da conversa lê o valor da `ChannelConnection` (ver [canais](channels.md)).
+
 ## Requisitos
 
 - REQ-CV-01 Gravar a mensagem de forma idempotente

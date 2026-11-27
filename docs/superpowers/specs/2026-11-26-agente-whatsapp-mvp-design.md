@@ -151,19 +151,19 @@ banco, nos logs e nos documentos segue ele. Ponto de partida:
 |---|---|---|
 | Canal | `Channel` | Tipo de meio de comunicação (WhatsApp). |
 | Conector | `ChannelConnector` | Implementação de um provedor de canal (Evolution). Interface + adaptadores. |
-| Conexão | `ChannelConnection` | O número do negócio conectado por um conector. |
+| Conexão | `ChannelConnection` | O número do negócio conectado por um conector. Guarda o tempo do debounce e os parâmetros da simulação de digitação. |
 | Contato | `Contact` | A pessoa do outro lado, identificada pelo endereço no canal (telefone/JID). |
 | Conversa | `Conversation` | A thread entre uma conexão e um contato. Tem um dono atual. |
 | Mensagem | `Message` | Uma mensagem da conversa. Tem direção e autor. |
 | Autor | `MessageAuthor` | `contact`, `agent` ou `human`. |
 | Dono da conversa | `ConversationOwner` | Quem está no comando agora: um agente ou humano. |
-| Agente | `Agent` | Nome, modelo, instruções, skills, ferramentas, limites e parâmetros. |
+| Agente | `Agent` | Nome, modelo, instruções, skills, ferramentas e limites. |
 | Skill | `Skill` | Bloco de instrução nomeado e reutilizável, associado ao agente. |
 | Ferramenta | `Tool` | Capacidade que o agente pode chamar. No MVP, sempre um webhook. |
 | Ferramenta padrão | `BuiltInTool` | Ferramenta que todo agente tem (ex.: handoff). |
 | Chamada de ferramenta | `ToolCall` | Registro de uma chamada: argumentos, resposta, duração, erro. |
 | Execução do agente | `AgentRun` | Um ciclo do agente sobre um lote de mensagens: chamadas ao modelo, ferramentas, resposta, custo. |
-| Janela de debounce | `DebounceWindow` | Tempo de espera para juntar mensagens seguidas do contato. |
+| Janela de debounce | `DebounceWindow` | Tempo de espera para juntar mensagens seguidas do contato. O tempo vem da conexão. |
 | Handoff | `Handoff` | Troca do dono da conversa. No MVP, sempre do agente para humano. |
 | Assumir (humano) | `HumanTakeover` | Handoff disparado porque o humano falou na conversa. |
 | Devolver | `Release` | O humano devolve a conversa ao agente. |
@@ -173,7 +173,7 @@ banco, nos logs e nos documentos segue ele. Ponto de partida:
 | Lista negra | `ForbiddenTerm` | Palavra ou frase que nunca pode sair numa mensagem automática (seção 4.10). |
 | Execução descartada | `AgentRunDiscarded` | Execução que não enviou, com motivo (`superseded_by_new_message`, `human_takeover`). |
 | Trava de envio | `SendingGuard` | Regra que limita os envios automáticos para proteger o número (seção 4.8). |
-| Simulação de digitação | `TypingSimulation` | "Digitando…" + atraso proporcional ao tamanho da resposta (seção 4.9). |
+| Simulação de digitação | `TypingSimulation` | "Digitando…" + atraso proporcional ao tamanho da resposta (seção 4.9). Os parâmetros vêm da conexão. |
 | Gasto | `Usage` | Custo e tokens de chamadas ao modelo. |
 | Limite de gasto | `SpendingLimit` | Teto por conversa e por agente/dia. |
 | Provedor de modelo | `LlmProvider` | Interface para chamar o modelo. OpenRouter é a primeira implementação. |
@@ -183,6 +183,8 @@ banco, nos logs e nos documentos segue ele. Ponto de partida:
 
 ### 4.2 Fluxo de uma mensagem recebida
 
+> **Decisão do dono do negócio (2026-11-27):** o tempo do debounce e os parâmetros da simulação de digitação (4.9) são configurados **por conexão** (`ChannelConnection`), não por agente. Todo atendimento por aquele número segue esses valores, qualquer que seja o agente.
+
 1. O conector recebe o webhook do provedor e **normaliza** para um formato único do canal
    (mensagem do contato, mensagem enviada pelo próprio número, ligação, grupo, status…).
 2. Grupos, ligações e status são descartados (com log).
@@ -190,7 +192,7 @@ banco, nos logs e nos documentos segue ele. Ponto de partida:
    `Conversation`. O dono de uma conversa nova é **configurável** (agente ou humano); padrão:
    agente **[decisão do Claude]**.
 4. Se o dono é o agente, a janela de debounce da conversa é aberta ou **reiniciada**.
-   **Configurável por agente; padrão 8 s.**
+   **Configurável por conexão; padrão 8 s.**
 5. Ao fechar a janela, uma `AgentRun` começa. **Antes de começar, o dono é verificado de novo**:
    se virou humano, nada acontece.
 6. Só existe **uma execução por conversa por vez**. Se chega uma mensagem nova do contato
@@ -284,7 +286,7 @@ ouvintes); mensagens do humano pelo celular não passam por aqui.
 Não é trava, é naturalidade: a resposta não pode chegar instantânea como a de um robô.
 - Antes de enviar cada mensagem do agente, o sistema mostra **"digitando…"** para o contato e
   espera um tempo **proporcional ao tamanho da mensagem** (cálculo por caractere).
-- Parâmetros configuráveis por agente: velocidade (caracteres por segundo), atraso mínimo e
+- Parâmetros configuráveis por conexão: velocidade (caracteres por segundo), atraso mínimo e
   atraso máximo. Os valores padrão ficam a cargo de quem implementa, com base em velocidade
   humana de digitação e limitados por um teto para não deixar o cliente esperando demais.
 - O "digitando…" é uma **capacidade opcional do conector** (a Evolution tem endpoint de
@@ -466,7 +468,7 @@ Cada marco é testável sozinho e vira vários PRs pequenos.
 | M0 | Fundação | Documentos + boilerplate + CI verdes. |
 | M1 | Canal | Mensagem da Evolution chega, é normalizada e gravada; grupos e ligações ignorados; sistema envia texto. |
 | M2 | Travas de envio | Pausa e limite diário aplicados a todo envio automático. |
-| M3 | Agente básico | Chave do OpenRouter cadastrada; agente com instruções e skills responde com debounce, interrupção por mensagem nova e simulação de digitação. |
+| M3 | Agente básico | Chave do OpenRouter cadastrada; agente com instruções e skills responde com debounce, interrupção por mensagem nova e simulação de digitação (parâmetros configurados na conexão). |
 | M4 | Ferramentas | Ferramenta por webhook cadastrada e chamada pelo agente; `ToolCall` registrado. |
 | M5 | Dono da conversa | Humano assume ao falar; agente fica em silêncio; devolução por API. |
 | M6 | Handoff e eventos | `handoff_to_human`; ouvintes webhook e `send_channel_message`. |
