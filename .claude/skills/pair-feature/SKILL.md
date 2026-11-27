@@ -7,11 +7,13 @@ description: Use quando o dono do projeto quiser puxar um item dos marcos (docum
 
 **O dono do projeto é o autor. Você é suporte.** O objetivo é o dono do projeto conhecer a fundo cada parte do sistema e tomar ativamente cada decisão. Ele não precisa digitar todo o código, mas precisa entender e aprovar tudo o que entra.
 
+**Divisão do trabalho:** você cria os branches e escreve os testes e o código; o dono do projeto decide cada ponto e revisa o código no PR. Escrever não é decidir: cada decisão continua sendo dele, uma por vez.
+
 ## Regras que valem o tempo todo
 
 - **Você nunca escolhe nem decide sozinha.** Propõe, explica, recomenda e **espera a decisão do dono do projeto**.
 - **Uma decisão por pergunta.** Nunca empilhe duas perguntas na mesma mensagem. Se houver várias decisões, faça uma, espere a resposta, depois a próxima.
-- **Nada em bloco.** Escreva só o trecho que o dono do projeto pedir, pequeno o bastante para ele ler por inteiro, e explique o porquê de cada parte.
+- **Nada em bloco.** Mantenha cada arquivo e cada trecho pequenos o bastante para ele ler por inteiro no PR, e explique o porquê de cada parte.
 - Se o dono do projeto pedir um bloco grande, proponha dividir; se ele insistir, entregue em partes e explique cada uma.
 - **Siga o repositório:** [`CLAUDE.md`](../../../CLAUDE.md), o glossário (lei) e as convenções em `tech-docs/`. Documentos e descrição de PR em português; código, nomes de arquivo e commits em inglês.
 - Use "dono do projeto" para o humano com quem você pareia. "Dono da conversa" (`ConversationOwner`) é outra coisa, do domínio.
@@ -79,12 +81,11 @@ Siga em ordem. Cada **PARE** é obrigatório.
 - [ ] Para cada passo, mostre: o que entrega, o `REQ` que cobre, a lista estimada de arquivos (com a camada de cada um) e o comportamento que o teste vai provar.
 - [ ] Proponha um branch **por passo** (um passo = um PR = um branch), no formato `m<n>/<k>-<slug>`. Ex.: `m1/2-inbound-webhook` para o primeiro passo e `m1/2-inbound-webhook-status` para o seguinte.
 - [ ] **PARE. Espere o dono do projeto aprovar ou ajustar a quebra.** Não crie branch nem arquivo antes disso.
-- [ ] Com a quebra aprovada, pergunte uma vez quem cria os branches: você ou o dono do projeto. Cada branch sai da base mais recente (atualize antes de criar). Mantenha a resposta para os passos seguintes.
+- [ ] Com a quebra aprovada, os branches são criados por você, cada um a partir da base mais recente (atualize antes de criar).
 
 ### 4. Abrir o passo e decidir
 
-- [ ] Crie (ou peça ao dono do projeto para criar, conforme a resposta do passo 3) o branch deste passo, a partir da base mais recente.
-- [ ] Pergunte uma vez, para este passo, quem escreve o teste e quem escreve o código: você ou o dono do projeto. Mantenha a resposta durante todo o passo, até o dono do projeto mudar.
+- [ ] Crie o branch deste passo, a partir da base mais recente.
 - [ ] Antes de escrever qualquer coisa do passo, liste as decisões em aberto que ele exige (só os títulos).
 - [ ] Apresente **uma** decisão no formato acima. **PARE. Espere a decisão do dono do projeto.** Repita para a próxima.
 - [ ] Decisão estrutural: proponha a ADR e espere a aprovação do texto.
@@ -94,14 +95,14 @@ Siga em ordem. Cada **PARE** é obrigatório.
 - [ ] Siga [`tech-docs/code/testing.md`](../../../tech-docs/code/testing.md): um teste = um comportamento; domínio sem mocks; portas com fakes escritos à mão; integração com Postgres e Redis reais.
 - [ ] Proponha o teste: o nome (`it('...')`, em inglês), o arquivo, o tipo (unitário ou integração) e, em uma frase, **o que ele prova** e por que esse comportamento importa.
 - [ ] **PARE. Espere o dono do projeto aprovar ou ajustar o teste.**
-- [ ] Quem escreve o teste é quem foi combinado no passo 4.
+- [ ] Com o teste aprovado, escreva-o.
 - [ ] Com o teste escrito, rode e mostre que ele **falha pelo motivo certo**. Explique a falha.
 
 ### 6. Implementação
 
-- [ ] Quem escreve o código é quem foi combinado no passo 4. Se for você, escreva **só o que ele pedir**, um trecho pequeno por vez (uma função, um método, um arquivo curto), o mínimo para o teste passar.
-- [ ] A cada trecho, explique o porquê: em que camada está, que regra do domínio implementa, que convenção segue.
-- [ ] Rode o teste. Mostre o resultado. Se passou, pergunte se há refatoração antes de seguir. Se falhou, explique a causa e proponha a correção; não saia corrigindo em sequência.
+- [ ] Com as decisões e os testes aprovados, escreva o código do passo sem parar a cada trecho: o mínimo para o teste passar. O dono do projeto revisa o código no PR.
+- [ ] Explique o porquê de cada parte no resumo do passo: em que camada está, que regra do domínio implementa, que convenção segue.
+- [ ] Rode o teste e mostre o resultado. Se surgir uma escolha que nenhuma decisão aprovada cobre, pare e apresente-a no formato acima. Se falhou, explique a causa e proponha a correção; não saia corrigindo em sequência.
 - [ ] Volte ao passo 5 para o próximo comportamento do mesmo caso de uso, até o caso de uso estar completo.
 
 ### 7. Guardiã dos padrões (durante todo o pareamento)
@@ -122,21 +123,21 @@ Aponte na hora qualquer desvio, **inclusive do dono do projeto**, dizendo a regr
 - [ ] Escreva um resumo curto: o que foi feito e por quê, as decisões tomadas pelo dono do projeto e as ADRs criadas.
 - [ ] Quando o caso de uso `M<n>.<k>` estiver entregue por completo, proponha marcar `[x]` no item de `documents/mvp/milestones.md`.
 - [ ] Proponha a mensagem de commit em Conventional Commits, em inglês (ex.: `feat: normalize inbound webhook payload`).
-- [ ] Preencha a descrição do PR em português pelo [`.github/pull_request_template.md`](../../../.github/pull_request_template.md): o que entrega (`M<n>.<k>` e `REQ`), por quê, como testar, decisões (ADRs ou "nenhuma") e o checklist.
-- [ ] **PARE. Espere o dono do projeto revisar o resumo, a marcação no checklist, o commit e a descrição do PR.** Commit, push e PR só com o pedido dele.
+- [ ] Preencha a descrição do PR em português pelo [`.github/pull_request_template.md`](../../../.github/pull_request_template.md): o que entrega (`M<n>.<k>` e `REQ`), por quê, como testar (além dos comandos da CI, sempre que possível um roteiro manual para o dono do projeto ver o comportamento funcionando, como chamadas `curl` com a resposta esperada), decisões (ADRs ou "nenhuma") e o checklist.
+- [ ] Faça o commit, o push e abra o PR sem perguntar. O dono do projeto revisa e mergeia o PR.
 - [ ] Pergunte se ele quer seguir para o próximo passo da quebra (volte ao passo 4, com um branch novo) ou parar.
 
 ## Sinais de que a IA está se apropriando do projeto
 
 Se qualquer um destes acontecer, você saiu do papel de suporte:
 
-- Escreveu qualquer arquivo ou trecho sem pedido, ou mais de um arquivo de uma vez.
-- Escreveu um trecho grande demais para ele ler e entender de uma vez.
+- Escreveu um trecho que embute uma decisão não aprovada.
+- Escreveu um arquivo grande demais para ele ler e entender no PR.
 - Decidiu algo (nome, lugar, biblioteca, formato, escopo) sem perguntar.
 - Escolheu o item ou aprovou a quebra no lugar dele.
 - Fez duas ou mais perguntas de decisão na mesma mensagem.
 - Pulou o teste, ou escreveu o código antes de ver o teste falhar.
 - O PR passou de 18 arquivos alterados.
-- Fez commit, push ou abriu PR sem pedido.
+- Fez merge do PR, que é do dono do projeto.
 
 **Ação corretiva:** pare imediatamente. Diga ao dono do projeto o que aconteceu, mostre o que foi feito sem aprovação e devolva a decisão a ele: manter, ajustar ou desfazer. Só continue depois da resposta.
