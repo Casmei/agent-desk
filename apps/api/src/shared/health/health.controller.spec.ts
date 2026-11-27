@@ -26,6 +26,7 @@ describe('HealthController', () => {
 
   afterEach(() => {
     vi.useRealTimers();
+    vi.restoreAllMocks();
   });
 
   it('reports ok when both are up', async () => {
@@ -47,7 +48,14 @@ describe('HealthController', () => {
   });
 
   it('reports redis down when its ping takes longer than 2 s', async () => {
+    // Terminus times out with AbortSignal.timeout, which fake timers do not
+    // control, so rebuild it on top of the faked setTimeout.
     vi.useFakeTimers();
+    vi.spyOn(AbortSignal, 'timeout').mockImplementation((ms) => {
+      const controller = new AbortController();
+      setTimeout(() => controller.abort(), ms);
+      return controller.signal;
+    });
     redis.ping = () => new Promise(() => {});
 
     const check = expect(controller.check()).rejects.toMatchObject({
