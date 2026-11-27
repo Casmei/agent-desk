@@ -18,6 +18,7 @@ Princípios gerais e índice das convenções. Os termos seguem o [glossário](.
 | Documento | Cobre | Quando ler |
 |---|---|---|
 | [`references.md`](references.md) | Páginas da documentação oficial do Nest e das bibliotecas que valem como padrão. | Antes de configurar ou usar qualquer recurso do framework ou de uma biblioteca. |
+| [`skills.md`](skills.md) | Skills de Nest e de código limpo: quando usar cada uma e a precedência sobre elas. | Antes de desenhar, escrever, testar ou revisar código Nest. |
 | [`layers.md`](layers.md) | Estrutura de pastas, o que vai em cada camada, portas, casos de uso e erros de domínio. | Ao decidir onde um código mora. |
 | [`naming.md`](naming.md) | Nomes de arquivos, classes, casos de uso, eventos, tabelas, colunas e variáveis de ambiente. | Ao criar qualquer arquivo ou identificador. |
 | [`persistence.md`](persistence.md) | Drizzle, schemas, repositórios, migrations e transações. | Ao escrever repositório, tabela ou migration. |

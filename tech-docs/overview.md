@@ -19,6 +19,7 @@ Este é o ponto de entrada da documentação técnica do agent-desk. O negócio 
 | `tech-docs/data-model.md` | Convenções de tabela e coluna e o catálogo de tabelas (preenchido a cada marco). | Antes de criar ou alterar uma tabela ou migration. |
 | `tech-docs/code/overview.md` | Princípios gerais de código e índice das convenções. | Ao começar a trabalhar no código. |
 | `tech-docs/code/references.md` | Documentação oficial do Nest e das bibliotecas, que vale como padrão. | Antes de configurar ou usar um recurso do framework ou de uma biblioteca. |
+| `tech-docs/code/skills.md` | Skills de Nest e de código limpo em `.claude/skills/`: quando usar cada uma, o que reforçam e onde contrariam o repositório. | Antes de desenhar, escrever, testar ou revisar código Nest. |
 | `tech-docs/code/layers.md` | Regras de cada camada e dependências permitidas. | Ao decidir onde um código mora. |
 | `tech-docs/code/naming.md` | Nomes de arquivos, classes, casos de uso, eventos, tabelas e colunas. | Ao criar qualquer arquivo ou identificador. |
 | `tech-docs/code/persistence.md` | Repositórios, mapeamento linha-entidade, transações e migrations. | Ao escrever repositório ou migration. |

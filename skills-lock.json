@@ -1,0 +1,69 @@
+{
+  "version": 2,
+  "skills": {
+    "clean-architecture": {
+      "source": "wondelai/skills",
+      "commit": "c37678106e63ef1c5472d848fb3d8b8c5b33fafe",
+      "sourceType": "github",
+      "skillPath": "clean-architecture/SKILL.md",
+      "computedHash": "16c740b7d76c50c96cd007c76109c9a43ab22af7132bd434b8931c3235e45a97",
+      "installMode": "copy"
+    },
+    "clean-code": {
+      "source": "sickn33/agentic-awesome-skills",
+      "commit": "560a2b034d8ce3eb90445841ab6a53df7132926a",
+      "sourceType": "github",
+      "skillPath": "skills/clean-code/SKILL.md",
+      "computedHash": "12447e66c9334fa608ab29b45ea8076770590d1ccbf2ee705c24cdf24496643d",
+      "installMode": "copy"
+    },
+    "nestjs-architecture-principles": {
+      "source": "amirtaherkhani/nestjs-skills",
+      "commit": "82723748fa3cfdaa16f8a6a4130fcd8dfe42517f",
+      "sourceType": "github",
+      "skillPath": "skills/nestjs-architecture-principles/SKILL.md",
+      "computedHash": "0d1ac031e348fad4c971f3f63b2845b46694f7d69bf3cf9f14dc5937cfcfd2c7",
+      "installMode": "copy"
+    },
+    "nestjs-best-practices": {
+      "source": "Kadajett/agent-nestjs-skills",
+      "commit": "3986e0cede33958e000f959031cbee0cd83c2941",
+      "sourceType": "github",
+      "skillPath": "skills/nestjs-best-practices/SKILL.md",
+      "computedHash": "15dfabf74412bab8e6232cbe111b56048aac496d2f151a08995f305475d82fad",
+      "installMode": "copy"
+    },
+    "nestjs-clean-typescript": {
+      "source": "Mindrally/skills",
+      "commit": "7682ca77710e0971eab4e0ae5dddfa281aea0ba5",
+      "sourceType": "github",
+      "skillPath": "nestjs-clean-typescript/SKILL.md",
+      "computedHash": "19c84937ac89a8c792e32e08436a70f7317cbe4081a09a10d4c1175e65d7ff35",
+      "installMode": "copy"
+    },
+    "nestjs-code-review": {
+      "source": "giuseppe-trisciuoglio/developer-kit",
+      "commit": "fe73fb33a09ee6562eeec7415a3f9a3bcf795177",
+      "sourceType": "github",
+      "skillPath": "plugins/developer-kit-typescript/skills/nestjs-code-review/SKILL.md",
+      "computedHash": "3f7bf8a7f21878bd73fc1cb8d7e6bfd280cabf2d6faa814275193a1ca281bff7",
+      "installMode": "copy"
+    },
+    "nestjs-oop-design-patterns": {
+      "source": "amirtaherkhani/nestjs-skills",
+      "commit": "82723748fa3cfdaa16f8a6a4130fcd8dfe42517f",
+      "sourceType": "github",
+      "skillPath": "skills/nestjs-oop-design-patterns/SKILL.md",
+      "computedHash": "3e23a959cab437499330428f1a80765c6ab01c15270282237866c81c0d4dfb9f",
+      "installMode": "copy"
+    },
+    "nestjs-patterns": {
+      "source": "affaan-m/ECC",
+      "commit": "4adeee6732a12d1540f49a4d50a38ce8c97f9a53",
+      "sourceType": "github",
+      "skillPath": "skills/nestjs-patterns/SKILL.md",
+      "computedHash": "6af78622c8a23f94764b457ab836b7d7997c0310a04182798efd5c0691e26c9a",
+      "installMode": "copy"
+    }
+  }
+}
