@@ -1,5 +1,5 @@
-import { ServiceUnavailableException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import { TerminusModule } from '@nestjs/terminus';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { DatabaseClient } from '../database/database-client.js';
 import { RedisClient } from '../redis/redis-client.js';
@@ -14,6 +14,7 @@ describe('HealthController', () => {
     database.ping = () => Promise.resolve();
     redis.ping = () => Promise.resolve();
     const module = await Test.createTestingModule({
+      imports: [TerminusModule],
       controllers: [HealthController],
       providers: [
         { provide: DatabaseClient, useValue: database },
@@ -27,36 +28,36 @@ describe('HealthController', () => {
     vi.useRealTimers();
   });
 
-  it('returns 200 when both are up', async () => {
-    await expect(controller.check()).resolves.toEqual({
+  it('reports ok when both are up', async () => {
+    await expect(controller.check()).resolves.toMatchObject({
       status: 'ok',
-      checks: { database: 'up', redis: 'up' },
+      details: { database: { status: 'up' }, redis: { status: 'up' } },
     });
   });
 
-  it('returns 503 and marks database down when ping rejects', async () => {
+  it('reports database down when its ping rejects', async () => {
     database.ping = () => Promise.reject(new Error('connection refused'));
 
-    await expect(controller.check()).rejects.toEqual(
-      new ServiceUnavailableException({
+    await expect(controller.check()).rejects.toMatchObject({
+      response: {
         status: 'error',
-        checks: { database: 'down', redis: 'up' },
-      }),
-    );
+        error: { database: { status: 'down', message: 'unavailable' } },
+      },
+    });
   });
 
-  it('returns 503 when a ping takes longer than 2000 ms', async () => {
+  it('reports redis down when its ping takes longer than 2 s', async () => {
     vi.useFakeTimers();
     redis.ping = () => new Promise(() => {});
 
-    const assertion = expect(controller.check()).rejects.toEqual(
-      new ServiceUnavailableException({
+    const check = expect(controller.check()).rejects.toMatchObject({
+      response: {
         status: 'error',
-        checks: { database: 'up', redis: 'down' },
-      }),
-    );
+        error: { redis: { status: 'down', message: 'unavailable' } },
+      },
+    });
     await vi.advanceTimersByTimeAsync(2000);
 
-    await assertion;
+    await check;
   });
 });

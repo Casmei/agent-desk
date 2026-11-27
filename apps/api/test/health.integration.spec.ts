@@ -2,7 +2,7 @@ import type { Server } from 'node:http';
 import type { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
-import { afterAll, beforeAll, describe, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { AppModule } from '../src/app.module.js';
 
 describe('GET /health', () => {
@@ -23,6 +23,12 @@ describe('GET /health', () => {
   it('returns 200 when postgres and redis are up', async () => {
     await request(app.getHttpServer() as Server)
       .get('/health')
-      .expect(200, { status: 'ok', checks: { database: 'up', redis: 'up' } });
+      .expect(200)
+      .expect(({ body }) => {
+        expect(body).toMatchObject({
+          status: 'ok',
+          details: { database: { status: 'up' }, redis: { status: 'up' } },
+        });
+      });
   });
 });

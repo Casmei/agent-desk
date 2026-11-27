@@ -14,6 +14,7 @@ O ponto de partida é o que o `nest new` (template ESM) e o `nest g` geram. Na d
 | Módulos (inclusive `@Global`) | [Modules](https://docs.nestjs.com/modules) |
 | Erros HTTP | [Exception filters](https://docs.nestjs.com/exception-filters) |
 | Ciclo de vida e shutdown | [Lifecycle events](https://docs.nestjs.com/fundamentals/lifecycle-events) |
+| Health check (`/health`) | [Terminus](https://docs.nestjs.com/reliability/terminus) |
 | Logger | [Logger](https://docs.nestjs.com/techniques/logger) |
 | Validação de entrada | [Validation](https://docs.nestjs.com/techniques/validation) |
 | Testes | [Testing](https://docs.nestjs.com/fundamentals/testing) |
