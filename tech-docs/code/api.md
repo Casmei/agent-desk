@@ -8,25 +8,35 @@
 
 ## Validação de entrada
 
-- Validação nativa do Nest: `ValidationPipe` global com `class-validator` e `class-transformer`.
+- Validação nativa do Nest: `ValidationPipe` global com `class-validator` e `class-transformer`, registrado como provider `APP_PIPE` no `AppModule` (página [Pipes](https://docs.nestjs.com/pipes), "Global scoped pipes"). Assim, os testes de integração que montam o `AppModule` validam exatamente como a produção, sem repetir a configuração.
 - A entrada é declarada como classe DTO com decoradores, só na camada `interface`.
 - O controller mapeia o DTO para um `input` simples (tipo da `application`) e só então chama o caso de uso. O caso de uso nunca recebe o DTO decorado.
 - Variáveis de ambiente usam envalid (veja [`security.md`](security.md) e a [ADR 0007](../decisions/0007-envalid-config-and-class-validator-input.md)).
 
 ```ts
-app.useGlobalPipes(
-  new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }),
-);
-
-export class UpdateConnectionSettingsDto {
-  @IsInt() @IsPositive() debounceSeconds!: number;
-  @IsNumber() @IsPositive() typingCharsPerSecond!: number;
+// app.module.ts
+{
+  provide: APP_PIPE,
+  useValue: new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }),
 }
 
-// PATCH /connections/:id/settings: DTO -> input simples, depois o caso de uso
-const input = { connectionId: id, ...dto };
-return this.updateConnectionSettings.execute(input);
+// interface/register-evolution-connection.dto.ts
+export class RegisterEvolutionConnectionDto {
+  @IsUrl({ require_tld: false, require_protocol: true, protocols: ['http', 'https'] }) baseUrl!: string;
+  @IsString() @IsNotEmpty() instanceName!: string;
+  @IsString() @IsNotEmpty() apiKey!: string;
+}
+
+// POST /channel-connections/evolution: DTO -> input simples, depois o caso de uso
+return this.registerChannelConnection.execute({
+  channel: 'whatsapp',
+  connector: 'evolution',
+  connectorSettings: { baseUrl: dto.baseUrl, instanceName: dto.instanceName },
+  connectorSecrets: { apiKey: dto.apiKey },
+});
 ```
+
+A resposta também é um tipo simples da `application` (por exemplo, `ChannelConnectionOutput`), porque a `interface` não importa entidades do `domain`. Segredos nunca entram nesse tipo.
 
 O tipo do `input` do caso de uso é declarado na `application`; veja [`layers.md`](layers.md).
 
