@@ -1,0 +1,19 @@
+# Roadmap
+
+O que vem depois do MVP. Cada item está registrado e fora do MVP de propósito. A arquitetura não deve impedir nenhum deles.
+
+## Itens
+
+- **Vários agentes e transferência entre agentes:** o dono da conversa já é "um agente" ou "humano" (não "o agente"), e a transferência entre agentes tem particularidades próprias que pedem um design separado.
+- **Agente roteador:** com vários agentes, alguém precisa decidir qual deles atende cada conversa.
+- **Intervalo entre primeiras mensagens:** só faz sentido quando o agente inicia conversas, por isso depende da prospecção.
+- **Multi-tenant:** adiado conscientemente. O dono sabe que adicionar multi-tenant depois é caro e escolheu deixá-lo fora do MVP mesmo assim, para manter uma instalação por comerciante e a simplicidade (ver ADR).
+- **Transcrição de áudio:** hoje o agente só recebe a indicação de que há um áudio que ele não consegue ouvir.
+- **Skill que melhora instruções:** ajuda quem não é programador a escrever boas instruções para o agente.
+- **Lista de bloqueio de contatos e modo teste:** protege contatos específicos e permite testar sem falar com clientes reais. Não confundir com a lista negra de termos, que já está no MVP.
+- **Avaliar LangChain/LangGraph:** entender melhor o produto e os agentes antes de decidir se um framework compensa, já que o MVP chama o modelo direto.
+- **Prospecção (Rastro/scraper, planilha):** hoje o agente só atende quem chama; para iniciar conversas ele precisaria de contatos vindos de um scraper ou de uma planilha.
+- **Novos conectores (Meta, Z-API, Baileys):** a interface de canal já separa o domínio da Evolution, então um novo conector é só mais uma implementação.
+- **Novos provedores de modelo:** a interface `LlmProvider` permite trocar o OpenRouter quando houver um segundo caso real.
+- **Telas (Pencil):** o front entra vazio no MVP, e as telas virão de um brainstorm no Pencil, junto com o design system.
+- **Publicar imagem Docker:** facilita a instalação por quem quer rodar por conta própria.
