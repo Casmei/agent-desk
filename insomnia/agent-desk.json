@@ -1,0 +1,210 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-11-27T00:00:00.000Z",
+  "__export_source": "agent-desk",
+  "resources": [
+    {
+      "_id": "wrk_agent_desk",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "agent-desk",
+      "scope": "collection",
+      "description": "API de gestão do agent-desk. Escolha o ambiente **Local** e preencha `admin_token` com o `ADMIN_TOKEN` do seu `.env`."
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "parentId": "wrk_agent_desk",
+      "name": "Base Environment",
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 0,
+      "data": {
+        "base_url": "http://localhost:3000",
+        "admin_token": "cole-aqui-o-ADMIN_TOKEN-do-.env",
+        "evolution_base_url": "http://localhost:8080",
+        "evolution_instance_name": "loja-centro",
+        "evolution_api_key": "cole-aqui-a-chave-da-instancia-evolution"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "admin_token",
+          "evolution_base_url",
+          "evolution_instance_name",
+          "evolution_api_key"
+        ]
+      }
+    },
+    {
+      "_id": "env_local",
+      "_type": "environment",
+      "parentId": "env_base",
+      "name": "Local (pnpm dev)",
+      "color": "#7d69cb",
+      "isPrivate": false,
+      "metaSortKey": 1,
+      "data": {
+        "base_url": "http://localhost:3000",
+        "evolution_base_url": "http://localhost:8080"
+      },
+      "dataPropertyOrder": {
+        "&": ["base_url", "evolution_base_url"]
+      }
+    },
+    {
+      "_id": "env_compose",
+      "_type": "environment",
+      "parentId": "env_base",
+      "name": "Docker compose (API em container)",
+      "color": "#2ea44f",
+      "isPrivate": false,
+      "metaSortKey": 2,
+      "data": {
+        "base_url": "http://localhost:3000",
+        "evolution_base_url": "http://evolution:8080"
+      },
+      "dataPropertyOrder": {
+        "&": ["base_url", "evolution_base_url"]
+      }
+    },
+    {
+      "_id": "fld_health",
+      "_type": "request_group",
+      "parentId": "wrk_agent_desk",
+      "name": "Health",
+      "description": "Rota pública, sem token.",
+      "metaSortKey": -200,
+      "environment": {}
+    },
+    {
+      "_id": "req_health",
+      "_type": "request",
+      "parentId": "fld_health",
+      "name": "Health check",
+      "method": "GET",
+      "url": "{{ _.base_url }}/health",
+      "headers": [],
+      "description": "Pública (`@Public()`). Esperado: `200` com `status: ok` e banco e Redis `up`.",
+      "metaSortKey": -100,
+      "body": {},
+      "parameters": [],
+      "authentication": {},
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_connections",
+      "_type": "request_group",
+      "parentId": "wrk_agent_desk",
+      "name": "Conexões de canal",
+      "description": "`ChannelConnection` (M1.1). Toda rota exige o header `x-admin-token`.",
+      "metaSortKey": -100,
+      "environment": {}
+    },
+    {
+      "_id": "req_register",
+      "_type": "request",
+      "parentId": "fld_connections",
+      "name": "Registrar conexão Evolution",
+      "method": "POST",
+      "url": "{{ _.base_url }}/channel-connections/evolution",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "x-admin-token",
+          "value": "{{ _.admin_token }}"
+        }
+      ],
+      "description": "Esperado: `201` com `id`, `channel: whatsapp`, `connector: evolution` e `connectorSettings`. A `apiKey` **não** aparece na resposta.",
+      "metaSortKey": -400,
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"baseUrl\": \"{{ _.evolution_base_url }}\",\n  \"instanceName\": \"{{ _.evolution_instance_name }}\",\n  \"apiKey\": \"{{ _.evolution_api_key }}\"\n}"
+      },
+      "parameters": [],
+      "authentication": {},
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_register_no_token",
+      "_type": "request",
+      "parentId": "fld_connections",
+      "name": "Registrar sem token (401)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/channel-connections/evolution",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "description": "Esperado: `401` `{\"message\":\"Unauthorized\",\"statusCode\":401}`.",
+      "metaSortKey": -300,
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"baseUrl\": \"{{ _.evolution_base_url }}\",\n  \"instanceName\": \"{{ _.evolution_instance_name }}\",\n  \"apiKey\": \"{{ _.evolution_api_key }}\"\n}"
+      },
+      "parameters": [],
+      "authentication": {},
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_register_wrong_token",
+      "_type": "request",
+      "parentId": "fld_connections",
+      "name": "Registrar com token errado (401)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/channel-connections/evolution",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "x-admin-token",
+          "value": "token-errado"
+        }
+      ],
+      "description": "Esperado: `401` `{\"message\":\"Unauthorized\",\"statusCode\":401}`.",
+      "metaSortKey": -200,
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"baseUrl\": \"{{ _.evolution_base_url }}\",\n  \"instanceName\": \"{{ _.evolution_instance_name }}\",\n  \"apiKey\": \"{{ _.evolution_api_key }}\"\n}"
+      },
+      "parameters": [],
+      "authentication": {},
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_register_invalid",
+      "_type": "request",
+      "parentId": "fld_connections",
+      "name": "Registrar com corpo inválido (400)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/channel-connections/evolution",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "x-admin-token",
+          "value": "{{ _.admin_token }}"
+        }
+      ],
+      "description": "Esperado: `400` no formato do `ValidationPipe`, com a lista de problemas em `message` (`baseUrl must be a URL address`, `apiKey should not be empty`, `property extra should not exist`).",
+      "metaSortKey": -100,
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"baseUrl\": \"nao-e-url\",\n  \"instanceName\": \"{{ _.evolution_instance_name }}\",\n  \"extra\": 1\n}"
+      },
+      "parameters": [],
+      "authentication": {},
+      "settingFollowRedirects": "global"
+    }
+  ]
+}

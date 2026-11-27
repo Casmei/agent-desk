@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
+import { APP_PIPE } from '@nestjs/core';
 import { ChannelsModule } from './modules/channels/channels.module.js';
 import { AdminTokenModule } from './shared/admin-token/admin-token.module.js';
 import { DatabaseModule } from './shared/database/database.module.js';
@@ -14,6 +15,16 @@ import { SecretEncryptionModule } from './shared/secret-encryption/secret-encryp
     SecretEncryptionModule,
     HealthModule,
     ChannelsModule,
+  ],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true,
+      }),
+    },
   ],
 })
 export class AppModule {}
