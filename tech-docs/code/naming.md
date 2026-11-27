@@ -13,6 +13,7 @@ O [glossário](../../documents/ubiquitous-language.md) é lei: se o conceito exi
 | `*.use-case.ts` | Caso de uso | `receive-message.use-case.ts` |
 | `*.port.ts` | Porta (classe abstrata) | `conversation.port.ts` |
 | `*.repository.ts` | Repositório (implementação) | `conversation.repository.ts` |
+| `*.connector.ts` | Adaptador de um conector de canal | `evolution.connector.ts` |
 | `*.controller.ts` | Controller HTTP | `conversations.controller.ts` |
 | `*.consumer.ts` | Consumidor de fila | `debounce.consumer.ts` |
 | `*.event.ts` | Evento de domínio | `conversation-handed-off.event.ts` |

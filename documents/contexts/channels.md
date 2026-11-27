@@ -37,6 +37,7 @@ Entidades tracejadas pertencem a outro contexto ([conversas](conversations.md)).
 Regras:
 
 - O conector recebe o webhook do provedor e o **normaliza** para um formato único do canal, distinguindo: mensagem do contato (texto ou áudio), mensagem enviada pelo próprio número do negócio (`fromMe`), ligação, grupo e status.
+- O resultado da normalização é uma [`ChannelInbound`](../ubiquitous-language.md). Imagens e Canais do WhatsApp (`@newsletter`) viram `unsupported`. O endereço do contato é o `remoteJid` como o provedor envia, que pode ser um id de privacidade do WhatsApp (`@lid`) em vez do número de telefone. Como identificar o `Contact` (LID ou telefone) é decidido no M1.4.
 - Grupos, ligações e status/broadcast são **descartados, com log**. O agente nunca responde a eles.
 - O conector envia texto pela conexão e devolve o id externo do provedor. Esse id permite reconhecer o eco da mensagem depois.
 - O número do negócio é o número conectado (`ChannelConnection`). O humano "fala na conversa" quando responde pelo WhatsApp desse mesmo número (celular ou WhatsApp Web).
