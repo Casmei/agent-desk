@@ -1,5 +1,5 @@
 import { filterLogLevels, type ConsoleLoggerOptions } from '@nestjs/common';
-import type { env } from '../config/env.js';
+import type { env } from '../config/env.ts';
 
 export const REDACTED_KEYS = [
   'authorization',

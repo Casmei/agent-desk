@@ -1,6 +1,6 @@
 import { Global, Module, type OnApplicationShutdown } from '@nestjs/common';
-import { env } from '../config/env.js';
-import { DatabaseClient } from './database-client.js';
+import { env } from '../config/env.ts';
+import { DatabaseClient } from './database-client.ts';
 
 @Global()
 @Module({

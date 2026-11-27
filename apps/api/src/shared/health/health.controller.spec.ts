@@ -1,9 +1,9 @@
 import { ServiceUnavailableException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { DatabaseClient } from '../database/database-client.js';
-import { RedisClient } from '../redis/redis-client.js';
-import { HealthController } from './health.controller.js';
+import { DatabaseClient } from '../database/database-client.ts';
+import { RedisClient } from '../redis/redis-client.ts';
+import { HealthController } from './health.controller.ts';
 
 class FakeDatabase {
   ping: () => Promise<void> = () => Promise.resolve();

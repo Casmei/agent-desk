@@ -1,6 +1,6 @@
 import { Controller, Get, ServiceUnavailableException } from '@nestjs/common';
-import { DatabaseClient } from '../database/database-client.js';
-import { RedisClient } from '../redis/redis-client.js';
+import { DatabaseClient } from '../database/database-client.ts';
+import { RedisClient } from '../redis/redis-client.ts';
 
 const CHECK_TIMEOUT_MS = 2000;
 

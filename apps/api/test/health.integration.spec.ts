@@ -3,7 +3,7 @@ import type { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, it } from 'vitest';
-import { AppModule } from '../src/app.module.js';
+import { AppModule } from '../src/app.module.ts';
 
 describe('GET /health', () => {
   let app: INestApplication;
