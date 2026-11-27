@@ -8,7 +8,7 @@ Trilha de marcos em formato de checklist. Cada marco é testável sozinho e vira
 
 - [ ] **M0.1** Documentação: documentos de negócio e técnicos, glossário e ADRs. (REQ-NF-01, REQ-NF-07, REQ-NF-08)
 - [ ] **M0.2** Skill `pair-feature`. (REQ-NF-10)
-- [ ] **M0.3** Boilerplate: monorepo, Drizzle, config com Zod, Pino, Vitest, lint de fronteiras e Docker. (REQ-NF-02, REQ-NF-03, REQ-NF-05, REQ-NF-06, REQ-NF-09)
+- [ ] **M0.3** Boilerplate: monorepo, Drizzle, config com envalid, logger nativo do Nest, Vitest, lint de fronteiras e Docker. (REQ-NF-02, REQ-NF-03, REQ-NF-05, REQ-NF-06, REQ-NF-09)
 - [ ] **M0.4** CI no GitHub Actions e template de PR. (REQ-NF-04, REQ-NF-09)
 
 ## M1 Canal
