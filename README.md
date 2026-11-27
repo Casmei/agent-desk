@@ -27,6 +27,8 @@ O `docker compose up -d`, sem argumentos, também sobe a API em container, na po
 
 Depois de atualizar o código, rode `docker compose up -d --build api`, porque o compose reaproveita a imagem já construída e não a reconstrói sozinho.
 
+A Evolution API não sobe com o `docker compose up -d`, porque está no perfil `evolution`, que é opcional. Para subi-la junto, rode `docker compose --profile evolution up -d`. O painel e a API dela ficam em `http://localhost:8080`, com a chave do `EVOLUTION_API_KEY` do `.env`.
+
 ## Testar a API com o Insomnia
 
 A coleção [`insomnia/agent-desk.json`](insomnia/agent-desk.json) traz as rotas da API de gestão, com a resposta esperada na descrição de cada uma. No Insomnia, use **Import** e escolha o arquivo.
