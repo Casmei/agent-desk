@@ -50,7 +50,7 @@ Siga em ordem. Cada **PARE** é obrigatório.
 
 - [ ] Leia [`CLAUDE.md`](../../../CLAUDE.md), [`documents/overview.md`](../../../documents/overview.md), o glossário [`documents/ubiquitous-language.md`](../../../documents/ubiquitous-language.md) e [`tech-docs/overview.md`](../../../tech-docs/overview.md).
 - [ ] Leia [`documents/mvp/milestones.md`](../../../documents/mvp/milestones.md) e [`documents/mvp/requirements.md`](../../../documents/mvp/requirements.md).
-- [ ] Depois que o item for escolhido (passo 2), leia o documento do contexto envolvido em `documents/contexts/`, o processo em `documents/processes/` (se houver) e as convenções de `tech-docs/code/` que o item toca. A sigla do `REQ` aponta o contexto:
+- [ ] Depois que o item for escolhido (passo 2), leia o documento do contexto envolvido em `documents/contexts/`, o processo em `documents/processes/` (se houver) e as convenções de `tech-docs/code/` que o item toca. Se o item usa um recurso do Nest ou de uma biblioteca, leia a página da documentação oficial listada em [`tech-docs/code/references.md`](../../../tech-docs/code/references.md) antes de propor qualquer decisão. A sigla do `REQ` aponta o contexto:
 
 | `REQ-<CTX>` | Documento |
 |---|---|

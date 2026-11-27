@@ -1,6 +1,6 @@
 # Testes
 
-Runner: Vitest.
+Runner: Vitest. A montagem de testes com o Nest (`Test.createTestingModule`, providers falsos com `useValue`, testes HTTP com supertest) segue a [documentação de testes do Nest](https://docs.nestjs.com/fundamentals/testing).
 
 ## TDD é obrigatório
 
