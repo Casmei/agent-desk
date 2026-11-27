@@ -12,19 +12,19 @@ Este glossário é **lei**: todo nome no código, no banco, nos logs e nos docum
 |---|---|---|
 | Canal | `Channel` | Tipo de meio de comunicação (WhatsApp). |
 | Conector | `ChannelConnector` | Implementação de um provedor de canal (Evolution). Interface + adaptadores. |
-| Conexão | `ChannelConnection` | O número do negócio conectado por um conector. |
+| Conexão | `ChannelConnection` | O número do negócio conectado por um conector. Guarda o tempo do debounce e os parâmetros da simulação de digitação. |
 | Contato | `Contact` | A pessoa do outro lado, identificada pelo endereço no canal (telefone/JID). |
 | Conversa | `Conversation` | A thread entre uma conexão e um contato. Tem um dono atual. |
 | Mensagem | `Message` | Uma mensagem da conversa. Tem direção e autor. |
 | Autor | `MessageAuthor` | `contact`, `agent` ou `human`. |
 | Dono da conversa | `ConversationOwner` | Quem está no comando agora: um agente ou humano. |
-| Agente | `Agent` | Nome, modelo, instruções, skills, ferramentas, limites e parâmetros. |
+| Agente | `Agent` | Nome, modelo, instruções, skills, ferramentas e limites. |
 | Skill | `Skill` | Bloco de instrução nomeado e reutilizável, associado ao agente. |
 | Ferramenta | `Tool` | Capacidade que o agente pode chamar. No MVP, sempre um webhook. |
 | Ferramenta padrão | `BuiltInTool` | Ferramenta que todo agente tem (ex.: handoff). |
 | Chamada de ferramenta | `ToolCall` | Registro de uma chamada: argumentos, resposta, duração, erro. |
 | Execução do agente | `AgentRun` | Um ciclo do agente sobre um lote de mensagens: chamadas ao modelo, ferramentas, resposta, custo. |
-| Janela de debounce | `DebounceWindow` | Tempo de espera para juntar mensagens seguidas do contato. |
+| Janela de debounce | `DebounceWindow` | Tempo de espera para juntar mensagens seguidas do contato. O tempo vem da conexão. |
 | Handoff | `Handoff` | Troca do dono da conversa. No MVP, sempre do agente para humano. |
 | Assumir (humano) | `HumanTakeover` | Handoff disparado porque o humano falou na conversa. |
 | Devolver | `Release` | O humano devolve a conversa ao agente. |
@@ -34,7 +34,7 @@ Este glossário é **lei**: todo nome no código, no banco, nos logs e nos docum
 | Lista negra | `ForbiddenTerm` | Palavra ou frase que nunca pode sair numa mensagem automática. |
 | Execução descartada | `AgentRunDiscarded` | Execução que não enviou, com motivo (`superseded_by_new_message`, `human_takeover`). |
 | Trava de envio | `SendingGuard` | Regra que limita os envios automáticos para proteger o número. |
-| Simulação de digitação | `TypingSimulation` | "Digitando…" + atraso proporcional ao tamanho da resposta. |
+| Simulação de digitação | `TypingSimulation` | "Digitando…" + atraso proporcional ao tamanho da resposta. Os parâmetros vêm da conexão. |
 | Gasto | `Usage` | Custo e tokens de chamadas ao modelo. |
 | Limite de gasto | `SpendingLimit` | Teto por conversa e por agente/dia. |
 | Provedor de modelo | `LlmProvider` | Interface para chamar o modelo. OpenRouter é a primeira implementação. |
