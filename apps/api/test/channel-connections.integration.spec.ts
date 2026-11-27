@@ -2,8 +2,10 @@ import type { Server } from 'node:http';
 import type { INestApplication, LoggerService } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { channelConnections } from '../src/modules/channels/infrastructure/channel-connections.schema.js';
 import { AppModule } from '../src/app.module.js';
+import { DatabaseClient } from '../src/shared/database/database-client.js';
 import { env } from '../src/shared/config/env.js';
 
 const apiKey = 'evo-api-key-123';
@@ -33,6 +35,10 @@ describe('channel connections', () => {
     app.useLogger(logger);
     await app.init();
     server = app.getHttpServer() as Server;
+  });
+
+  beforeEach(async () => {
+    await app.get(DatabaseClient).db.delete(channelConnections);
   });
 
   afterAll(async () => {

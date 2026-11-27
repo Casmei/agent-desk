@@ -1,7 +1,7 @@
 import type { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { eq } from 'drizzle-orm';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { DatabaseClient } from '../../../shared/database/database-client.js';
 import { DatabaseModule } from '../../../shared/database/database.module.js';
 import { SecretEncryptionModule } from '../../../shared/secret-encryption/secret-encryption.module.js';
@@ -37,6 +37,10 @@ describe('ChannelConnectionRepository', () => {
     await app.init();
     repository = app.get(ChannelConnectionRepository);
     database = app.get(DatabaseClient);
+  });
+
+  beforeEach(async () => {
+    await database.db.delete(channelConnections);
   });
 
   afterAll(async () => {
