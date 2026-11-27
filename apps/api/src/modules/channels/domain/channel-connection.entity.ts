@@ -20,8 +20,6 @@ export type NewChannelConnection = Pick<
 export class ChannelConnection {
   readonly id: string;
   readonly channel: Channel;
-  // The connector name and its settings are opaque here: only the connector
-  // adapters know a provider by name (REQ-CH-01).
   readonly connector: string;
   readonly connectorSettings: Record<string, unknown>;
   readonly connectorSecrets: Record<string, string>;
