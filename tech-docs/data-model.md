@@ -17,4 +17,15 @@ Tipos do Drizzle não saem da infraestrutura: o domínio vê entidades, não lin
 
 ## Tabelas
 
-> Preenchida a cada marco.
+### `channel_connections` (módulo `channels`, M1.1)
+
+A conexão (`ChannelConnection`): o número ou a conta do negócio conectado por um conector. O formato dos dados do conector está na [ADR 0018](decisions/0018-connector-data-in-connection.md).
+
+| Coluna | Tipo | Conteúdo |
+|---|---|---|
+| `id` | `uuid` | uuid v7, gerado no domínio. |
+| `channel` | `text` | Canal: `whatsapp`. |
+| `connector` | `text` | Conector: `evolution`. Só a `infrastructure` e a `interface` conhecem os valores. |
+| `connector_settings` | `jsonb` | Configuração do conector, sem segredos. Na Evolution: `{ baseUrl, instanceName }`. |
+| `connector_secrets_encrypted` | `text` | JSON com todos os segredos do conector, cifrado no formato `ad-v1-...` ([ADR 0016](decisions/0016-secret-encryption.md)). Na Evolution: `{ apiKey }`. |
+| `created_at`, `updated_at` | `timestamptz` | Datas. |

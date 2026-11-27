@@ -12,7 +12,7 @@ O [glossário](../../documents/ubiquitous-language.md) é lei: se o conceito exi
 | `*.value-object.ts` | Value object | `channel-address.value-object.ts` |
 | `*.use-case.ts` | Caso de uso | `receive-message.use-case.ts` |
 | `*.port.ts` | Porta (classe abstrata) | `conversation.port.ts` |
-| `*.repository.ts` | Repositório (implementação) | `drizzle-conversation.repository.ts` |
+| `*.repository.ts` | Repositório (implementação) | `conversation.repository.ts` |
 | `*.controller.ts` | Controller HTTP | `conversations.controller.ts` |
 | `*.consumer.ts` | Consumidor de fila | `debounce.consumer.ts` |
 | `*.event.ts` | Evento de domínio | `conversation-handed-off.event.ts` |

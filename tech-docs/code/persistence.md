@@ -6,6 +6,7 @@ PostgreSQL acessado por Drizzle. As convenções de tabela e coluna estão em [`
 
 - **Drizzle só em `infrastructure`.** Tipos do Drizzle nunca aparecem em `domain`, `application` ou `interface`.
 - **Schema** em `modules/<module>/infrastructure/*.schema.ts`, um arquivo por tabela ou grupo coeso de tabelas. O `drizzle.config.ts` encontra esses arquivos por glob.
+- **O repositório se chama `<Agregado>Repository`** (`channel-connection.repository.ts`) e implementa a porta com `implements`. A porta é a classe abstrata da `application`, usada como token de injeção.
 - **Repositórios usam o query builder** (`db.select().from(tabela)`, `db.insert(tabela)`) com as tabelas importadas do `*.schema.ts`. Por isso o `drizzle()` não recebe `schema`: ele só serve para a API relacional `db.query.*`, que não usamos.
 - **O repositório mapeia linha para entidade e entidade para linha.** O domínio nunca vê a linha.
 - Um repositório por agregado, com os métodos que os casos de uso precisam. Nada de repositório genérico.
@@ -17,8 +18,9 @@ PostgreSQL acessado por Drizzle. As convenções de tabela e coluna estão em [`
 - **Nunca editadas à mão.** Para corrigir, altere o schema e gere outra migration.
 - Migration e a mudança de schema que a originou entram no mesmo PR. Migrations geradas não contam para o limite de arquivos do PR.
 - Tabela nova entra em [`data-model.md`](../data-model.md) no mesmo PR.
-- Enquanto não houver nenhum `*.schema.ts`, o `db:generate` falha com `No schema files found`. É o esperado: não há o que gerar.
-- **Pendente até o primeiro PR com tabela:** o `drizzle-kit` é devDependency e não vai para a imagem; quem rodar a primeira migration decide o executor (o migrator do `drizzle-orm` na subida da API ou um serviço one-shot no compose) e inclui o `db:migrate` no job `integration` da CI.
+- Dê um nome à migration: `pnpm --filter @agent-desk/api db:generate --name <acao_em_snake_case>` (por exemplo, `create_channel_connections`).
+- **A API aplica as migrations na subida** ([ADR 0017](../decisions/0017-migrations-on-startup.md)), no `onModuleInit` do `DatabaseModule`, com o `migrate` de `drizzle-orm/postgres-js/migrator`. O `drizzle-kit` é devDependency e não vai para a imagem; a pasta `drizzle/` vai.
+- Por isso a CI não tem passo de migração: todo teste de integração que inicializa o `DatabaseModule` (`app.init()`) aplica as migrations antes de rodar.
 
 ## Transações
 
