@@ -36,7 +36,16 @@ return this.registerChannelConnection.execute({
 });
 ```
 
-A resposta também é um tipo simples da `application` (por exemplo, `ChannelConnectionOutput`), porque a `interface` não importa entidades do `domain`. Segredos nunca entram nesse tipo.
+O caso de uso devolve um tipo de saída da `application`, nunca a entidade (o *response model* da skill `clean-architecture`; a `nestjs-best-practices` também proíbe devolver entidade do controller). O tipo é **derivado da entidade**, sem repetir campos, e é ali que os segredos saem:
+
+```ts
+export type ChannelConnectionOutput = Omit<ChannelConnectionProps, 'connectorSecrets'>;
+
+const { connectorSecrets, ...output } = connection;
+return output;
+```
+
+O oxlint aceita esse idioma com `ignoreRestSiblings` (`.oxlintrc.json`).
 
 O tipo do `input` do caso de uso é declarado na `application`; veja [`layers.md`](layers.md).
 

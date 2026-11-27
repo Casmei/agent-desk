@@ -1,21 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import {
   ChannelConnection,
-  type Channel,
+  type ChannelConnectionProps,
   type NewChannelConnection,
 } from '../domain/channel-connection.entity.js';
 import { ChannelConnectionPort } from './channel-connection.port.js';
 
-export type RegisterChannelConnectionInput = NewChannelConnection;
-
-export interface ChannelConnectionOutput {
-  id: string;
-  channel: Channel;
-  connector: string;
-  connectorSettings: Record<string, unknown>;
-  createdAt: Date;
-  updatedAt: Date;
-}
+export type ChannelConnectionOutput = Omit<
+  ChannelConnectionProps,
+  'connectorSecrets'
+>;
 
 @Injectable()
 export class RegisterChannelConnection {
@@ -23,22 +17,14 @@ export class RegisterChannelConnection {
 
   constructor(private readonly connections: ChannelConnectionPort) {}
 
-  async execute(
-    input: RegisterChannelConnectionInput,
-  ): Promise<ChannelConnectionOutput> {
+  async execute(input: NewChannelConnection): Promise<ChannelConnectionOutput> {
     const connection = ChannelConnection.create(input);
     await this.connections.save(connection);
     this.logger.log('channel connection registered', {
       connectionId: connection.id,
     });
 
-    return {
-      id: connection.id,
-      channel: connection.channel,
-      connector: connection.connector,
-      connectorSettings: connection.connectorSettings,
-      createdAt: connection.createdAt,
-      updatedAt: connection.updatedAt,
-    };
+    const { connectorSecrets, ...output } = connection;
+    return output;
   }
 }
