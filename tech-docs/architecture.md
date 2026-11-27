@@ -63,10 +63,10 @@ Todo módulo segue as mesmas quatro camadas.
 
 | Camada | Contém | Pode depender de |
 |---|---|---|
-| `domain` | Entidades, value objects, regras, eventos de domínio, erros de domínio. TypeScript puro, sem Nest, sem Drizzle. | Nada fora do domínio. |
+| `domain` | Entidades, value objects, regras, eventos de domínio, erros de domínio. TypeScript puro, sem Nest, sem Drizzle. | Nada fora do domínio, exceto `node:crypto` (veja [`code/layers.md`](code/layers.md)). |
 | `application` | Casos de uso (uma classe por caso de uso) e as portas (classes abstratas) que eles usam. | `domain` |
 | `infrastructure` | Implementações das portas: repositórios Drizzle, conector Evolution, OpenRouter, BullMQ, cliente HTTP de webhooks. | `application`, `domain` |
-| `interface` | Controllers HTTP, consumidores de fila, DTOs de entrada e saída. Sem regra de negócio. | `application` |
+| `interface` | Controllers HTTP, consumidores de fila, DTOs de entrada e saída. Sem regra de negócio. | `application` e os erros de domínio (`*.error.ts`) do próprio módulo, para traduzi-los para HTTP. |
 
 ```mermaid
 flowchart TD
@@ -74,6 +74,7 @@ flowchart TD
     infrastructure["infrastructure"] --> application
     infrastructure --> domain["domain"]
     application --> domain
+    interface -. "só *.error.ts" .-> domain
 ```
 
 ### Regra entre módulos
@@ -86,7 +87,7 @@ Um módulo só usa outro **pela camada `application` dele**, nunca por `domain` 
 - Repositórios convertem linhas do banco em entidades de domínio. Tipos do Drizzle nunca saem da infraestrutura.
 - O módulo Nest é só a fiação: liga portas a implementações.
 - Erros de domínio são classes tipadas. A camada `interface` traduz para HTTP.
-- As regras de dependência entre camadas e entre módulos são **verificadas automaticamente** (lint) na CI.
+- As regras de dependência entre camadas e entre módulos são convenção, verificada na revisão do PR.
 - **Proibido:** repositório genérico, herança profunda, biblioteca de CQRS ou event sourcing, abstração sem um segundo caso real, "utils" genérico.
 
 ## Fronteira síncrona e assíncrona

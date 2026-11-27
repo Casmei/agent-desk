@@ -11,7 +11,7 @@ Princípios gerais e índice das convenções. Os termos seguem o [glossário](.
 - **TypeScript estrito.** Sem `any` implícito e sem atalhos que escondam o tipo.
 - **Sem abstração "para o futuro":** só se cria o que a tarefa em mãos usa.
 - **Teste antes do código** (TDD). Veja [`testing.md`](testing.md).
-- As regras de dependência entre camadas e entre módulos são verificadas por lint na CI. Se o lint reclamar, o desenho está errado, não o lint.
+- As regras de dependência entre camadas e entre módulos são convenção, verificada na revisão do PR.
 
 ## Índice
 

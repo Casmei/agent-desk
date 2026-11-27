@@ -42,6 +42,7 @@ Toda resposta de erro tem este formato:
 - `message`: texto curto em inglês, sem dados sensíveis.
 - A `interface` traduz cada erro de domínio tipado para um status HTTP e um `code`. Erro desconhecido vira `500` com `code` genérico; o detalhe vai para o log, não para a resposta.
 - Falha de validação de entrada responde `400` no mesmo formato.
+- **Exceção:** o `GET /health` responde no formato padrão do Terminus (`{ status, info, error, details }`, com `503` quando algo está fora), o formato nativo do `@nestjs/terminus`. Reescrevê-lo seria código próprio sem ganho.
 
 ## Proteção da gestão
 
