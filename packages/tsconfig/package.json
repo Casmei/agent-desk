@@ -1,0 +1,8 @@
+{
+  "name": "@agent-desk/tsconfig",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./base.json": "./base.json"
+  }
+}
