@@ -10,7 +10,12 @@
     "test": {},
     "test:integration": {
       "cache": false,
-      "passThroughEnv": ["DATABASE_URL", "REDIS_URL", "ADMIN_TOKEN"]
+      "passThroughEnv": [
+        "DATABASE_URL",
+        "REDIS_URL",
+        "ADMIN_TOKEN",
+        "SECRET_ENCRYPTION_KEY"
+      ]
     },
     "dev": {
       "cache": false,

@@ -5,6 +5,13 @@ const adminToken = makeValidator((value: string) => {
   return value;
 });
 
+const secretEncryptionKey = makeValidator((value: string) => {
+  if (!/^[0-9a-f]{64}$/i.test(value)) {
+    throw new Error('must have 64 hexadecimal characters (32 bytes)');
+  }
+  return Buffer.from(value, 'hex');
+});
+
 export const env = cleanEnv(process.env, {
   NODE_ENV: str({
     choices: ['development', 'test', 'production'],
@@ -18,5 +25,6 @@ export const env = cleanEnv(process.env, {
   DATABASE_URL: url(),
   REDIS_URL: url(),
   ADMIN_TOKEN: adminToken(),
+  SECRET_ENCRYPTION_KEY: secretEncryptionKey(),
   TOOL_WEBHOOK_TIMEOUT_MS: num({ default: 10000 }),
 });

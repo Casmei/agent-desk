@@ -6,7 +6,10 @@ if [ ! -f .env ]; then
     cp "$SUPERSET_ROOT_PATH/.env" .env
   else
     cp .env.example .env
-    sed -i.bak "s/^ADMIN_TOKEN=$/ADMIN_TOKEN=$(openssl rand -hex 32)/" .env && rm .env.bak
+    sed -i.bak \
+      -e "s/^ADMIN_TOKEN=$/ADMIN_TOKEN=$(openssl rand -hex 32)/" \
+      -e "s/^SECRET_ENCRYPTION_KEY=$/SECRET_ENCRYPTION_KEY=$(openssl rand -hex 32)/" \
+      .env && rm .env.bak
   fi
 fi
 

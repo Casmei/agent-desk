@@ -53,6 +53,7 @@ jobs:
       DATABASE_URL: postgres://agent_desk:agent_desk@localhost:5432/agent_desk
       REDIS_URL: redis://localhost:6379
       ADMIN_TOKEN: ci-admin-token-with-at-least-32-characters
+      SECRET_ENCRYPTION_KEY: "0000000000000000000000000000000000000000000000000000000000000000"
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
