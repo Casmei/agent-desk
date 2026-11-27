@@ -1,5 +1,8 @@
+import { config } from 'dotenv';
 import swc from 'unplugin-swc';
 import { defineConfig } from 'vitest/config';
+
+config({ path: '../../.env', quiet: true });
 
 export default defineConfig({
   plugins: [swc.vite()],
