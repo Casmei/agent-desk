@@ -75,16 +75,14 @@ Regras:
 
 ## Configuráveis
 
-Todos por agente.
+Todos por agente. O tempo do debounce e os parâmetros da simulação de digitação são configurados na conexão (ver [canais](channels.md)); o agente apenas os lê.
 
 | Item | Padrão |
 |---|---|
 | Nome, modelo (entre os do OpenRouter) e instruções | sem padrão |
-| Debounce (`DebounceWindow`) | 8 s |
 | Mensagens de histórico (N) | a cargo de quem implementa |
 | Máximo de iterações por execução | 5 |
 | Máximo de interrupções seguidas por conversa | 3 |
-| Velocidade de digitação (caracteres por segundo), atraso mínimo e atraso máximo | a cargo de quem implementa, com base em velocidade humana de digitação e limitados por um teto |
 
 ## Requisitos
 

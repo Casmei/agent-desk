@@ -13,7 +13,7 @@ A `AgentRun` produz uma resposta final em texto (ver [`agent-run.md`](agent-run.
 - O texto da resposta do agente.
 - Os termos da lista negra (`ForbiddenTerm`).
 - A configuração das travas de envio: pausa, limite por dia e fuso.
-- Os parâmetros da simulação de digitação do agente: velocidade (caracteres por segundo), atraso mínimo e atraso máximo.
+- Os parâmetros da simulação de digitação, lidos da conexão: velocidade (caracteres por segundo), atraso mínimo e atraso máximo.
 - A capacidade do conector de mostrar "digitando…" (opcional).
 
 ## Saídas

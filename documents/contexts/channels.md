@@ -32,7 +32,7 @@ Entidades tracejadas pertencem a outro contexto ([conversas](conversations.md)).
 
 - **`Channel`**: tipo de meio de comunicação (WhatsApp).
 - **`ChannelConnector`**: implementação de um provedor de canal (Evolution). É uma interface com adaptadores.
-- **`ChannelConnection`**: o número do negócio conectado por um conector. O segredo de acesso não aparece em respostas da API nem em log.
+- **`ChannelConnection`**: o número do negócio conectado por um conector. Guarda também o tempo do debounce e os parâmetros da simulação de digitação, que valem para todo atendimento por esse número, qualquer que seja o agente. O segredo de acesso não aparece em respostas da API nem em log.
 
 Regras:
 
@@ -54,7 +54,12 @@ Regras:
 - Dados da conexão com a Evolution, informados pela API de gestão.
 - O token de acesso da Evolution é guardado cifrado.
 
-O spec não define valores padrão para este contexto.
+| Item | Padrão |
+|---|---|
+| Tempo da janela de debounce (`DebounceWindow`) | 8 s |
+| Velocidade de digitação (caracteres por segundo), atraso mínimo e atraso máximo (`TypingSimulation`) | a cargo de quem implementa, com base em velocidade humana de digitação e limitados por um teto |
+
+O spec não define valores padrão para os dados da conexão com a Evolution.
 
 ## Requisitos
 
