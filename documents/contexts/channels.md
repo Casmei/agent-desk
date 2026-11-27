@@ -30,9 +30,9 @@ Entidades tracejadas pertencem a outro contexto ([conversas](conversations.md)).
 
 ## Entidades e regras
 
-- **`Channel`**: tipo de meio de comunicação (WhatsApp).
-- **`ChannelConnector`**: implementação de um provedor de canal (Evolution). É uma interface com adaptadores.
-- **`ChannelConnection`**: o número do negócio conectado por um conector. Guarda também o tempo do debounce e os parâmetros da simulação de digitação, que valem para todo atendimento por esse número, qualquer que seja o agente. O segredo de acesso não aparece em respostas da API nem em log.
+- **`Channel`**: tipo de meio de comunicação (WhatsApp; no futuro, Instagram).
+- **`ChannelConnector`**: implementação de um provedor de canal (Evolution; no futuro, OpenWA, GOWA, Z-API, Meta e Baileys). É uma interface com adaptadores.
+- **`ChannelConnection`**: o número (ou a conta) do negócio conectado por um conector. Guarda o canal, o conector e os dados de acesso do conector, que variam de um conector para outro (URL, instância, um ou mais segredos, estado de sessão). Os segredos são guardados cifrados e não aparecem em respostas da API nem em log.
 
 Regras:
 
@@ -54,10 +54,7 @@ Regras:
 - Dados da conexão com a Evolution, informados pela API de gestão.
 - O token de acesso da Evolution é guardado cifrado.
 
-| Item | Padrão |
-|---|---|
-| Tempo da janela de debounce (`DebounceWindow`) | 8 s |
-| Velocidade de digitação (caracteres por segundo), atraso mínimo e atraso máximo (`TypingSimulation`) | a cargo de quem implementa, com base em velocidade humana de digitação e limitados por um teto |
+O tempo da janela de debounce e os parâmetros da simulação de digitação **não ficam na conexão**: no MVP são padrões fixos (ver [agente](agent.md)). Configurá-los por conexão está no [roadmap](../roadmap.md).
 
 O spec não define valores padrão para os dados da conexão com a Evolution.
 
@@ -73,6 +70,6 @@ O spec não define valores padrão para os dados da conexão com a Evolution.
 
 ## Fora do MVP
 
-- Outros conectores além da Evolution (Meta, Z-API, Baileys).
+- Outros conectores além da Evolution (OpenWA, GOWA, Z-API, Meta e Baileys) e o canal Instagram.
 - Prospecção ativa, campanhas e importação de contatos.
 - Transcrição de áudio: o áudio é só registrado como mensagem de áudio.

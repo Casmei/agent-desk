@@ -13,7 +13,7 @@ O provedor do canal (hoje a Evolution) chama o webhook do sistema com um evento 
 - O payload bruto do provedor.
 - A conexão (`ChannelConnection`) à qual o webhook pertence.
 - A configuração do dono da conversa inicial das conversas novas (agente ou humano; padrão: agente).
-- O tempo da janela de debounce, lido da conexão (padrão 8 s).
+- O tempo da janela de debounce: padrão fixo de 8 s no MVP.
 
 ## Saídas
 
@@ -43,7 +43,7 @@ flowchart TD
 2. Grupos, ligações e status são **descartados**, com log. Nada é gravado.
 3. A mensagem é **gravada de forma idempotente** pelo id externo. O sistema encontra ou cria o `Contact` e a `Conversation`. Processar duas vezes o mesmo webhook resulta em uma única `Message`.
 4. Se a conversa é nova, o **dono da conversa inicial** é o configurado: agente ou humano. O padrão é o agente.
-5. Se o dono da conversa é o agente, a **`DebounceWindow`** da conversa é aberta ou, se já estiver aberta, **reiniciada**. O tempo é configurável por conexão; o padrão é 8 s. Quando a janela fecha, começa a `AgentRun`.
+5. Se o dono da conversa é o agente, a **`DebounceWindow`** da conversa é aberta ou, se já estiver aberta, **reiniciada**. No MVP, o tempo é um padrão fixo de 8 s. Quando a janela fecha, começa a `AgentRun`.
 
 Mensagens enviadas pelo próprio número do negócio seguem o fluxo de [`human-takeover-and-release.md`](human-takeover-and-release.md), que decide entre eco do sistema e fala do humano.
 

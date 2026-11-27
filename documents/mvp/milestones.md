@@ -16,7 +16,7 @@ Trilha de marcos em formato de checklist. Cada marco é testável sozinho e vira
 **Pronto quando:** a mensagem da Evolution chega, é normalizada e gravada; grupos e ligações são ignorados; o sistema envia texto.
 
 - [x] **M1.0** Proteger a API de gestão com o token de administração. (REQ-ST-01)
-- [ ] **M1.1** Registrar a conexão Evolution, com o tempo do debounce e os parâmetros da simulação de digitação. (REQ-CH-01, REQ-CH-02, REQ-NF-06)
+- [ ] **M1.1** Registrar a conexão Evolution. (REQ-CH-01, REQ-CH-02, REQ-NF-06)
 - [ ] **M1.2** Receber e normalizar o webhook: texto, áudio, `fromMe`, grupo, ligação e status. (REQ-CH-03)
 - [ ] **M1.3** Descartar grupo, ligação e status com log. (REQ-CH-04)
 - [ ] **M1.4** Gravar a mensagem de forma idempotente, criando `Contact` e `Conversation`, com dono inicial configurável. (REQ-CV-01, REQ-CV-02)
@@ -33,7 +33,7 @@ Trilha de marcos em formato de checklist. Cada marco é testável sozinho e vira
 
 ## M3 Agente básico
 
-**Pronto quando:** a chave do OpenRouter está cadastrada e o agente, com instruções e skills, responde com debounce, interrupção por mensagem nova e simulação de digitação (parâmetros configurados na conexão).
+**Pronto quando:** a chave do OpenRouter está cadastrada e o agente, com instruções e skills, responde com debounce, interrupção por mensagem nova e simulação de digitação (com padrões fixos).
 
 - [ ] **M3.1** Cadastrar a chave do OpenRouter cifrada. (REQ-ST-02, REQ-NF-06)
 - [ ] **M3.2** Configurar o agente: modelo, instruções, máximo de iterações, máximo de interrupções e N de histórico. (REQ-AG-01)

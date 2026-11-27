@@ -13,7 +13,9 @@ O que vem depois do MVP. Cada item está registrado e fora do MVP de propósito.
 - **Lista de bloqueio de contatos e modo teste:** protege contatos específicos e permite testar sem falar com clientes reais. Não confundir com a lista negra de termos, que já está no MVP.
 - **Avaliar LangChain/LangGraph:** entender melhor o produto e os agentes antes de decidir se um framework compensa, já que o MVP chama o modelo direto.
 - **Prospecção (Rastro/scraper, planilha):** hoje o agente só atende quem chama; para iniciar conversas ele precisaria de contatos vindos de um scraper ou de uma planilha.
-- **Novos conectores (Meta, Z-API, Baileys):** a interface de canal já separa o domínio da Evolution, então um novo conector é só mais uma implementação.
+- **Novos conectores (OpenWA, GOWA, Z-API, Meta, Baileys):** a interface de canal já separa o domínio da Evolution, então um novo conector é só mais uma implementação. A conexão guarda os dados de acesso de cada conector num formato próprio dele, porque eles variam (URL, instância, um ou mais segredos, estado de sessão).
+- **Canal Instagram:** a conexão já guarda o canal, então o Instagram entra como outro canal, pelo conector da Meta.
+- **Debounce e digitação configuráveis por conexão:** no MVP, o tempo da janela de debounce (8 s) e os parâmetros da simulação de digitação são padrões fixos no código. Depois do MVP, o comerciante poderá ajustá-los por conexão. Onde persistir (colunas ou configurações por canal) é decidido nesse momento.
 - **Novos provedores de modelo:** a interface `LlmProvider` permite trocar o OpenRouter quando houver um segundo caso real.
 - **Telas (Pencil):** o front entra vazio no MVP, e as telas virão de um brainstorm no Pencil, junto com o design system.
 - **Publicar imagem Docker:** facilita a instalação por quem quer rodar por conta própria.
