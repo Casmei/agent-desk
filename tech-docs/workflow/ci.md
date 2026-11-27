@@ -4,13 +4,13 @@ A CI roda no GitHub Actions. Esta página explica o que cada job faz e como roda
 
 ## Quando roda
 
-Os jobs `quality`, `integration` e `build` ficam em `ci.yml`, que roda em `pull_request` e em `push` para a `main`. O workflow `pr-size` roda em `pull_request`.
+Os jobs `quality`, `integration` e `build` ficam em `ci.yml`, que roda em `pull_request` e em `push` para a `main`. O workflow `pr-size` roda em `pull_request`. Os dois workflows têm só permissão de leitura do repositório (`permissions: contents: read`).
 
 ## Jobs
 
 | Job / workflow | O que faz |
 |---|---|
-| `quality` | Roda lint (inclui as regras de fronteira entre camadas), typecheck e testes unitários. |
+| `quality` | Confere a formatação (Prettier), roda lint (inclui as regras de fronteira entre camadas), typecheck e testes unitários. |
 | `integration` | Roda os testes de integração contra `postgres:18-alpine` e `redis:8-alpine`. |
 | `build` | Roda `pnpm build` e faz o build da imagem Docker de `apps/api/Dockerfile`, sem publicar (sem push). |
 | `pr-size` (workflow) | Etapa de shell que avisa quando o PR altera mais de 18 arquivos, sem contar `pnpm-lock.yaml` (em qualquer pasta) nem `apps/api/drizzle/`. |
@@ -22,6 +22,7 @@ O `pr-size` emite um aviso (warning annotation) do GitHub e **não falha o job**
 Job `quality`:
 
 ```bash
+pnpm format:check
 pnpm lint
 pnpm typecheck
 pnpm test
