@@ -3,7 +3,6 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "rewriteRelativeImportExtensions": true,
     "outDir": "dist",
     "rootDir": ".",
     "types": ["node"]

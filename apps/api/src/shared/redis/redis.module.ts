@@ -1,6 +1,6 @@
 import { Global, Module, type OnApplicationShutdown } from '@nestjs/common';
-import { env } from '../config/env.ts';
-import { RedisClient } from './redis-client.ts';
+import { env } from '../config/env.js';
+import { RedisClient } from './redis-client.js';
 
 @Global()
 @Module({

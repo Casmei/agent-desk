@@ -1,6 +1,6 @@
 import { ConsoleLogger } from '@nestjs/common';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { buildLoggerOptions } from './logger-options.ts';
+import { buildLoggerOptions } from './logger-options.js';
 
 type LogEnv = Parameters<typeof buildLoggerOptions>[0];
 

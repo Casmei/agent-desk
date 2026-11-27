@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { env } from '../config/env.ts';
-import { DatabaseClient } from './database-client.ts';
+import { env } from '../config/env.js';
+import { DatabaseClient } from './database-client.js';
 
 describe('DatabaseClient', () => {
   it('connects to postgres and answers a ping', async () => {
