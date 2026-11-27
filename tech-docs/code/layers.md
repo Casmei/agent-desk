@@ -34,6 +34,7 @@ O módulo Nest (`<module>.module.ts`) é só fiação: liga cada porta à sua im
 - **Um caso de uso por classe,** com um único método público: `execute(input)`.
 - **Erros de domínio são classes tipadas** (`*.error.ts`). A camada `interface` os traduz para HTTP (veja [`api.md`](api.md)).
 - **Entre módulos,** um módulo só usa outro pela `application` dele, nunca por `domain` nem por `infrastructure`.
+- **Cada camada é uma pasta plana,** sem subpastas: o lint de fronteiras depende disso (veja a [ADR 0015](../decisions/0015-nest-cli-swc-esm.md)).
 - Controllers e consumidores só chamam casos de uso.
 
 ## Proibido

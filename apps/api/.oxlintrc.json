@@ -41,10 +41,11 @@
             "patterns": [
               {
                 "group": [
-                  "@nestjs/*",
+                  "@nestjs/**",
                   "!@nestjs/common",
+                  "@nestjs/common/**",
                   "drizzle-orm",
-                  "drizzle-orm/*",
+                  "drizzle-orm/**",
                   "postgres",
                   "ioredis",
                   "bullmq",

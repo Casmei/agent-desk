@@ -14,11 +14,12 @@ interface OxlintReport {
 }
 
 function lintErrors(fixture: string): string[] {
-  const { stdout } = spawnSync(
+  const { stdout, error } = spawnSync(
     oxlint,
     ['--format', 'json', sampleModule + fixture],
     { encoding: 'utf8' },
   );
+  if (error) throw error;
   const report = JSON.parse(stdout) as OxlintReport;
   return report.diagnostics.map((diagnostic) => diagnostic.code);
 }
