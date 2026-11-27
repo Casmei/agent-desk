@@ -25,6 +25,24 @@ Guarde a `SECRET_ENCRYPTION_KEY`: ela cifra os segredos gravados no banco, e per
 
 O `docker compose up -d`, sem argumentos, também sobe a API em container, na porta do `PORT` do `.env` (3000 por padrão).
 
+## Testar a API com o Insomnia
+
+A coleção [`insomnia/agent-desk.json`](insomnia/agent-desk.json) traz as rotas da API de gestão, com a resposta esperada na descrição de cada uma. No Insomnia, use **Import** e escolha o arquivo.
+
+Depois, em **Manage Environments**, preencha no ambiente base:
+
+| Variável | Valor |
+|---|---|
+| `admin_token` | O `ADMIN_TOKEN` do seu `.env`. |
+| `evolution_api_key` | A chave de API da instância na Evolution. |
+| `evolution_instance_name` | O nome da instância na Evolution. |
+
+Escolha o ambiente pelo lugar onde a API roda:
+- **Local (pnpm dev):** a API fala com a Evolution em `http://localhost:8080`.
+- **Docker compose (API em container):** a API fala com a Evolution pelo nome do serviço, em `http://evolution:8080`.
+
+Nos dois casos, o Insomnia chama a API em `http://localhost:3000`. Não salve tokens reais no arquivo da coleção.
+
 ## Mapa de pastas
 
 | Pasta | Conteúdo |
@@ -33,6 +51,7 @@ O `docker compose up -d`, sem argumentos, também sobe a API em container, na po
 | `tech-docs/` | A técnica: como. Comece por [`tech-docs/overview.md`](tech-docs/overview.md). |
 | `apps/` | Aplicações: `api` (NestJS) e `web` (Vite + React). |
 | `packages/` | Pacotes de configuração compartilhada. |
+| `insomnia/` | Coleção do Insomnia para testar a API à mão. |
 
 ## Licença
 
