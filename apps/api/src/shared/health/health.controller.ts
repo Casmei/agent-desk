@@ -24,11 +24,13 @@ export class HealthController {
         this.indicator
           .check('database')
           .attempt(() => this.database.ping())
+          .withFailureData({ message: 'unavailable' })
           .withTimeout('2s'),
       () =>
         this.indicator
           .check('redis')
           .attempt(() => this.redis.ping())
+          .withFailureData({ message: 'unavailable' })
           .withTimeout('2s'),
     ]);
   }

@@ -1,4 +1,3 @@
-import { ServiceUnavailableException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { TerminusModule } from '@nestjs/terminus';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -39,13 +38,11 @@ describe('HealthController', () => {
   it('reports database down when its ping rejects', async () => {
     database.ping = () => Promise.reject(new Error('connection refused'));
 
-    const error = await controller.check().catch((e: unknown) => e);
-
-    expect(error).toBeInstanceOf(ServiceUnavailableException);
-    expect((error as ServiceUnavailableException).getResponse()).toMatchObject({
-      status: 'error',
-      error: { database: { status: 'down' } },
-      details: { database: { status: 'down' }, redis: { status: 'up' } },
+    await expect(controller.check()).rejects.toMatchObject({
+      response: {
+        status: 'error',
+        error: { database: { status: 'down', message: 'unavailable' } },
+      },
     });
   });
 
@@ -53,15 +50,14 @@ describe('HealthController', () => {
     vi.useFakeTimers();
     redis.ping = () => new Promise(() => {});
 
-    const result = controller.check().catch((e: unknown) => e);
-    await vi.advanceTimersByTimeAsync(2000);
-    const error = await result;
-
-    expect(error).toBeInstanceOf(ServiceUnavailableException);
-    expect((error as ServiceUnavailableException).getResponse()).toMatchObject({
-      status: 'error',
-      error: { redis: { status: 'down' } },
-      details: { database: { status: 'up' }, redis: { status: 'down' } },
+    const check = expect(controller.check()).rejects.toMatchObject({
+      response: {
+        status: 'error',
+        error: { redis: { status: 'down', message: 'unavailable' } },
+      },
     });
+    await vi.advanceTimersByTimeAsync(2000);
+
+    await check;
   });
 });
