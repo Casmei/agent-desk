@@ -4,6 +4,7 @@ Princípios gerais e índice das convenções. Os termos seguem o [glossário](.
 
 ## Princípios
 
+- **A documentação oficial manda nos padrões.** O que é do Nest segue a [documentação do Nest](https://docs.nestjs.com). O que é de outra biblioteca segue a documentação dela. A lista de páginas está em [`references.md`](references.md). Uma divergência precisa de ADR.
 - **Simplicidade primeiro**, mesmo que isso custe mais código. O projeto precisa ser fácil de ler e entender.
 - **Glossário é lei:** todo nome no código, no banco e nos logs vem de [`ubiquitous-language.md`](../../documents/ubiquitous-language.md). Termo novo entra lá no mesmo PR que o usa.
 - **Código em inglês;** documentos em português.
@@ -16,6 +17,7 @@ Princípios gerais e índice das convenções. Os termos seguem o [glossário](.
 
 | Documento | Cobre | Quando ler |
 |---|---|---|
+| [`references.md`](references.md) | Páginas da documentação oficial do Nest e das bibliotecas que valem como padrão. | Antes de configurar ou usar qualquer recurso do framework ou de uma biblioteca. |
 | [`layers.md`](layers.md) | Estrutura de pastas, o que vai em cada camada, portas, casos de uso e erros de domínio. | Ao decidir onde um código mora. |
 | [`naming.md`](naming.md) | Nomes de arquivos, classes, casos de uso, eventos, tabelas, colunas e variáveis de ambiente. | Ao criar qualquer arquivo ou identificador. |
 | [`persistence.md`](persistence.md) | Drizzle, schemas, repositórios, migrations e transações. | Ao escrever repositório, tabela ou migration. |

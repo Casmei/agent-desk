@@ -18,6 +18,7 @@ Este é o ponto de entrada da documentação técnica do agent-desk. O negócio 
 | `tech-docs/architecture.md` | Componentes, monólito modular, lista de módulos, quatro camadas, regra entre módulos, fronteira síncrona/assíncrona, portas e deploy. | Antes de criar um módulo, uma porta ou qualquer integração entre partes. |
 | `tech-docs/data-model.md` | Convenções de tabela e coluna e o catálogo de tabelas (preenchido a cada marco). | Antes de criar ou alterar uma tabela ou migration. |
 | `tech-docs/code/overview.md` | Princípios gerais de código e índice das convenções. | Ao começar a trabalhar no código. |
+| `tech-docs/code/references.md` | Documentação oficial do Nest e das bibliotecas, que vale como padrão. | Antes de configurar ou usar um recurso do framework ou de uma biblioteca. |
 | `tech-docs/code/layers.md` | Regras de cada camada e dependências permitidas. | Ao decidir onde um código mora. |
 | `tech-docs/code/naming.md` | Nomes de arquivos, classes, casos de uso, eventos, tabelas e colunas. | Ao criar qualquer arquivo ou identificador. |
 | `tech-docs/code/persistence.md` | Repositórios, mapeamento linha-entidade, transações e migrations. | Ao escrever repositório ou migration. |
@@ -34,6 +35,7 @@ Este é o ponto de entrada da documentação técnica do agent-desk. O negócio 
 
 ## Regras de manutenção
 
+- Padrão de framework ou de biblioteca segue a documentação oficial (veja [`code/references.md`](code/references.md)). Divergir dela é decisão estrutural e vira ADR.
 - Decisão estrutural nova vira ADR em `decisions/` no mesmo PR que a introduz.
 - Mecanismo com mais de uma solução plausível ganha um design em `design/` antes do código.
 - Tabela nova entra em [`data-model.md`](data-model.md) no mesmo PR que a cria.
