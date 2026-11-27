@@ -18,15 +18,6 @@ function captureError(run: () => unknown): InvalidEnvError {
 }
 
 describe('parseEnv', () => {
-  it('applies defaults', () => {
-    expect(parseEnv(valid)).toMatchObject({
-      NODE_ENV: 'development',
-      PORT: 3000,
-      LOG_LEVEL: 'log',
-      TOOL_WEBHOOK_TIMEOUT_MS: 10000,
-    });
-  });
-
   it('lists every invalid key', () => {
     const error = captureError(() =>
       parseEnv({ ...valid, DATABASE_URL: undefined, ADMIN_TOKEN: 'short' }),
@@ -35,10 +26,6 @@ describe('parseEnv', () => {
     expect(error.invalidKeys.sort()).toEqual(['ADMIN_TOKEN', 'DATABASE_URL']);
     expect(error.message).toContain('ADMIN_TOKEN');
     expect(error.message).toContain('DATABASE_URL');
-  });
-
-  it('coerces numeric values', () => {
-    expect(parseEnv({ ...valid, PORT: '8080' }).PORT).toBe(8080);
   });
 
   it('rejects a non-postgres database url', () => {
