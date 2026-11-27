@@ -75,7 +75,7 @@ Regras:
 
 ## Configuráveis
 
-Todos por agente. O tempo do debounce e os parâmetros da simulação de digitação são configurados na conexão (ver [canais](channels.md)); o agente apenas os lê.
+Todos por agente, exceto o tempo do debounce e os parâmetros da simulação de digitação, que no MVP são padrões fixos (8 s de debounce; velocidade humana de digitação, com teto). Configurá-los por conexão está no [roadmap](../roadmap.md).
 
 | Item | Padrão |
 |---|---|

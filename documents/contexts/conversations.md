@@ -67,7 +67,7 @@ Regras:
 |---|---|
 | Dono de uma conversa nova (agente ou humano) | agente |
 
-O tempo da `DebounceWindow` não é configurado aqui: a janela da conversa lê o valor da `ChannelConnection` (ver [canais](channels.md)).
+O tempo da `DebounceWindow` não é configurado aqui: no MVP é um padrão fixo de 8 s (ver [agente](agent.md)).
 
 ## Requisitos
 
