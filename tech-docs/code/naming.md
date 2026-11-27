@@ -18,6 +18,8 @@ O [glossário](../../documents/ubiquitous-language.md) é lei: se o conceito exi
 | `*.event.ts` | Evento de domínio | `conversation-handed-off.event.ts` |
 | `*.error.ts` | Erro de domínio | `conversation-not-found.error.ts` |
 | `*.module.ts` | Módulo Nest | `conversations.module.ts` |
+| `*.guard.ts` | Guard do Nest | `admin-token.guard.ts` |
+| `*.decorator.ts` | Decorator | `public.decorator.ts` |
 
 Testes ficam ao lado do código (veja [`testing.md`](testing.md)).
 
