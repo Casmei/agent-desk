@@ -1,0 +1,18 @@
+[install]
+run = ["pnpm install --frozen-lockfile"]
+
+[setup]
+run = ["./.paradev/setup.sh"]
+
+[terminals.dev]
+run = "pnpm dev"
+default = true
+
+[ports.api]
+default = 3000
+label = "API"
+
+[ports.web]
+default = 5173
+label = "Web"
+preview = true
