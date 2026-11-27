@@ -52,6 +52,7 @@ Regras:
 ## Configuráveis
 
 - Dados da conexão com a Evolution, informados pela API de gestão em `POST /channel-connections/evolution`: URL do servidor (`baseUrl`), nome da instância (`instanceName`) e chave de API (`apiKey`). A resposta traz a conexão sem a chave.
+- As conexões registradas são listadas em `GET /channel-connections`, sem nenhum segredo.
 - O token de acesso da Evolution é guardado cifrado.
 
 O tempo da janela de debounce e os parâmetros da simulação de digitação **não ficam na conexão**: no MVP são padrões fixos (ver [agente](agent.md)). Configurá-los por conexão está no [roadmap](../roadmap.md).

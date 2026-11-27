@@ -1,4 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { ListChannelConnections } from '../application/list-channel-connections.use-case.js';
 import {
   RegisterChannelConnection,
   type ChannelConnectionOutput,
@@ -9,7 +10,13 @@ import { RegisterEvolutionConnectionDto } from './register-evolution-connection.
 export class ChannelConnectionsController {
   constructor(
     private readonly registerChannelConnection: RegisterChannelConnection,
+    private readonly listChannelConnections: ListChannelConnections,
   ) {}
+
+  @Get()
+  list(): Promise<ChannelConnectionOutput[]> {
+    return this.listChannelConnections.execute();
+  }
 
   @Post('evolution')
   registerEvolution(

@@ -25,6 +25,8 @@ Guarde a `SECRET_ENCRYPTION_KEY`: ela cifra os segredos gravados no banco, e per
 
 O `docker compose up -d`, sem argumentos, também sobe a API em container, na porta do `PORT` do `.env` (3000 por padrão).
 
+Depois de atualizar o código, rode `docker compose up -d --build api`, porque o compose reaproveita a imagem já construída e não a reconstrói sozinho.
+
 ## Testar a API com o Insomnia
 
 A coleção [`insomnia/agent-desk.json`](insomnia/agent-desk.json) traz as rotas da API de gestão, com a resposta esperada na descrição de cada uma. No Insomnia, use **Import** e escolha o arquivo.

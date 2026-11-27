@@ -103,6 +103,26 @@
       "environment": {}
     },
     {
+      "_id": "req_list_connections",
+      "_type": "request",
+      "parentId": "fld_connections",
+      "name": "Listar conexões",
+      "method": "GET",
+      "url": "{{ _.base_url }}/channel-connections",
+      "headers": [
+        {
+          "name": "x-admin-token",
+          "value": "{{ _.admin_token }}"
+        }
+      ],
+      "description": "Esperado: `200` com a lista de conexões, sem a `apiKey` de nenhuma.",
+      "metaSortKey": -500,
+      "body": {},
+      "parameters": [],
+      "authentication": {},
+      "settingFollowRedirects": "global"
+    },
+    {
       "_id": "req_register",
       "_type": "request",
       "parentId": "fld_connections",
