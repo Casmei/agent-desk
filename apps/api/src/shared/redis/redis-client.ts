@@ -11,8 +11,10 @@ export class RedisClient {
       connectTimeout: 2000,
       maxRetriesPerRequest: 0,
     });
-    this.redis.on('error', (error) => {
-      this.logger.warn(String(error));
+    this.redis.on('error', (error: NodeJS.ErrnoException) => {
+      this.logger.warn(
+        `Redis connection error: ${error.code ?? error.message}`,
+      );
     });
   }
 
