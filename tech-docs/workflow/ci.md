@@ -13,7 +13,7 @@ Os jobs `quality`, `integration` e `build` ficam em `ci.yml`, que roda em `pull_
 | `quality` | Roda lint (inclui as regras de fronteira entre camadas), typecheck e testes unitários. |
 | `integration` | Roda os testes de integração contra `postgres:18-alpine` e `redis:8-alpine`. |
 | `build` | Roda `pnpm build` e faz o build da imagem Docker de `apps/api/Dockerfile`, sem publicar (sem push). |
-| `pr-size` (workflow) | Avisa quando o PR altera mais de 18 arquivos, sem contar `pnpm-lock.yaml` nem `apps/api/drizzle/`. |
+| `pr-size` (workflow) | Etapa de shell que avisa quando o PR altera mais de 18 arquivos, sem contar `pnpm-lock.yaml` (em qualquer pasta) nem `apps/api/drizzle/`. |
 
 O `pr-size` emite um aviso (warning annotation) do GitHub e **não falha o job**. A regra completa está em [`pull-requests.md`](pull-requests.md).
 
@@ -44,7 +44,7 @@ docker build -f apps/api/Dockerfile .
 Para o `pr-size`, conte os arquivos alterados contra a `main`, sem o lockfile e as migrations geradas:
 
 ```bash
-git diff --name-only main...HEAD -- . ':!pnpm-lock.yaml' ':!apps/api/drizzle' | wc -l
+git diff --name-only main...HEAD -- . ':(exclude,glob)**/pnpm-lock.yaml' ':!apps/api/drizzle' | wc -l
 ```
 
 ## Quando a CI falha
