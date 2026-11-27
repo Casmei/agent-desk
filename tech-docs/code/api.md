@@ -14,17 +14,21 @@
 - Variáveis de ambiente usam envalid (veja [`security.md`](security.md) e a [ADR 0007](../decisions/0007-envalid-config-and-class-validator-input.md)).
 
 ```ts
-app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
+app.useGlobalPipes(
+  new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }),
+);
 
-export class ReleaseConversationDto {
-  @IsString() reason!: string;
-  @IsInt() @Min(1) holdMinutes!: number;
+export class UpdateConnectionSettingsDto {
+  @IsInt() @IsPositive() debounceSeconds!: number;
+  @IsNumber() @IsPositive() typingCharsPerSecond!: number;
 }
 
-// controller: DTO -> input simples, depois o caso de uso
-const input = { reason: dto.reason, holdMinutes: dto.holdMinutes };
-return this.useCase.execute(input);
+// PATCH /connections/:id/settings: DTO -> input simples, depois o caso de uso
+const input = { connectionId: id, ...dto };
+return this.updateConnectionSettings.execute(input);
 ```
+
+O tipo do `input` do caso de uso é declarado na `application`; veja [`layers.md`](layers.md).
 
 ## Formato de erro
 
