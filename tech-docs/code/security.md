@@ -19,4 +19,4 @@ As variáveis de ambiente são validadas com **envalid** na subida. Configuraç�
 ## Entrada externa
 
 - O webhook de entrada do conector é validado por **token próprio**, diferente do token de administração.
-- Toda entrada da API é validada com Zod antes de chegar ao caso de uso.
+- Toda entrada da API é validada pelo `ValidationPipe` (class-validator) antes de chegar ao caso de uso.

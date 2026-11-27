@@ -8,9 +8,23 @@
 
 ## Validação de entrada
 
-- **Zod**, no controller (camada `interface`), antes de chamar o caso de uso.
-- O schema Zod gera o DTO de entrada. O caso de uso recebe um `input` já validado e tipado.
-- Zod é usado só para entrada da API. A configuração por variáveis de ambiente usa envalid (veja [`security.md`](security.md)).
+- Validação nativa do Nest: `ValidationPipe` global com `class-validator` e `class-transformer`.
+- A entrada é declarada como classe DTO com decoradores, só na camada `interface`.
+- O controller mapeia o DTO para um `input` simples (tipo da `application`) e só então chama o caso de uso. O caso de uso nunca recebe o DTO decorado.
+- Variáveis de ambiente usam envalid (veja [`security.md`](security.md) e a [ADR 0007](../decisions/0007-envalid-config-and-class-validator-input.md)).
+
+```ts
+app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
+
+export class ReleaseConversationDto {
+  @IsString() reason!: string;
+  @IsInt() @Min(1) holdMinutes!: number;
+}
+
+// controller: DTO -> input simples, depois o caso de uso
+const input = { reason: dto.reason, holdMinutes: dto.holdMinutes };
+return this.useCase.execute(input);
+```
 
 ## Formato de erro
 
