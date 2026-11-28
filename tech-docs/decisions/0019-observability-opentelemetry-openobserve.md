@@ -25,6 +25,6 @@ Precisamos enxergar traces, logs e métricas da API em produção, como faríamo
 ## Consequências
 
 - Trocar de fornecedor é mudar variáveis de ambiente, não código.
-- O `postgres.js`, nosso driver, não tem auto-instrumentação do OpenTelemetry (o pacote de auto-instrumentação cobre o `pg`, não o `postgres.js`). As consultas ao banco não aparecem como spans. HTTP, Express/Nest e ioredis aparecem.
+- As consultas ao banco aparecem como spans por causa do driver `pg`, que a auto-instrumentação cobre ([ADR 0020](0020-node-postgres-driver.md)). HTTP, Express/Nest, ioredis e Postgres aparecem.
 - O `instrumentation.ts` lê `process.env` direto, porque roda antes da aplicação e do `env.ts`.
 - Tudo que o `OtelLogger` envia passa pela mesma lista `REDACTED_KEYS` do log no console.

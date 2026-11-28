@@ -12,7 +12,7 @@ O agent-desk é uma instalação única, com uma instância da API e um usuário
 
 ## Decisão
 
-- O `DatabaseModule` aplica as migrations no `onModuleInit`, com o `migrate` de `drizzle-orm/postgres-js/migrator`, antes de a API aceitar requisições.
+- O `DatabaseModule` aplica as migrations no `onModuleInit`, com o `migrate` de `drizzle-orm/node-postgres/migrator`, antes de a API aceitar requisições.
 - A pasta `drizzle/` vai para a imagem junto com o `dist/`.
 - Os testes de integração inicializam o `DatabaseModule` real com `app.init()`, como na [documentação de testes do Nest](https://docs.nestjs.com/fundamentals/testing), e passam pelo mesmo caminho de migração. A CI não tem passo de migração próprio.
 
