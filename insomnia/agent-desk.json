@@ -25,7 +25,9 @@
         "admin_token": "cole-aqui-o-ADMIN_TOKEN-do-.env",
         "evolution_base_url": "http://localhost:8080",
         "evolution_instance_name": "loja-centro",
-        "evolution_api_key": "cole-aqui-a-chave-da-instancia-evolution"
+        "evolution_api_key": "cole-aqui-a-chave-da-instancia-evolution",
+        "connection_id": "cole-aqui-o-id-da-conexao",
+        "webhook_token": "cole-aqui-o-webhookToken-do-registro"
       },
       "dataPropertyOrder": {
         "&": [
@@ -33,7 +35,9 @@
           "admin_token",
           "evolution_base_url",
           "evolution_instance_name",
-          "evolution_api_key"
+          "evolution_api_key",
+          "connection_id",
+          "webhook_token"
         ]
       }
     },
@@ -139,7 +143,7 @@
           "value": "{{ _.admin_token }}"
         }
       ],
-      "description": "Esperado: `201` com `id`, `channel: whatsapp`, `connector: evolution` e `connectorSettings`. A `apiKey` **não** aparece na resposta.",
+      "description": "Esperado: `201` com `id`, `channel: whatsapp`, `connector: evolution` e `connectorSettings`. A `apiKey` **não** aparece na resposta. A resposta traz o `webhookToken`, que só aparece nesta vez.",
       "metaSortKey": -400,
       "body": {
         "mimeType": "application/json",
@@ -216,11 +220,47 @@
           "value": "{{ _.admin_token }}"
         }
       ],
-      "description": "Esperado: `400` no formato do `ValidationPipe`, com a lista de problemas em `message` (`baseUrl must be a URL address`, `apiKey should not be empty`, `property extra should not exist`).",
+      "description": "Esperado: `400` no formato do `ValidationPipe`, com a lista de problemas em `message` (`baseUrl must be a URL address`, `apiKey should not be empty`). O campo `extra` é descartado em silêncio, sem erro (veja o débito técnico em `tech-docs/code/api.md`).",
       "metaSortKey": -100,
       "body": {
         "mimeType": "application/json",
         "text": "{\n  \"baseUrl\": \"nao-e-url\",\n  \"instanceName\": \"{{ _.evolution_instance_name }}\",\n  \"extra\": 1\n}"
+      },
+      "parameters": [],
+      "authentication": {},
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_webhooks",
+      "_type": "request_group",
+      "parentId": "wrk_agent_desk",
+      "name": "Webhooks",
+      "description": "Entrada do provedor (M1.2). Usa o `x-webhook-token` da conexão, não o token de administração.",
+      "metaSortKey": 0,
+      "environment": {}
+    },
+    {
+      "_id": "req_receive_evolution_message",
+      "_type": "request",
+      "parentId": "fld_webhooks",
+      "name": "Receber mensagem (Evolution)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/webhooks/evolution/{{ _.connection_id }}",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "x-webhook-token",
+          "value": "{{ _.webhook_token }}"
+        }
+      ],
+      "description": "Esperado: `200` sem corpo. O servidor registra `channel inbound received` com `kind: contact_message`. Cole em `connection_id` e `webhook_token` o `id` e o `webhookToken` da resposta do registro. Sem o header, ou com token errado: `401`.",
+      "metaSortKey": -100,
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"event\": \"messages.upsert\",\n  \"instance\": \"store\",\n  \"data\": {\n    \"key\": {\n      \"remoteJid\": \"100000000000001@lid\",\n      \"fromMe\": false,\n      \"id\": \"TESTMSG00000001\",\n      \"remoteJidAlt\": \"5511900000001@s.whatsapp.net\",\n      \"addressingMode\": \"lid\",\n      \"participant\": \"\"\n    },\n    \"pushName\": \"Contato Teste\",\n    \"message\": {\n      \"conversation\": \"Oi, vocês têm esse produto?\"\n    },\n    \"messageType\": \"conversation\",\n    \"messageTimestamp\": 1795800000,\n    \"instanceId\": \"00000000-0000-4000-8000-000000000001\",\n    \"source\": \"android\"\n  },\n  \"destination\": \"https://agent-desk.example/webhooks/evolution\",\n  \"date_time\": \"2026-11-27T12:00:00.000Z\",\n  \"sender\": \"5511900000000@s.whatsapp.net\",\n  \"server_url\": \"https://evolution.example\",\n  \"apikey\": \"fake-instance-api-key\"\n}"
       },
       "parameters": [],
       "authentication": {},

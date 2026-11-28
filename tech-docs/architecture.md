@@ -116,5 +116,6 @@ sequenceDiagram
 ## Instalação e deploy
 
 - **Instalação única:** cada instalação atende um único negócio. Não há multi-tenant.
-- **Deploy por docker-compose:** `postgres`, `redis` e `api`. A Evolution entra em um perfil opcional de dev.
+- **Desenvolvimento local por docker-compose:** `postgres`, `redis` e `api`. A Evolution entra em um perfil opcional (`evolution`).
+- **Deploy no Coolify:** a API construída pelo `apps/api/Dockerfile`, com `HEALTHCHECK` em `/health`, e Postgres e Redis como recursos do Coolify. Passo a passo em [`workflow/deploy.md`](workflow/deploy.md).
 - Um Dockerfile por app. A configuração vem de variáveis de ambiente, validadas na subida: a aplicação não sobe com configuração inválida.

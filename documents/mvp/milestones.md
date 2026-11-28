@@ -17,7 +17,7 @@ Trilha de marcos em formato de checklist. Cada marco é testável sozinho e vira
 
 - [x] **M1.0** Proteger a API de gestão com o token de administração. (REQ-ST-01)
 - [x] **M1.1** Registrar a conexão Evolution. (REQ-CH-01, REQ-CH-02, REQ-NF-06)
-- [ ] **M1.2** Receber e normalizar o webhook: texto, áudio, `fromMe`, grupo, ligação e status. (REQ-CH-03)
+- [x] **M1.2** Receber e normalizar o webhook: texto, áudio, `fromMe`, grupo, ligação e status. (REQ-CH-03)
 - [ ] **M1.3** Descartar grupo, ligação e status com log. (REQ-CH-04)
 - [ ] **M1.4** Gravar a mensagem de forma idempotente, criando `Contact` e `Conversation`, com dono inicial configurável. (REQ-CV-01, REQ-CV-02)
 - [ ] **M1.5** Enviar texto e registrar o id externo. (REQ-CH-05)
