@@ -17,6 +17,7 @@ O ponto de partida é o que o `nest new` (template ESM) e o `nest g` geram. Na d
 | Health check (`/health`) | [Terminus](https://docs.nestjs.com/reliability/terminus) |
 | Logger | [Logger](https://docs.nestjs.com/techniques/logger) |
 | Validação de entrada | [Validation](https://docs.nestjs.com/techniques/validation) |
+| Documentação da API (Swagger) | [OpenAPI](https://docs.nestjs.com/openapi/introduction) |
 | Testes | [Testing](https://docs.nestjs.com/fundamentals/testing) |
 | CLI, build e watch | [CLI overview](https://docs.nestjs.com/cli/overview) e [SWC](https://docs.nestjs.com/recipes/swc) |
 
@@ -38,3 +39,4 @@ O ponto de partida é o que o `nest new` (template ESM) e o `nest g` geram. Na d
 Cada divergência tem uma razão registrada:
 
 - **Variáveis de ambiente com envalid, não com `@nestjs/config`.** Veja a [ADR 0007](../decisions/0007-envalid-config-and-class-validator-input.md).
+- **OpenAPI com decoradores explícitos, sem o plugin da CLI.** Veja a [ADR 0021](../decisions/0021-openapi-with-explicit-decorators.md).
