@@ -21,7 +21,7 @@ export class ChannelConnectionsController {
   @Post('evolution')
   registerEvolution(
     @Body() dto: RegisterEvolutionConnectionDto,
-  ): Promise<ChannelConnectionOutput> {
+  ): Promise<ChannelConnectionOutput & { webhookToken: string }> {
     return this.registerChannelConnection.execute({
       channel: 'whatsapp',
       connector: 'evolution',

@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import type { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { eq } from 'drizzle-orm';
@@ -20,6 +21,7 @@ function evolutionConnection(): ChannelConnection {
       instanceName: 'store',
     },
     connectorSecrets: { apiKey },
+    webhookTokenHash: 'a-token-hash',
   });
 }
 
@@ -53,6 +55,17 @@ describe('ChannelConnectionRepository', () => {
     await repository.save(connection);
 
     expect(await repository.list()).toContainEqual(connection);
+  });
+
+  it('finds a connection by id', async () => {
+    const connection = evolutionConnection();
+    await repository.save(connection);
+
+    expect(await repository.findById(connection.id)).toEqual(connection);
+  });
+
+  it('returns null for an unknown id', async () => {
+    expect(await repository.findById(randomUUID())).toBeNull();
   });
 
   it('stores the connector secrets encrypted', async () => {

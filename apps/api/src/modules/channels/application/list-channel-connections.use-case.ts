@@ -8,7 +8,7 @@ export class ListChannelConnections {
 
   async execute(): Promise<ChannelConnectionOutput[]> {
     return (await this.connections.list()).map(
-      ({ connectorSecrets, ...output }) => output,
+      ({ connectorSecrets, webhookTokenHash, ...output }) => output,
     );
   }
 }

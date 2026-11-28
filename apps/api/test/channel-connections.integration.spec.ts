@@ -69,6 +69,7 @@ describe('channel connections', () => {
           instanceName: 'store',
         },
       });
+      expect(response.body.webhookToken).toMatch(/^ad-wh-[0-9a-f]{64}$/);
       expect(response.text).not.toContain(apiKey);
       expect(response.text).not.toContain('ad-v1-');
     });
@@ -121,6 +122,8 @@ describe('channel connections', () => {
       );
       expect(response.text).not.toContain(apiKey);
       expect(response.text).not.toContain('ad-v1-');
+      expect(response.text).not.toContain('ad-wh-');
+      expect(response.text).not.toContain('webhookTokenHash');
     });
   });
 });

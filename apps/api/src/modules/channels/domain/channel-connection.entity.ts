@@ -8,13 +8,18 @@ export interface ChannelConnectionProps {
   connector: string;
   connectorSettings: Record<string, unknown>;
   connectorSecrets: Record<string, string>;
+  webhookTokenHash: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export type NewChannelConnection = Pick<
   ChannelConnectionProps,
-  'channel' | 'connector' | 'connectorSettings' | 'connectorSecrets'
+  | 'channel'
+  | 'connector'
+  | 'connectorSettings'
+  | 'connectorSecrets'
+  | 'webhookTokenHash'
 >;
 
 export class ChannelConnection {
@@ -23,6 +28,7 @@ export class ChannelConnection {
   readonly connector: string;
   readonly connectorSettings: Record<string, unknown>;
   readonly connectorSecrets: Record<string, string>;
+  readonly webhookTokenHash: string;
   readonly createdAt: Date;
   readonly updatedAt: Date;
 
@@ -32,6 +38,7 @@ export class ChannelConnection {
     this.connector = props.connector;
     this.connectorSettings = props.connectorSettings;
     this.connectorSecrets = props.connectorSecrets;
+    this.webhookTokenHash = props.webhookTokenHash;
     this.createdAt = props.createdAt;
     this.updatedAt = props.updatedAt;
   }

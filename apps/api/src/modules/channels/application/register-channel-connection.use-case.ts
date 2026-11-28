@@ -1,3 +1,4 @@
+import { createHash, randomBytes } from 'node:crypto';
 import { Injectable, Logger } from '@nestjs/common';
 import {
   ChannelConnection,
@@ -8,7 +9,7 @@ import { ChannelConnectionPort } from './channel-connection.port.js';
 
 export type ChannelConnectionOutput = Omit<
   ChannelConnectionProps,
-  'connectorSecrets'
+  'connectorSecrets' | 'webhookTokenHash'
 >;
 
 @Injectable()
@@ -17,14 +18,20 @@ export class RegisterChannelConnection {
 
   constructor(private readonly connections: ChannelConnectionPort) {}
 
-  async execute(input: NewChannelConnection): Promise<ChannelConnectionOutput> {
-    const connection = ChannelConnection.create(input);
+  async execute(
+    input: Omit<NewChannelConnection, 'webhookTokenHash'>,
+  ): Promise<ChannelConnectionOutput & { webhookToken: string }> {
+    const webhookToken = `ad-wh-${randomBytes(32).toString('hex')}`;
+    const connection = ChannelConnection.create({
+      ...input,
+      webhookTokenHash: createHash('sha256').update(webhookToken).digest('hex'),
+    });
     await this.connections.save(connection);
     this.logger.log('channel connection registered', {
       connectionId: connection.id,
     });
 
-    const { connectorSecrets, ...output } = connection;
-    return output;
+    const { connectorSecrets, webhookTokenHash, ...output } = connection;
+    return { ...output, webhookToken };
   }
 }
