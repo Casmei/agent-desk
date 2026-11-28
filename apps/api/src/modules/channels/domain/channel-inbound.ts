@@ -23,3 +23,22 @@ export type ChannelInbound =
   | { kind: 'call' }
   | { kind: 'status' }
   | { kind: 'unsupported'; reason: UnsupportedReason };
+
+export type InboundDiscardReason =
+  'group' | 'call' | 'status' | UnsupportedReason;
+
+export function discardReasonOf(
+  inbound: ChannelInbound,
+): InboundDiscardReason | undefined {
+  switch (inbound.kind) {
+    case 'group':
+    case 'call':
+    case 'status':
+      return inbound.kind;
+    case 'unsupported':
+      return inbound.reason;
+    case 'contact_message':
+    case 'own_message':
+      return undefined;
+  }
+}

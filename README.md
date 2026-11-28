@@ -31,7 +31,7 @@ A Evolution API não sobe com o `docker compose up -d`, porque está no perfil `
 
 ## Testar a API com o Insomnia
 
-A coleção [`insomnia/agent-desk.json`](insomnia/agent-desk.json) traz as rotas da API de gestão, com a resposta esperada na descrição de cada uma. No Insomnia, use **Import** e escolha o arquivo.
+A coleção [`insomnia/agent-desk.yaml`](insomnia/agent-desk.yaml) (formato v5 do Insomnia) traz as rotas da API de gestão, com a resposta esperada na descrição de cada uma. No Insomnia, use **Import** e escolha o arquivo.
 
 Depois, em **Manage Environments**, preencha no ambiente base:
 
