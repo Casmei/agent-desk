@@ -5,8 +5,12 @@ import request from 'supertest';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { AppModule } from '../src/app.module.js';
 import {
+  call,
   connectionUpdate,
+  contactImage,
   contactText,
+  groupMessage,
+  statusMessage,
 } from '../src/modules/channels/infrastructure/evolution/evolution-webhook.fixtures.js';
 import { channelConnections } from '../src/modules/channels/infrastructure/channel-connections.schema.js';
 import { env } from '../src/shared/config/env.js';
@@ -107,6 +111,23 @@ describe('POST /webhooks/evolution/:connectionId', () => {
     const logs = logger.entries.join('\n');
     expect(logs).toContain('channel inbound received');
     expect(logs).toContain('contact_message');
+  });
+
+  it.each([
+    ['group', groupMessage],
+    ['call', call],
+    ['status', statusMessage],
+    ['unsupported_content', contactImage],
+  ])('discards a %s inbound and logs the reason', async (reason, payload) => {
+    await request(server)
+      .post(url)
+      .set('x-webhook-token', webhookToken)
+      .send(payload)
+      .expect(200);
+
+    const lastLog = logger.entries.at(-1);
+    expect(lastLog).toContain('channel inbound discarded');
+    expect(lastLog).toContain(`"reason":"${reason}"`);
   });
 
   it('accepts other provider events', async () => {

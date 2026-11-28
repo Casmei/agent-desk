@@ -57,6 +57,17 @@ Este glossário é **lei**: todo nome no código, no banco, nos logs e nos docum
 - `agent`: o agente.
 - `human`: o humano (dono ou atendente).
 
+### Motivos de descarte da entrada do canal (`InboundDiscardReason`)
+
+A entrada do canal que não é mensagem do contato nem do próprio número é descartada, com uma linha de log com o motivo:
+
+- `group`: mensagem de grupo.
+- `call`: ligação.
+- `status`: status ou broadcast.
+- `newsletter`: mensagem de um Canal do WhatsApp.
+- `unsupported_content`: conteúdo que o MVP não trata (imagem, figurinha, vídeo, documento).
+- `unsupported_event`: outro evento do provedor (por exemplo, mudança de estado da conexão).
+
 ### Motivos de descarte (`AgentRunDiscarded`)
 
 - `superseded_by_new_message`: chegou mensagem nova do contato antes de a execução enviar.
