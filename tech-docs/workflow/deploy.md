@@ -42,6 +42,20 @@ Em **Environment Variables** da aplicação:
 | `ADMIN_TOKEN` | `openssl rand -hex 32` |
 | `SECRET_ENCRYPTION_KEY` | `openssl rand -hex 32`. **Guarde num cofre:** perder ou trocar invalida os segredos gravados ([ADR 0016](../decisions/0016-secret-encryption.md)). |
 
+Para enviar traces, métricas e logs ao OpenObserve ([ADR 0019](../decisions/0019-observability-opentelemetry-openobserve.md)), acrescente:
+
+| Variável | Valor |
+|---|---|
+| `OTEL_SERVICE_NAME` | `agent-desk-api` |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | `https://<openobserve>/api/default` |
+| `OTEL_EXPORTER_OTLP_HEADERS` | `Authorization=Basic%20<base64 de email:senha>` |
+| `OTEL_EXPORTER_OTLP_PROTOCOL` | `http/protobuf` |
+| `OTEL_TRACES_EXPORTER` | `otlp` |
+| `OTEL_METRICS_EXPORTER` | `otlp` |
+| `OTEL_LOGS_EXPORTER` | `otlp` |
+
+Sem `OTEL_EXPORTER_OTLP_ENDPOINT`, a instrumentação não inicia.
+
 Segredos ficam só nas variáveis do Coolify, nunca no repositório nem na imagem. Sem uma variável obrigatória, ou com formato inválido, a API não sobe e o log diz qual está errada.
 
 ## 4. Conferir
@@ -73,3 +87,10 @@ Esperado: `{"status":"ok", …}` com `database` e `redis` em `up`.
 3. **Mande uma mensagem** para o número conectado. Nos logs da aplicação no Coolify aparece uma linha JSON com `"message":"channel inbound received"`, `connectionId` e `kind` (`contact_message` para texto ou áudio do contato).
 
 Se a Evolution e a API estiverem no mesmo servidor do Coolify, a `baseUrl` pode ser a URL interna da Evolution. A URL do webhook precisa ser uma que a Evolution alcance: a pública da API ou a interna.
+
+## 6. Observabilidade
+
+Abra o OpenObserve (`https://<openobserve>`), entre com o e-mail e a senha do `OTEL_EXPORTER_OTLP_HEADERS` e use a organização `default`:
+
+- **Traces:** lista as requisições, com os spans de HTTP, Nest e Redis. Consultas ao Postgres não aparecem como spans.
+- **Logs:** o stream `default` traz as mesmas linhas do stdout, com `trace_id` e `span_id` para ir do log ao trace.
