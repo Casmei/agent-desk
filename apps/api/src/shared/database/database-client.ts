@@ -1,20 +1,23 @@
 import { Logger } from '@nestjs/common';
-import { drizzle, type PostgresJsDatabase } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
+import { drizzle, type NodePgDatabase } from 'drizzle-orm/node-postgres';
+import { Pool } from 'pg';
 
 export class DatabaseClient {
   private readonly logger = new Logger(DatabaseClient.name);
-  readonly db: PostgresJsDatabase;
-  private readonly sql: postgres.Sql;
+  readonly db: NodePgDatabase;
+  private readonly pool: Pool;
 
   constructor(url: string) {
-    this.sql = postgres(url, { connect_timeout: 2 });
-    this.db = drizzle(this.sql);
+    this.pool = new Pool({
+      connectionString: url,
+      connectionTimeoutMillis: 2000,
+    });
+    this.db = drizzle(this.pool);
   }
 
   async ping(): Promise<void> {
     try {
-      await this.sql`select 1`;
+      await this.pool.query('select 1');
     } catch (error) {
       const { code, message } = error as { code?: string; message: string };
       this.logger.warn(`Database ping failed: ${code ?? message}`);
@@ -23,6 +26,6 @@ export class DatabaseClient {
   }
 
   async close(): Promise<void> {
-    await this.sql.end();
+    await this.pool.end();
   }
 }

@@ -25,7 +25,7 @@ O ponto de partida é o que o `nest new` (template ESM) e o `nest g` geram. Na d
 | Biblioteca | Página |
 |---|---|
 | Drizzle ORM e drizzle-kit | [Documentação do Drizzle](https://orm.drizzle.team/docs/overview) |
-| postgres.js | [README do postgres](https://github.com/porsager/postgres) |
+| node-postgres | [Documentação do node-postgres](https://node-postgres.com) |
 | ioredis | [Documentação do ioredis](https://redis.github.io/ioredis/) |
 | envalid | [README do envalid](https://github.com/af/envalid) |
 | class-validator | [README do class-validator](https://github.com/typestack/class-validator) |

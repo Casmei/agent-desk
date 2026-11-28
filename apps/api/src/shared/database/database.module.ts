@@ -5,7 +5,7 @@ import {
   type OnApplicationShutdown,
   type OnModuleInit,
 } from '@nestjs/common';
-import { migrate } from 'drizzle-orm/postgres-js/migrator';
+import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { env } from '../config/env.js';
 import { DatabaseClient } from './database-client.js';
 

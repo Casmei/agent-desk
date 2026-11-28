@@ -1,6 +1,6 @@
 # Persistência
 
-PostgreSQL acessado por Drizzle. As convenções de tabela e coluna estão em [`data-model.md`](../data-model.md).
+PostgreSQL acessado por Drizzle, com o driver `pg` (node-postgres) via `drizzle-orm/node-postgres` ([ADR 0020](../decisions/0020-node-postgres-driver.md)). As convenções de tabela e coluna estão em [`data-model.md`](../data-model.md).
 
 ## Regras
 
@@ -19,7 +19,7 @@ PostgreSQL acessado por Drizzle. As convenções de tabela e coluna estão em [`
 - Migration e a mudança de schema que a originou entram no mesmo PR. Migrations geradas não contam para o limite de arquivos do PR.
 - Tabela nova entra em [`data-model.md`](../data-model.md) no mesmo PR.
 - Dê um nome à migration: `pnpm --filter @agent-desk/api db:generate --name <acao_em_snake_case>` (por exemplo, `create_channel_connections`).
-- **A API aplica as migrations na subida** ([ADR 0017](../decisions/0017-migrations-on-startup.md)), no `onModuleInit` do `DatabaseModule`, com o `migrate` de `drizzle-orm/postgres-js/migrator`. O `drizzle-kit` é devDependency e não vai para a imagem; a pasta `drizzle/` vai.
+- **A API aplica as migrations na subida** ([ADR 0017](../decisions/0017-migrations-on-startup.md)), no `onModuleInit` do `DatabaseModule`, com o `migrate` de `drizzle-orm/node-postgres/migrator`. O `drizzle-kit` é devDependency e não vai para a imagem; a pasta `drizzle/` vai.
 - Por isso a CI não tem passo de migração: todo teste de integração que inicializa o `DatabaseModule` (`app.init()`) aplica as migrations antes de rodar.
 
 ## Transações
