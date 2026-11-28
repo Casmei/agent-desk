@@ -13,6 +13,7 @@ Este glossário é **lei**: todo nome no código, no banco, nos logs e nos docum
 | Canal | `Channel` | Tipo de meio de comunicação (WhatsApp; no futuro, Instagram). |
 | Conector | `ChannelConnector` | Implementação de um provedor de canal (Evolution; no futuro, OpenWA, GOWA, Z-API, Meta, Baileys). Interface + adaptadores. |
 | Conexão | `ChannelConnection` | O número (ou a conta) do negócio conectado por um conector. Guarda o canal, o conector e os dados de acesso do conector. |
+| Entrada do canal | `ChannelInbound` | O que chega do provedor do canal (webhook) traduzido para o formato único do canal: mensagem do contato, mensagem do próprio número, grupo, ligação, status ou algo não suportado. |
 | Contato | `Contact` | A pessoa do outro lado, identificada pelo endereço no canal (telefone/JID). |
 | Conversa | `Conversation` | A thread entre uma conexão e um contato. Tem um dono atual. |
 | Mensagem | `Message` | Uma mensagem da conversa. Tem direção e autor. |
@@ -40,6 +41,15 @@ Este glossário é **lei**: todo nome no código, no banco, nos logs e nos docum
 | Provedor de modelo | `LlmProvider` | Interface para chamar o modelo. OpenRouter é a primeira implementação. |
 
 ## Valores enumerados
+
+### Tipos de entrada do canal (`ChannelInbound.kind`)
+
+- `contact_message`: mensagem do contato, texto ou áudio.
+- `own_message`: mensagem enviada pelo próprio número do negócio (o `fromMe`).
+- `group`: mensagem de grupo.
+- `call`: ligação.
+- `status`: status/broadcast.
+- `unsupported`: algo que o MVP não trata, com o motivo: `newsletter` para os Canais do WhatsApp, `unsupported_content` para conteúdo que o MVP não trata, como imagem, e `unsupported_event` para outros eventos do provedor.
 
 ### Autor da mensagem (`MessageAuthor`)
 
