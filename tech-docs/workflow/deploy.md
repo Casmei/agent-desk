@@ -28,6 +28,20 @@ Não publique as portas deles na internet. A API fala com eles pela rede interna
 
 **Migrations:** não precisa de comando de pré-deploy. A API aplica as migrations ao subir ([ADR 0017](../decisions/0017-migrations-on-startup.md)), e uma migration quebrada impede a subida.
 
+## Deploy automático
+
+Cada push na `main` (o merge de um PR) roda a CI. Se `quality`, `integration` e `build` passarem, o job `deploy` do `.github/workflows/ci.yml` chama `POST /api/v1/deploy` do Coolify e acompanha o deploy até ele terminar. Um deploy que falha aparece como falha na CI. Só um deploy roda por vez (`concurrency: deploy-production`).
+
+O job usa, no repositório do GitHub:
+
+| Nome | Tipo | Valor |
+|---|---|---|
+| `COOLIFY_TOKEN` | secret | Token da API do Coolify com acesso de deploy à aplicação. |
+| `COOLIFY_URL` | variável | `https://panel.byal.com.br` |
+| `COOLIFY_APP_UUID` | variável | O id da aplicação no Coolify (aparece na URL dela no painel). |
+
+Para trocar o token: `gh secret set COOLIFY_TOKEN --repo Casmei/agent-desk`.
+
 ## 3. Variáveis de ambiente
 
 Em **Environment Variables** da aplicação:

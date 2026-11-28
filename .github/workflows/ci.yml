@@ -76,3 +76,33 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: docker build -f apps/api/Dockerfile .
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [quality, integration, build]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    steps:
+      - name: Deploy to Coolify and wait for it
+        env:
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+          COOLIFY_URL: ${{ vars.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ vars.COOLIFY_APP_UUID }}
+        run: |
+          deployment=$(curl -fsS -X POST "$COOLIFY_URL/api/v1/deploy?uuid=$COOLIFY_APP_UUID" \
+            -H "Authorization: Bearer $COOLIFY_TOKEN" | jq -r '.deployments[0].deployment_uuid')
+          echo "Deployment $deployment queued"
+          for attempt in $(seq 1 60); do
+            status=$(curl -fsS "$COOLIFY_URL/api/v1/deployments/$deployment" \
+              -H "Authorization: Bearer $COOLIFY_TOKEN" | jq -r '.status')
+            echo "Status: $status"
+            case "$status" in
+              finished) exit 0 ;;
+              failed | cancelled*) exit 1 ;;
+            esac
+            sleep 10
+          done
+          echo "Deployment did not finish in 10 minutes"
+          exit 1

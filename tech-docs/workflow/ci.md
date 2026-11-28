@@ -13,6 +13,7 @@ Os jobs `quality`, `integration` e `build` ficam em `ci.yml`, que roda em `pull_
 | `quality` | Confere a formatação (Prettier), roda lint, typecheck e testes unitários. |
 | `integration` | Roda os testes de integração contra `postgres:18-alpine` e `redis:8-alpine`. |
 | `build` | Roda `pnpm build` e faz o build da imagem Docker de `apps/api/Dockerfile`, sem publicar (sem push). |
+| `deploy` | Só no push para a `main`, depois de `quality`, `integration` e `build`: dispara o deploy no Coolify e espera terminar. Veja [`deploy.md`](deploy.md#deploy-automático). |
 | `pr-size` (workflow) | Etapa de shell que avisa quando o PR altera mais de 18 arquivos, sem contar `pnpm-lock.yaml` (em qualquer pasta) nem `apps/api/drizzle/`. |
 
 O `pr-size` emite um aviso (warning annotation) do GitHub e **não falha o job**. A regra completa está em [`pull-requests.md`](pull-requests.md).
