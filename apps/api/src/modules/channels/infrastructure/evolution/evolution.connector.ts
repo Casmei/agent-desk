@@ -3,80 +3,60 @@ import { ChannelConnector } from '../../application/channel-connector.port.js';
 import type {
   ChannelInbound,
   MessageContent,
+  UnsupportedReason,
 } from '../../domain/channel-inbound.js';
 
 interface EvolutionWebhook {
-  event?: unknown;
-  data?: unknown;
+  event: string;
+  data: EvolutionMessage;
 }
 
 interface EvolutionMessage {
-  key?: { remoteJid?: string; fromMe?: boolean; id?: string };
+  key: { remoteJid: string; fromMe: boolean; id: string };
   pushName?: string;
   message?: {
     conversation?: string;
-    extendedTextMessage?: { text?: string };
-    audioMessage?: unknown;
+    extendedTextMessage?: { text: string };
+    audioMessage?: object;
   };
-  messageTimestamp?: number | string;
-}
-
-const unsupportedEvent: ChannelInbound = {
-  kind: 'unsupported',
-  reason: 'unsupported_event',
-};
-
-function isObject(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null;
+  messageTimestamp: number;
 }
 
 @Injectable()
 export class EvolutionConnector implements ChannelConnector {
   normalizeInbound(payload: unknown): ChannelInbound {
-    if (!isObject(payload)) return unsupportedEvent;
-    const webhook: EvolutionWebhook = payload;
-
+    // The webhook route validates the payload with its DTO before calling the connector.
+    const webhook = payload as EvolutionWebhook;
     // Evolution sends `messages.upsert`, but webhook configs use `MESSAGES_UPSERT`.
-    const event = String(webhook.event).toLowerCase().replace(/_/g, '.');
+    const event = webhook.event.toLowerCase().replace(/_/g, '.');
+
     if (event === 'call') return { kind: 'call' };
-    if (event !== 'messages.upsert' || !isObject(webhook.data))
-      return unsupportedEvent;
+    if (event !== 'messages.upsert') return unsupported('unsupported_event');
+    return this.normalizeMessage(webhook.data);
+  }
 
-    const data: EvolutionMessage = webhook.data;
-    const remoteJid = data.key?.remoteJid;
-    const externalId = data.key?.id;
-    if (!remoteJid || !externalId) return unsupportedEvent;
+  private normalizeMessage({
+    key,
+    pushName,
+    message,
+    messageTimestamp,
+  }: EvolutionMessage): ChannelInbound {
+    if (key.remoteJid.endsWith('@g.us')) return { kind: 'group' };
+    if (key.remoteJid.endsWith('@broadcast')) return { kind: 'status' };
+    if (key.remoteJid.endsWith('@newsletter')) return unsupported('newsletter');
 
-    if (remoteJid.endsWith('@g.us')) return { kind: 'group' };
-    if (remoteJid.endsWith('@broadcast')) return { kind: 'status' };
-    if (remoteJid.endsWith('@newsletter'))
-      return { kind: 'unsupported', reason: 'newsletter' };
+    const content = this.contentOf(message);
+    if (!content) return unsupported('unsupported_content');
 
-    const content = this.contentOf(data.message);
-    if (!content) return { kind: 'unsupported', reason: 'unsupported_content' };
-
-    const sentAt = new Date(Number(data.messageTimestamp) * 1000);
-
-    if (data.key?.fromMe === true) {
-      return {
-        kind: 'own_message',
-        externalId,
-        contactAddress: remoteJid,
-        content,
-        sentAt,
-      };
-    }
-
-    return {
-      kind: 'contact_message',
-      externalId,
-      contactAddress: remoteJid,
-      ...(typeof data.pushName === 'string' && data.pushName !== ''
-        ? { contactName: data.pushName }
-        : {}),
+    const inbound = {
+      externalId: key.id,
+      contactAddress: key.remoteJid,
       content,
-      sentAt,
+      sentAt: new Date(messageTimestamp * 1000),
     };
+    return key.fromMe
+      ? { kind: 'own_message', ...inbound }
+      : { kind: 'contact_message', contactName: pushName, ...inbound };
   }
 
   private contentOf(
@@ -87,4 +67,8 @@ export class EvolutionConnector implements ChannelConnector {
     if (message?.audioMessage) return { type: 'audio' };
     return undefined;
   }
+}
+
+function unsupported(reason: UnsupportedReason): ChannelInbound {
+  return { kind: 'unsupported', reason };
 }

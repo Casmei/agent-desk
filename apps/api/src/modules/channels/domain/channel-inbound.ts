@@ -8,7 +8,7 @@ export type ChannelInbound =
       kind: 'contact_message';
       externalId: string;
       contactAddress: string;
-      contactName?: string;
+      contactName: string | undefined;
       content: MessageContent;
       sentAt: Date;
     }
