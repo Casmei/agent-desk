@@ -1,16 +1,13 @@
-import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import { ChannelConnection } from '../domain/channel-connection.entity.js';
 import type { ChannelConnectionPort } from './channel-connection.port.js';
 import { VerifyWebhookToken } from './verify-webhook-token.use-case.js';
 
-const token = 'ad-wh-issued-for-the-connection';
-const connection = ChannelConnection.create({
+const { connection, webhookToken: token } = ChannelConnection.register({
   channel: 'whatsapp',
   connector: 'evolution',
   connectorSettings: {},
   connectorSecrets: {},
-  webhookTokenHash: createHash('sha256').update(token).digest('hex'),
 });
 const connections: ChannelConnectionPort = {
   save: async () => {},

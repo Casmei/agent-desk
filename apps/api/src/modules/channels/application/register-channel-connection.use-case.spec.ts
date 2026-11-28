@@ -1,4 +1,3 @@
-import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import type { ChannelConnection } from '../domain/channel-connection.entity.js';
 import type { ChannelConnectionPort } from './channel-connection.port.js';
@@ -45,15 +44,11 @@ describe('RegisterChannelConnection', () => {
     expect(JSON.stringify(output)).not.toContain('evo-api-key-123');
   });
 
-  it('returns a webhook token once and stores only its hash', async () => {
+  it('returns the webhook token issued for the saved connection', async () => {
     const { register, saved } = registerWithSavedList();
 
     const output = await register.execute(input);
 
-    expect(output.webhookToken).toMatch(/^ad-wh-[0-9a-f]{64}$/);
-    expect(saved[0]?.webhookTokenHash).toBe(
-      createHash('sha256').update(output.webhookToken).digest('hex'),
-    );
-    expect(saved[0]?.webhookTokenHash).not.toBe(output.webhookToken);
+    expect(saved[0]?.acceptsWebhookToken(output.webhookToken)).toBe(true);
   });
 });

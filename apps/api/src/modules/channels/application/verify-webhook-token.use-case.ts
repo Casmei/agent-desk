@@ -1,4 +1,3 @@
-import { createHash, timingSafeEqual } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
 import { isUUID } from 'class-validator';
 import { ChannelConnectionPort } from './channel-connection.port.js';
@@ -17,10 +16,6 @@ export class VerifyWebhookToken {
     if (!token || !isUUID(connectionId)) return false;
 
     const connection = await this.connections.findById(connectionId);
-    if (!connection) return false;
-
-    const received = createHash('sha256').update(token).digest();
-    const expected = Buffer.from(connection.webhookTokenHash, 'hex');
-    return timingSafeEqual(received, expected);
+    return connection?.acceptsWebhookToken(token) ?? false;
   }
 }

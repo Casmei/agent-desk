@@ -3,6 +3,7 @@ import { ListChannelConnections } from '../application/list-channel-connections.
 import {
   RegisterChannelConnection,
   type ChannelConnectionOutput,
+  type RegisteredChannelConnection,
 } from '../application/register-channel-connection.use-case.js';
 import { RegisterEvolutionConnectionDto } from './register-evolution-connection.dto.js';
 
@@ -21,7 +22,7 @@ export class ChannelConnectionsController {
   @Post('evolution')
   registerEvolution(
     @Body() dto: RegisterEvolutionConnectionDto,
-  ): Promise<ChannelConnectionOutput & { webhookToken: string }> {
+  ): Promise<RegisteredChannelConnection> {
     return this.registerChannelConnection.execute({
       channel: 'whatsapp',
       connector: 'evolution',

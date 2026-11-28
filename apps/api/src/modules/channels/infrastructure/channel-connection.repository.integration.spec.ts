@@ -13,7 +13,7 @@ import { channelConnections } from './channel-connections.schema.js';
 const apiKey = 'evo-api-key-123';
 
 function evolutionConnection(): ChannelConnection {
-  return ChannelConnection.create({
+  return ChannelConnection.register({
     channel: 'whatsapp',
     connector: 'evolution',
     connectorSettings: {
@@ -21,8 +21,7 @@ function evolutionConnection(): ChannelConnection {
       instanceName: 'store',
     },
     connectorSecrets: { apiKey },
-    webhookTokenHash: 'a-token-hash',
-  });
+  }).connection;
 }
 
 describe('ChannelConnectionRepository', () => {

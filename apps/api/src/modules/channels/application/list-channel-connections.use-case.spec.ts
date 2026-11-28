@@ -5,7 +5,7 @@ import { ListChannelConnections } from './list-channel-connections.use-case.js';
 
 describe('ListChannelConnections', () => {
   it('lists the connections without their secrets', async () => {
-    const connection = ChannelConnection.create({
+    const connection = ChannelConnection.register({
       channel: 'whatsapp',
       connector: 'evolution',
       connectorSettings: {
@@ -13,8 +13,7 @@ describe('ListChannelConnections', () => {
         instanceName: 'store',
       },
       connectorSecrets: { apiKey: 'evo-api-key-123' },
-      webhookTokenHash: 'a-token-hash',
-    });
+    }).connection;
     const connections: ChannelConnectionPort = {
       save: async () => {},
       list: async () => [connection],

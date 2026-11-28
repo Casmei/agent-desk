@@ -33,7 +33,7 @@ O módulo Nest (`<module>.module.ts`) é só fiação: liga cada porta à sua im
 - **Portas são classes abstratas,** usadas diretamente como token de injeção do Nest. Não há tokens em string.
 - **Um caso de uso por classe,** com um único método público: `execute(input)`.
 - **Erros de domínio são classes tipadas** (`*.error.ts`). A camada `interface` os traduz para HTTP (veja [`api.md`](api.md)) e, por isso, pode importar os erros de domínio do próprio módulo (`../domain/*.error.js`). O resto do `domain` continua bloqueado para ela.
-- **O `domain` só usa `node:crypto` entre os builtins do Node,** para gerar IDs (uuid v7) com `randomUUIDv7`. Todos os outros `node:*` ficam fora do domínio.
+- **O `domain` só usa `node:crypto` entre os builtins do Node,** para gerar IDs (uuid v7) com `randomUUIDv7` e para emitir e conferir tokens (`randomBytes`, `createHash` e `timingSafeEqual`), como o token de webhook da `ChannelConnection`. Todos os outros `node:*` ficam fora do domínio.
 - **Entre módulos,** um módulo só usa outro pela `application` dele, nunca por `domain` nem por `infrastructure`.
 - Controllers e consumidores só chamam casos de uso.
 
