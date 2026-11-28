@@ -4,6 +4,7 @@
 
 - O token de acesso da Evolution, a chave do OpenRouter e os cabeçalhos das ferramentas por webhook (que podem conter segredos) são **cifrados em repouso**. Colunas têm sufixo `*_encrypted` (veja [`data-model.md`](../data-model.md)).
 - Segredo nunca aparece em log, em resposta de API nem em mensagem de erro. Veja [`logging.md`](logging.md).
+- Segredos que o comerciante entrega (a chave da Evolution, a do OpenRouter) nunca voltam em resposta. Segredos que o sistema gera para ele (o token do webhook) aparecem uma única vez, na resposta de criação, e ficam só como hash SHA-256 (colunas `*_hash`).
 - Segredos reais não entram no repositório. Só o `.env.example`, com valores de exemplo.
 
 ## Cifra de segredos
@@ -28,5 +29,6 @@ As variáveis de ambiente são validadas com **envalid** na subida. Configuraç�
 
 ## Entrada externa
 
-- O webhook de entrada do conector é validado por **token próprio**, diferente do token de administração.
+- O webhook de entrada do conector é validado por **token próprio**, diferente do token de administração. Cada conexão tem o seu: o sistema o gera no registro (`ad-wh-` e 32 bytes aleatórios em hex) e o devolve uma única vez.
+- O conector da Evolution envia o token no header `x-webhook-token`, configurado nos `headers` do `/webhook/set/{instance}`. A rota `POST /webhooks/evolution/:connectionId` usa o `@WebhookTokenAuth()`, que confere o token com o hash da conexão. Conexão desconhecida ou token errado dão `401`, sem revelar quais ids existem.
 - Toda entrada da API é validada pelo `ValidationPipe` (class-validator) antes de chegar ao caso de uso.
