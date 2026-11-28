@@ -52,7 +52,7 @@ collection:
           isPrivate: false
           description: "Esperado: `201` com `id`, `channel: whatsapp`, `connector:
             evolution` e `connectorSettings`. A `apiKey` **não** aparece na
-            resposta."
+            resposta. O `webhookToken` aparece só nesta resposta."
           sortKey: -400
         method: POST
         body:
@@ -145,7 +145,8 @@ collection:
           isPrivate: false
           description: "Esperado: `400` no formato do `ValidationPipe`, com a lista de
             problemas em `message` (`baseUrl must be a URL address`, `apiKey
-            should not be empty`, `property extra should not exist`)."
+            should not be empty`). O campo `extra` é descartado em silêncio, sem
+            erro (veja o débito técnico em `tech-docs/code/api.md`)."
           sortKey: -100
         method: POST
         body:
@@ -161,6 +162,71 @@ collection:
             value: application/json
           - name: x-admin-token
             value: "{{ _.admin_token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Webhooks
+    meta:
+      id: fld_2c1d0f6a7b8e4f3a9d5c6e7f8a9b0c1d
+      created: 1795812074313
+      modified: 1795812074313
+      sortKey: 0
+      description: Entrada do provedor (M1.2). Usa o `x-webhook-token` da conexão, não
+        o token de administração.
+    children:
+      - url: "{{ _.base_url }}/webhooks/evolution/{{ _.connection_id }}"
+        name: Receber mensagem (Evolution)
+        meta:
+          id: req_3e4f5a6b7c8d4e9f8a1b2c3d4e5f6a7b
+          created: 1795812074313
+          modified: 1795812074313
+          isPrivate: false
+          description: "Esperado: `200` sem corpo. O servidor registra `channel inbound
+            received` com `kind: contact_message`. Cole em `connection_id` e
+            `webhook_token` o `id` e o `webhookToken` da resposta do registro.
+            Sem o header, ou com token errado: `401`."
+          sortKey: -100
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "event": "messages.upsert",
+              "instance": "store",
+              "data": {
+                "key": {
+                  "remoteJid": "100000000000001@lid",
+                  "fromMe": false,
+                  "id": "TESTMSG00000001",
+                  "remoteJidAlt": "5511900000001@s.whatsapp.net",
+                  "addressingMode": "lid",
+                  "participant": ""
+                },
+                "pushName": "Contato Teste",
+                "message": {
+                  "conversation": "Oi, vocês têm esse produto?"
+                },
+                "messageType": "conversation",
+                "messageTimestamp": 1795800000,
+                "instanceId": "00000000-0000-4000-8000-000000000001",
+                "source": "android"
+              },
+              "destination": "https://agent-desk.example/webhooks/evolution",
+              "date_time": "2026-11-27T12:00:00.000Z",
+              "sender": "5511900000000@s.whatsapp.net",
+              "server_url": "https://evolution.example",
+              "apikey": "fake-instance-api-key"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: x-webhook-token
+            value: "{{ _.webhook_token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -188,6 +254,8 @@ environments:
     evolution_base_url: http://localhost:8080
     evolution_instance_name: loja-centro
     evolution_api_key: cole-aqui-a-chave-da-instancia-evolution
+    connection_id: cole-aqui-o-id-da-conexao
+    webhook_token: cole-aqui-o-webhookToken-do-registro
   subEnvironments:
     - name: Docker compose (API em container)
       meta:

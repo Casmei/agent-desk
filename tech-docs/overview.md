@@ -29,6 +29,7 @@ Este é o ponto de entrada da documentação técnica do agent-desk. O negócio 
 | `tech-docs/code/security.md` | Segredos, colunas cifradas, validação de entrada, configuração validada na subida. | Ao lidar com segredo, credencial ou entrada externa. |
 | `tech-docs/code/integrations.md` | Conector de canal, provedor de modelo e webhooks externos. | Ao integrar com sistema externo. |
 | `tech-docs/workflow/pull-requests.md` | Tamanho do PR, template, commits e descrição. | Antes de abrir um PR. |
+| `tech-docs/workflow/deploy.md` | Deploy no Coolify: recursos, campos da aplicação, variáveis e como ligar a Evolution. | Ao fazer ou mudar o deploy. |
 | `tech-docs/workflow/ci.md` | O que a CI roda e o que bloqueia o merge. | Quando a CI falhar ou for alterada. |
 | `tech-docs/decisions/` | ADRs numeradas (`TEMPLATE.md` mais uma por decisão estrutural). | Ao questionar uma escolha, ou antes de tomar uma decisão estrutural. |
 | `tech-docs/design/TEMPLATE.md` | Modelo de design técnico de um mecanismo específico. | Ao desenhar um mecanismo novo, antes de implementar. |
