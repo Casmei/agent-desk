@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   HealthCheck,
   HealthCheckService,
@@ -8,6 +9,7 @@ import { Public } from '../admin-token/public.decorator.js';
 import { DatabaseClient } from '../database/database-client.js';
 import { RedisClient } from '../redis/redis-client.js';
 
+@ApiTags('health')
 @Public()
 @Controller('health')
 export class HealthController {
@@ -20,6 +22,7 @@ export class HealthController {
 
   @Get()
   @HealthCheck()
+  @ApiOperation({ summary: 'Verifica se o Postgres e o Redis respondem' })
   check() {
     return this.health.check([
       () =>

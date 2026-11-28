@@ -49,6 +49,15 @@ O oxlint aceita esse idioma com `ignoreRestSiblings` (`.oxlintrc.json`).
 
 O tipo do `input` do caso de uso é declarado na `application`; veja [`layers.md`](layers.md).
 
+## Documentação (OpenAPI)
+
+A API se descreve sozinha em `/docs` (interface do Swagger) e `/docs-json` (documento OpenAPI), em todos os ambientes. Regras na [ADR 0021](../decisions/0021-openapi-with-explicit-decorators.md):
+
+- Todo controller tem `@ApiTags` e toda rota tem `@ApiOperation` e as respostas que devolve (`@ApiOkResponse`, `@ApiBadRequestResponse`…).
+- Todo campo de DTO tem `@ApiProperty` (ou `@ApiPropertyOptional`), ao lado dos decoradores do `class-validator`.
+- A resposta é um DTO da `interface` que `implements` o tipo de saída do caso de uso, como o `ChannelConnectionResponseDto`.
+- Rota de gestão leva `@ApiSecurity('admin-token')`; o webhook leva `@ApiSecurity('webhook-token')`.
+
 ## Formato de erro
 
 A resposta de erro é a padrão do Nest, produzida pelas [exceções HTTP nativas](https://docs.nestjs.com/exception-filters) e pelo filtro global de exceções que já vem com o framework. Não há filtro próprio.

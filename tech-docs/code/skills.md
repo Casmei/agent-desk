@@ -60,7 +60,7 @@ Candidatos, não decisões. Cada um vira uma pergunta ao dono do projeto quando 
 | `@Exclude()` do class-transformer na entidade, com `ClassSerializerInterceptor` (`nestjs-best-practices`) | O domínio não importa bibliotecas de framework | [`layers.md`](layers.md) |
 | `useGlobalPipes` no `main.ts` (`nestjs-patterns`) | `APP_PIPE` no `AppModule` | [`api.md`](api.md) |
 | JSDoc em toda classe pública e um export por arquivo (`nestjs-clean-typescript`) | Comentário só para um porquê não óbvio | [`CLAUDE.md`](../../CLAUDE.md), regra 11 |
-| Decoradores do OpenAPI em toda rota (`nestjs-code-review`) | Sem Swagger por enquanto. Adotar é decisão nova | — |
+| Decoradores do OpenAPI em toda rota (`nestjs-code-review`) | Adotado, com decoradores explícitos e sem o plugin da CLI | [ADR 0021](../decisions/0021-openapi-with-explicit-decorators.md) |
 | MikroORM, Jest e um service por entidade (`nestjs-clean-typescript`) | Drizzle, Vitest e um caso de uso por classe | ADRs [0003](../decisions/0003-drizzle-orm.md) e [0009](../decisions/0009-vitest.md), [`layers.md`](layers.md) |
 | Limites fixos (funções com menos de 20 linhas, classes com menos de 10 métodos) (`clean-code`, `nestjs-clean-typescript`) | Sem limites rígidos; legibilidade de cima para baixo | A própria `nestjs-oop-design-patterns` recusa esses limites |
 
