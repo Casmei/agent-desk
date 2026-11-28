@@ -6,6 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { OWN_AUTH_KEY } from './own-auth.js';
 import { IS_PUBLIC_KEY } from './public.decorator.js';
 
 export class AdminTokenGuard implements CanActivate {
@@ -19,11 +20,16 @@ export class AdminTokenGuard implements CanActivate {
   }
 
   canActivate(context: ExecutionContext): boolean {
-    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
-    if (isPublic) return true;
+    const targets = [context.getHandler(), context.getClass()];
+    const isPublic = this.reflector.getAllAndOverride<boolean>(
+      IS_PUBLIC_KEY,
+      targets,
+    );
+    const hasOwnAuth = this.reflector.getAllAndOverride<boolean>(
+      OWN_AUTH_KEY,
+      targets,
+    );
+    if (isPublic || hasOwnAuth) return true;
 
     const request = context.switchToHttp().getRequest<IncomingMessage>();
     const header = request.headers['x-admin-token'];
