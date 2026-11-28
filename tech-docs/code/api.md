@@ -17,7 +17,7 @@
 // app.module.ts
 {
   provide: APP_PIPE,
-  useValue: new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }),
+  useValue: new ValidationPipe({ whitelist: true, transform: true }),
 }
 
 // interface/register-evolution-connection.dto.ts
@@ -67,5 +67,16 @@ A resposta de erro é a padrão do Nest, produzida pelas [exceções HTTP nativa
 
 As rotas de gestão exigem o header `x-admin-token`, comparado com o token de administração da instalação. Sem o header ou com valor errado, a resposta é `401`. Regras do token em [`security.md`](security.md).
 
-- O `AdminTokenGuard` (`shared/admin-token/`) é global: toda rota exige o token, a menos que seja marcada com `@Public()`.
-- `@Public()` só em rota que não é de gestão: o `GET /health` e, a partir do M1.2, o webhook do conector, que tem token próprio (veja [`security.md`](security.md)).
+- **Token de administração por padrão:** o `AdminTokenGuard` (`shared/admin-token/`) é global, e toda rota exige o token.
+- **`@Public()`** só em rota realmente pública, como o `GET /health`.
+- **Rota com autenticação própria** usa um decorator composto com `applyDecorators`, como o `@WebhookTokenAuth()` do webhook do conector (veja [`security.md`](security.md)). Ele marca a rota com `OWN_AUTH_KEY` e aplica o guard próprio, e o `AdminTokenGuard` não a exige.
+
+## Débito técnico
+
+### Campos desconhecidos são descartados em silêncio
+
+- **Hoje:** o `ValidationPipe` global usa `whitelist: true` sem `forbidNonWhitelisted`. Um campo que o DTO não declara é removido sem erro, em todas as rotas. Isso inclui as de gestão: um `"extra": 1` no corpo do `POST /channel-connections/evolution` é ignorado, em vez de responder `400`.
+- **Por quê:** o webhook da Evolution manda dezenas de campos que não usamos (`instance`, `sender`, `apikey`, `key.remoteJidAlt`, `contextInfo`…) e pode acrescentar outros a qualquer versão. Rejeitá-los faria o webhook perder mensagens. A alternativa era um `ValidationPipe` local com o parâmetro tipado como `object`, um truque que o dono do projeto recusou. Efeito colateral bom: o `apikey` da Evolution é removido na borda e não circula pela aplicação.
+- **O que se perdeu:** quem chama a API de gestão não fica sabendo que mandou um campo errado (um erro de digitação no nome do campo some em silêncio).
+- **Quando revisitar:** quando a API de gestão tiver clientes além do admin (o front do roadmap ou integrações de terceiros), ou quando um campo ignorado causar um bug real. Caminhos possíveis: voltar o `forbidNonWhitelisted` no global e dar às rotas de webhook uma validação tolerante própria, documentada no Nest, ou um pipe por grupo de rotas.
+

@@ -20,6 +20,7 @@ function registerWithSavedList() {
       saved.push(connection);
     },
     list: async () => [],
+    findById: async () => null,
   };
   return { register: new RegisterChannelConnection(connections), saved };
 }
@@ -41,5 +42,13 @@ describe('RegisterChannelConnection', () => {
 
     expect(output).not.toHaveProperty('connectorSecrets');
     expect(JSON.stringify(output)).not.toContain('evo-api-key-123');
+  });
+
+  it('returns the webhook token issued for the saved connection', async () => {
+    const { register, saved } = registerWithSavedList();
+
+    const output = await register.execute(input);
+
+    expect(saved[0]?.acceptsWebhookToken(output.webhookToken)).toBe(true);
   });
 });

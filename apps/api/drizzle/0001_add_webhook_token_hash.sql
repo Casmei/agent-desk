@@ -1,0 +1,1 @@
+ALTER TABLE "channel_connections" ADD COLUMN "webhook_token_hash" text NOT NULL;

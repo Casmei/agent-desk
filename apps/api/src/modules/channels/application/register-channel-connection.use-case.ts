@@ -8,8 +8,12 @@ import { ChannelConnectionPort } from './channel-connection.port.js';
 
 export type ChannelConnectionOutput = Omit<
   ChannelConnectionProps,
-  'connectorSecrets'
+  'connectorSecrets' | 'webhookTokenHash'
 >;
+
+export interface RegisteredChannelConnection extends ChannelConnectionOutput {
+  webhookToken: string;
+}
 
 @Injectable()
 export class RegisterChannelConnection {
@@ -17,14 +21,23 @@ export class RegisterChannelConnection {
 
   constructor(private readonly connections: ChannelConnectionPort) {}
 
-  async execute(input: NewChannelConnection): Promise<ChannelConnectionOutput> {
-    const connection = ChannelConnection.create(input);
+  async execute(
+    input: NewChannelConnection,
+  ): Promise<RegisteredChannelConnection> {
+    const { connection, webhookToken } = ChannelConnection.register(input);
     await this.connections.save(connection);
     this.logger.log('channel connection registered', {
       connectionId: connection.id,
     });
 
-    const { connectorSecrets, ...output } = connection;
-    return output;
+    return { ...withoutSecrets(connection), webhookToken };
   }
+}
+
+export function withoutSecrets({
+  connectorSecrets,
+  webhookTokenHash,
+  ...output
+}: ChannelConnection): ChannelConnectionOutput {
+  return output;
 }

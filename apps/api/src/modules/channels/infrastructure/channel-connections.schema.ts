@@ -9,6 +9,7 @@ export const channelConnections = pgTable('channel_connections', {
     .$type<Record<string, unknown>>()
     .notNull(),
   connectorSecretsEncrypted: text('connector_secrets_encrypted').notNull(),
+  webhookTokenHash: text('webhook_token_hash').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull(),
 });

@@ -21,7 +21,6 @@ import { SecretEncryptionModule } from './shared/secret-encryption/secret-encryp
       provide: APP_PIPE,
       useValue: new ValidationPipe({
         whitelist: true,
-        forbidNonWhitelisted: true,
         transform: true,
       }),
     },

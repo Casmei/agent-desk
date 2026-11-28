@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { eq } from 'drizzle-orm';
 import { DatabaseClient } from '../../../shared/database/database-client.js';
 import { SecretCipher } from '../../../shared/secret-encryption/secret-cipher.js';
 import { ChannelConnectionPort } from '../application/channel-connection.port.js';
@@ -28,6 +29,14 @@ export class ChannelConnectionRepository implements ChannelConnectionPort {
     return rows.map((row) => this.toEntity(row));
   }
 
+  async findById(id: string): Promise<ChannelConnection | null> {
+    const [row] = await this.database.db
+      .select()
+      .from(channelConnections)
+      .where(eq(channelConnections.id, id));
+    return row ? this.toEntity(row) : null;
+  }
+
   private toRow(connection: ChannelConnection): ChannelConnectionRow {
     return {
       id: connection.id,
@@ -37,6 +46,7 @@ export class ChannelConnectionRepository implements ChannelConnectionPort {
       connectorSecretsEncrypted: this.cipher.encrypt(
         JSON.stringify(connection.connectorSecrets),
       ),
+      webhookTokenHash: connection.webhookTokenHash,
       createdAt: connection.createdAt,
       updatedAt: connection.updatedAt,
     };
@@ -51,6 +61,7 @@ export class ChannelConnectionRepository implements ChannelConnectionPort {
       connectorSecrets: JSON.parse(
         this.cipher.decrypt(row.connectorSecretsEncrypted),
       ) as Record<string, string>,
+      webhookTokenHash: row.webhookTokenHash,
       createdAt: row.createdAt,
       updatedAt: row.updatedAt,
     });
