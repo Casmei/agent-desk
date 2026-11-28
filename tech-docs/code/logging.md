@@ -6,6 +6,12 @@ Usamos o **logger nativo do Nest**, seguindo a [documentação oficial](https://
 
 `ConsoleLogger` com `json: true` fora de `development`, para gerar JSON estruturado. Em `development`, saída legível. O formato segue o `NODE_ENV` do `.env`, também no `docker compose up`: com `development` os logs saem coloridos e legíveis; num deploy real, use `NODE_ENV=production` para ter JSON. A configuração `redact` mascara chaves sensíveis nos parâmetros estruturados.
 
+## Envio ao OpenObserve
+
+O logger é o `OtelLogger` (`shared/logging/otel-logger.ts`), que estende o `ConsoleLogger` do Nest, como na seção "Extend built-in logger" da [documentação do Nest](https://docs.nestjs.com/techniques/logger). Cada linha de `log`, `warn`, `error` e `fatal` vai para dois lugares: o stdout, em JSON, e o OpenObserve, pela API de logs do OpenTelemetry, já com o contexto do trace ativo ([ADR 0019](../decisions/0019-observability-opentelemetry-openobserve.md)). Sem `OTEL_EXPORTER_OTLP_ENDPOINT`, só o stdout existe.
+
+As chaves de `REDACTED_KEYS` também são removidas do que é enviado, então um segredo logado por engano não chega ao OpenObserve. A regra vale para os campos do objeto passado ao logger, não para texto interpolado na mensagem.
+
 ## Uso
 
 Em cada classe:

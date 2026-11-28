@@ -30,6 +30,7 @@ O ponto de partida é o que o `nest new` (template ESM) e o `nest g` geram. Na d
 | envalid | [README do envalid](https://github.com/af/envalid) |
 | class-validator | [README do class-validator](https://github.com/typestack/class-validator) |
 | Vitest | [Guia do Vitest](https://vitest.dev/guide/) |
+| OpenTelemetry JS | [Documentação do OpenTelemetry JS](https://opentelemetry.io/docs/languages/js/) e [suporte a ESM](https://github.com/open-telemetry/opentelemetry-js/blob/main/doc/esm-support.md) |
 | oxlint | [Linter do oxlint](https://oxc.rs/docs/guide/usage/linter) |
 
 ## Onde divergimos da documentação do Nest

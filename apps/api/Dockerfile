@@ -13,4 +13,4 @@ COPY --from=build --chown=node:node /out .
 USER node
 HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=3 \
   CMD wget -q -O /dev/null "http://127.0.0.1:${PORT:-3000}/health" || exit 1
-CMD ["node", "dist/main.js"]
+CMD ["node", "--import", "./dist/instrumentation.js", "dist/main.js"]
